@@ -109,7 +109,7 @@ ibrows_newsletter:
 stfalcon_tinymce:
   include_jquery: false
   tinymce_jquery: true
-  textarea_class: "tinymce"
+  selector: ".tinymce"
   # create own methods in your own RendererBridge and set here the icons and description for them
   tinymce_buttons:
     unsubscribelink:
