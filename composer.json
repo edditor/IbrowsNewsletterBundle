@@ -15,10 +15,9 @@
 			"email": "mike.meier@ibrows.ch"
 		}
 	],
-	"minimum-stability": "stable",
 	"require": {
-		"symfony/symfony": ">=2.1",
-        "stfalcon/tinymce-bundle": "*"
+		"symfony/symfony": ">=2.8",
+		"stfalcon/tinymce-bundle": "^0.4"
     },
     "autoload": {
         "psr-4": { "Ibrows\\Bundle\\NewsletterBundle\\": "" }

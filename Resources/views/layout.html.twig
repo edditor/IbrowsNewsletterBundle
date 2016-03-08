@@ -78,7 +78,7 @@
 
             <script type="text/javascript">
                 var $newsletter = new ibrows_newsletter.newsletter({
-                    tinymceButtons: {{ tinymceCustomButtons|default()|raw }},
+                    tinymceButtons: {{ tinymceCustomButtons|default('[]')|raw }},
                     selectors: {
                         iframeAutoheight: '[data-iframe-auto-height="true"]'
                     }
@@ -137,7 +137,6 @@
             {% block newsletter_content %}{% endblock newsletter_content %}
         </div>
 
+        {{ tinymce_init() }}
     </body>
 </html>
-
-{{ tinymce_init() }}
