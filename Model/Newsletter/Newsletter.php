@@ -1,13 +1,13 @@
 <?php
+
 namespace Ibrows\Bundle\NewsletterBundle\Model\Newsletter;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
-use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
-
-use Doctrine\Common\Collections\ArrayCollection;
-
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class Newsletter implements NewsletterInterface
@@ -110,7 +110,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @param  string     $subject
+     * @param  string $subject
      * @return Newsletter
      */
     public function setSubject($subject)
@@ -129,7 +129,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @param  string     $name
+     * @param  string $name
      * @return Newsletter
      */
     public function setName($name)
@@ -148,7 +148,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @param  string     $senderMail
+     * @param  string $senderMail
      * @return Newsletter
      */
     public function setSenderMail($senderMail)
@@ -167,7 +167,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @param  string     $senderName
+     * @param  string $senderName
      * @return Newsletter
      */
     public function setSenderName($senderName)
@@ -186,7 +186,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @param  type       $returnMail
+     * @param  string $returnMail
      * @return Newsletter
      */
     public function setReturnMail($returnMail)
@@ -222,8 +222,9 @@ abstract class Newsletter implements NewsletterInterface
      */
     public function addSubscriber(SubscriberInterface $subscriber)
     {
-        if ($this->subscribers->contains($subscriber))
+        if ($this->subscribers->contains($subscriber)) {
             return $this;
+        }
 
         $subscriber->addNewsletter($this);
         $this->subscribers->add($subscriber);
@@ -251,7 +252,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @param  \DateTime  $dateTime
+     * @param  \DateTime $dateTime
      * @return Newsletter
      */
     public function setCreatedAt(\DateTime $dateTime)
@@ -322,7 +323,7 @@ abstract class Newsletter implements NewsletterInterface
 
     protected function generateHash()
     {
-        return sha1(uniqid().time());
+        return sha1(uniqid() . time());
     }
 
     /**
