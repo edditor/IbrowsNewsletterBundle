@@ -58,6 +58,8 @@ ns.edit = function ($options) {
     };
 
     this.setupBlockSortable = function () {
+        var settings = {};
+
         $($elements.blocks).sortable({
             placeholder: "ui-state-highlight",
             cursor: 'move',
@@ -70,13 +72,13 @@ ns.edit = function ($options) {
             },
             start: function ($event, $ui) {
                 jQuery($ui.item).find($options.selectors.tinymce).each(function () {
-                    tinyMCE.execCommand('mceRemoveControl', false, jQuery(this).attr('id'));
+                    $(this).tinymce().remove();
                 });
                 jQuery($elements.blockDeleteDroppable).show();
             },
             stop: function ($event, $ui) {
                 jQuery($ui.item).find($options.selectors.tinymce).each(function () {
-                    tinyMCE.execCommand('mceAddControl', false, jQuery(this).attr('id'));
+                    initTinyMCE();
                 });
                 jQuery($elements.blockDeleteDroppable).hide();
             }
@@ -194,9 +196,7 @@ ns.edit = function ($options) {
             $data,
             function ($response) {
                 $parent.append($response.html);
-                jQuery($response.html).find($options.selectors.tinymce).each(function () {
-                    tinyMCE.execCommand('mceAddControl', false, jQuery(this).attr('id'));
-                });
+                initTinyMCE();
             }
         );
     };
