@@ -327,7 +327,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @return NewsletterSendSettings
+     * @return SendSettingsInterface
      */
     public function getSendSettings()
     {

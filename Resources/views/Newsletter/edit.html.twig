@@ -95,7 +95,7 @@
                                         required="required"
                                         type="hidden"
                                         name="name"
-                                        >
+                                >
                             </div>
                             {% for blockProviderOptionKey, blockProviderOptionOptions in blockProvider.optionKeys %}
                                 <div>
@@ -107,7 +107,7 @@
                                             {% if blockProviderOptionOptions.required|default(true) == true %}required="required"{% endif %}
                                             type="text"
                                             name="option[{{ blockProviderOptionKey }}]"
-                                            >
+                                    >
                                 </div>
                             {% endfor %}
                             <div>
@@ -149,6 +149,5 @@
 
         </form>
 
-        <di
     </div>
 {% endblock %}

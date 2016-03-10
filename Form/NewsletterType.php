@@ -2,14 +2,26 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Form;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsletterType extends AbstractType
 {
+    /**
+     * @var string
+     */
     protected $managerName;
+
+    /**
+     * @var string
+     */
     protected $designClass;
 
+    /**
+     * NewsletterType constructor.
+     * @param string $managerName
+     * @param string $designClass
+     */
     public function __construct($managerName, $designClass)
     {
         $this->managerName = $managerName;
@@ -28,30 +40,25 @@ class NewsletterType extends AbstractType
             ->add('senderMail', 'email')
             ->add('senderName')
             ->add('returnMail', 'email')
-            ->add('design', 'entity', array(
-                'em' => $this->managerName,
-                'class' => $this->designClass,
-            ))
-        ;
+            ->add(
+                'design',
+                'entity',
+                array(
+                    'em'    => $this->managerName,
+                    'class' => $this->designClass,
+                )
+            );
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
-        $resolver->setDefaults(array(
-            'validation_groups' => array('newsletter'),
-        ));
+        $resolver->setDefaults(
+            array(
+                'validation_groups' => array('newsletter'),
+            )
+        );
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'ibrows_newsletterbundle_newsletter';
-    }
-
 }

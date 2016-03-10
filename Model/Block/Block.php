@@ -134,7 +134,7 @@ abstract class Block implements BlockInterface
 
     /**
      * @param  string $key
-     * @param  mixed $default
+     * @param  mixed  $default
      * @return mixed
      */
     public function getProviderOption($key, $default = null)
@@ -148,7 +148,7 @@ abstract class Block implements BlockInterface
 
     /**
      * @param  string $key
-     * @param  mixed $value
+     * @param  mixed  $value
      * @return Block
      */
     public function setProviderOption($key, $value)
@@ -178,6 +178,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * @param array $blocks
      * @return BlockInterface
      */
     public function addBlocks(array $blocks)

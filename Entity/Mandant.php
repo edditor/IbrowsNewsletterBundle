@@ -2,9 +2,9 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Entity;
 
-use Ibrows\Bundle\NewsletterBundle\Model\Mandant\Mandant as AbstractMandant;
-
 use Doctrine\ORM\Mapping as ORM;
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\Mandant as AbstractMandant;
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\SendSettingsInterface;
 
 class Mandant extends AbstractMandant
 {
@@ -37,7 +37,7 @@ class Mandant extends AbstractMandant
     protected $rendererName;
 
     /**
-     * @var unknown_type
+     * @var SendSettingsInterface
      *
      * @ORM\OneToOne(targetEntity="SendSettings")
      * @ORM\JoinColumn(name="send_settings_id", referencedColumnName="id")

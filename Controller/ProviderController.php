@@ -5,6 +5,7 @@ namespace Ibrows\Bundle\NewsletterBundle\Controller;
 use Ibrows\Bundle\NewsletterBundle\Form\BlockMetadataEditType;
 use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,11 +15,11 @@ class ProviderController extends AbstractController
 {
     /**
      * @Route("/view/add", name="ibrows_newsletter_provider_view_add")
+     * @param Request $request
+     * @return Response
      */
-    public function editViewAction()
+    public function editViewAction(Request $request)
     {
-        $request = $this->getRequest();
-
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
@@ -74,10 +75,11 @@ class ProviderController extends AbstractController
 
     /**
      * @Route("/blockmetadataedit", name="ibrows_newsletter_blockmetadata_edit")
+     * @param Request $request
+     * @return Response
      */
-    public function blockmetadataeditAction()
+    public function blockmetadataeditAction(Request $request)
     {
-        $request = $this->getRequest();
         if (!$blockId = (int)$request->get('block')) {
             throw $this->createNotFoundException('Need Block-Id Parameter');
         }
@@ -103,7 +105,7 @@ class ProviderController extends AbstractController
         $form = $this->createForm(new BlockMetadataEditType($provider), $block);
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $this->getMandantManager()->persistNewsletter($this->getMandant()->getName(), $newsletter);
@@ -130,11 +132,11 @@ class ProviderController extends AbstractController
 
     /**
      * @Route("/blockposition/update", name="ibrows_newsletter_provider_block_position_update")
+     * @param Request $request
+     * @return Response
      */
-    public function blockPositionUpdateAction()
+    public function blockPositionUpdateAction(Request $request)
     {
-        $request = $this->getRequest();
-
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
@@ -164,11 +166,11 @@ class ProviderController extends AbstractController
 
     /**
      * @Route("/block/remove", name="ibrows_newsletter_provider_block_remove")
+     * @param Request $request
+     * @return Response
      */
-    public function blockRemoveAction()
+    public function blockRemoveAction(Request $request)
     {
-        $request = $this->getRequest();
-
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }

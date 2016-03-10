@@ -4,18 +4,28 @@ namespace Ibrows\Bundle\NewsletterBundle\Renderer;
 
 class TwigRenderer implements RendererInterface
 {
+    /**
+     * @var \Twig_Environment
+     */
     protected $engine;
 
+    /**
+     * TwigRenderer constructor.
+     * @param array $twigOptions
+     */
     public function __construct(array $twigOptions = array())
     {
-        $engine = new \Twig_Environment(
-            new \Twig_Loader_String(),
+        $this->engine = new \Twig_Environment(
+            null,
             $twigOptions
         );
-
-        $this->engine = $engine;
     }
 
+    /**
+     * @param RenderableInterface $element
+     * @param array               $parameters
+     * @return string
+     */
     public function render(RenderableInterface $element, array $parameters = array())
     {
         try {
@@ -23,7 +33,6 @@ class TwigRenderer implements RendererInterface
         } catch (\Exception $e) {
             $rendered = $e->getMessage();
         }
-
         return $rendered;
     }
 

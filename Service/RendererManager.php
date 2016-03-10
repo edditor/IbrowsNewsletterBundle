@@ -3,7 +3,10 @@
 namespace Ibrows\Bundle\NewsletterBundle\Service;
 
 use Ibrows\Bundle\NewsletterBundle\Block\BlockComposition;
-
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
+use Ibrows\Bundle\NewsletterBundle\Renderer\Bridge\RendererBridge;
 use Ibrows\Bundle\NewsletterBundle\Renderer\RendererInterface;
 
 class RendererManager
@@ -29,7 +32,7 @@ class RendererManager
     }
 
     /**
-     * @param  string                    $name
+     * @param  string $name
      * @return RendererInterface
      * @throws \InvalidArgumentException
      */
@@ -42,26 +45,47 @@ class RendererManager
         return $this->renderers[$name];
     }
 
-    public function renderNewsletter($renderername, $bridge, $newsletter, $mandant, $subscriber, $context = null)
-    {
+    /**
+     * @param string              $renderername
+     * @param RendererBridge      $bridge
+     * @param NewsletterInterface $newsletter
+     * @param MandantInterface    $mandant
+     * @param SubscriberInterface $subscriber
+     * @param string              $context
+     * @return string
+     */
+    public function renderNewsletter(
+        $renderername,
+        RendererBridge $bridge,
+        NewsletterInterface $newsletter,
+        MandantInterface $mandant,
+        SubscriberInterface $subscriber,
+        $context = null
+    ) {
         $renderer = $this->get($renderername);
 
         $blockVariables = array(
-                'context' => $context,
-                'mandant' => $mandant,
-                'newsletter' => $newsletter,
-                'subscriber' => $subscriber,
-                'bridge' => $bridge,
+            'context'    => $context,
+            'mandant'    => $mandant,
+            'newsletter' => $newsletter,
+            'subscriber' => $subscriber,
+            'bridge'     => $bridge,
         );
 
         $blockContent = $renderer->render(
-                new BlockComposition($this->blockProvider, $newsletter->getBlocks()),
-                $blockVariables
+            new BlockComposition($this->blockProvider, $newsletter->getBlocks()),
+            $blockVariables
         );
 
-        $overview = $renderer->render($newsletter->getDesign(), array_merge($blockVariables, array(
-                'content' => $blockContent
-        )));
+        $overview = $renderer->render(
+            $newsletter->getDesign(),
+            array_merge(
+                $blockVariables,
+                array(
+                    'content' => $blockContent
+                )
+            )
+        );
 
         return $overview;
     }

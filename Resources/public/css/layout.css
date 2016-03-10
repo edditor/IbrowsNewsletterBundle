@@ -1,32 +1,29 @@
 /************** --------------- **************/
 /************** NEWSLETTER EDIT **************/
 /************** --------------- **************/
-.layout-newsletter-edit ul#blocks{
+.layout-newsletter-edit ul#blocks {
     width: 100%;
     border: 1px solid #cdcdcd;
     border-radius: 5px;
     list-style-type: none;
-    margin: 0;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin: 1em 0;
 }
 
-.layout-newsletter-edit .clone-block-dialog ul{
-    margin:0;
+.layout-newsletter-edit .clone-block-dialog ul {
     list-style-type: none;
-    margin-top: 1em;
+    margin: 1em 0 0;
 }
 
-.layout-newsletter-edit .clone-block-dialog ul li{
+.layout-newsletter-edit .clone-block-dialog ul li {
     margin-bottom: 1em;
 }
 
-.layout-newsletter-edit ul#blocks li.block textarea{
+.layout-newsletter-edit ul#blocks li.block textarea {
     width: 100%;
     height: 100%;
 }
 
-.layout-newsletter-edit ul#blocks li.block{
+.layout-newsletter-edit ul#blocks li.block {
     border: 1px solid black;
     border-radius: 5px;
     margin: 1em;
@@ -35,29 +32,29 @@
     background: #c4e3f3;
 }
 
-.layout-newsletter-edit ul#blocks li.block table.provider{
+.layout-newsletter-edit ul#blocks li.block table.provider {
     border: 1px solid #cdcdcd;
     border-radius: 5px;
     background: white;
 }
 
-.layout-newsletter-edit ul#blocks li.block table.provider tr.provider td.provider{
+.layout-newsletter-edit ul#blocks li.block table.provider tr.provider td.provider {
     border: 1px solid #cdcdcd;
     border-radius: 5px;
     padding: .8em 1em .8em 1em;
 }
 
-.layout-newsletter-edit ul#blocks li.ui-state-highlight{
+.layout-newsletter-edit ul#blocks li.ui-state-highlight {
     height: 50px;
 }
 
-.layout-newsletter-edit ul#blocks li.helper{
-    border:1px solid green;
+.layout-newsletter-edit ul#blocks li.helper {
+    border: 1px solid green;
     border-radius: 5px;
     background: #7aba7b;
 }
 
-.layout-newsletter-edit div.block-delete-droppable{
+.layout-newsletter-edit div.block-delete-droppable {
     position: fixed;
     top: 30%;
     right: 1em;
@@ -68,7 +65,7 @@
     background: #ffd5d5;
 }
 
-.layout-newsletter-edit div.block-delete-droppable.hover{
+.layout-newsletter-edit div.block-delete-droppable.hover {
     border: 1px solid red;
     background: #eed3d7;
 }
@@ -78,7 +75,7 @@
 /************** -------------- **************/
 .layout-statistic-show #read-pie-chart,
 .layout-statistic-show #job-pie-chart,
-.layout-statistic-show #job-line-chart{
+.layout-statistic-show #job-line-chart {
     height: 300px;
     width: 450px;
     border: 1px solid #cdcdcd;
@@ -88,8 +85,8 @@
     margin-bottom: 10px;
 }
 
-.layout-statistic-show #job-line-chart{
-    float:none;
+.layout-statistic-show #job-line-chart {
+    float: none;
     margin: 0;
     width: 910px;
 }
@@ -97,14 +94,14 @@
 /************** --------------------- **************/
 /************** NEWSLETTER SUBSCRIBER **************/
 /************** --------------------- **************/
-.layout-newsletter-subscriber select{
+.layout-newsletter-subscriber select {
     width: 100%;
 }
 
 /************** ------------- **************/
 /************** DESIGN CREATE **************/
 /************** ------------- **************/
-.layout-design-create textarea{
+.layout-design-create textarea {
     width: 80%;
     height: 200px;
 }
@@ -112,7 +109,7 @@
 /************** ----------- **************/
 /************** DESIGN EDIT **************/
 /************** ----------- **************/
-.layout-design-edit textarea{
+.layout-design-edit textarea {
     width: 80%;
     height: 200px;
 }
@@ -120,7 +117,7 @@
 /************** ------------------ **************/
 /************** NEWSLETTER SUMMARY **************/
 /************** ------------------ **************/
-.layout-newsletter-summary .newsletter-overview{
+.layout-newsletter-summary .newsletter-overview {
     border: 1px solid #cdcdcd;
     border-radius: 5px;
     padding: .5em;
@@ -130,7 +127,7 @@
 /************** ----------- **************/
 /************** DESIGN EDIT **************/
 /************** ----------- **************/
-.layout-design-edit textarea.tinymce{
+.layout-design-edit textarea.tinymce {
     width: 925px;
     height: 300px;
 }

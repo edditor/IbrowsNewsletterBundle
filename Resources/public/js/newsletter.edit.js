@@ -3,8 +3,6 @@ var ns = ibrows_newsletter.namespace('ibrows_newsletter');
 ns.edit = function ($options) {
 
     var $self = this;
-    var $options = $options;
-
     var $container = null;
     var $elements = {};
 
@@ -40,7 +38,6 @@ ns.edit = function ($options) {
         $elements['block'].dblclick(function () {
             var elem = jQuery(this);
             var blockId = elem.attr($options.attributes.blockId);
-            var blockContainer = $elements.block.filter('[data-element-id="' + blockId + '"]');
 
             $elements.blockMetadataEditDialog.html('');
             $elements.blockMetadataEditDialog.dialog('open');

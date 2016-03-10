@@ -2,11 +2,11 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Command;
 
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputOption;
-
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class EnableMandantsCommand extends ContainerAwareCommand
 {
@@ -15,14 +15,14 @@ class EnableMandantsCommand extends ContainerAwareCommand
         $this
             ->setName('ibrows:newsletter:mandants:enable')
             ->setDescription('Insert all mandants given in the config')
-            ->addOption('renderer', null, InputOption::VALUE_REQUIRED, 'Service id of the renderer', 'ibrows_newsletter.renderer.twig')
-        ;
+            ->addOption('renderer', null, InputOption::VALUE_REQUIRED, 'Service id of the renderer', 'ibrows_newsletter.renderer.twig');
     }
 
     /**
      * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @return int|null|void
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -36,13 +36,16 @@ class EnableMandantsCommand extends ContainerAwareCommand
 
             $mandantRepo = $objectManager->getRepository($mandantClassName);
 
-            $mandant = $mandantRepo->findOneBy(array(
-                'name' => $mandantName
-            ));
+            $mandant = $mandantRepo->findOneBy(
+                array(
+                    'name' => $mandantName
+                )
+            );
 
             if (!$mandant) {
-                $output->writeln('Creating mandant <info>'. $mandantName .'</info>');
+                $output->writeln('Creating mandant <info>' . $mandantName . '</info>');
 
+                /** @var MandantInterface $mandant */
                 $mandant = new $mandantClassName();
 
                 $mandant->setName($mandantName);
@@ -57,10 +60,10 @@ class EnableMandantsCommand extends ContainerAwareCommand
 
             $oldHash = $mandant->getHash();
             if ($oldHash != $mandantHash) {
-                throw new Exception('Mandant "'. $mandantName .'" is already registered with hash "'. $oldHash .'" - Correct config entry');
+                throw new Exception('Mandant "' . $mandantName . '" is already registered with hash "' . $oldHash . '" - Correct config entry');
             }
 
-            $output->writeln('Mandant <info>'. $mandantName .'</info> already existing');
+            $output->writeln('Mandant <info>' . $mandantName . '</info> already existing');
         }
     }
 }

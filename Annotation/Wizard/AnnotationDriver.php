@@ -2,8 +2,8 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Annotation\Wizard;
 
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class AnnotationDriver
 {
@@ -44,6 +44,7 @@ class AnnotationDriver
         $bags = array();
 
         foreach ($controller->getMethods() as $methodReflection) {
+            /** @var Annotation $annotation */
             $annotation = $this->reader->getMethodAnnotation($methodReflection, $this->annotationClassName);
 
             if ($annotation) {

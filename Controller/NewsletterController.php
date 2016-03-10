@@ -11,6 +11,7 @@ use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberGenderTitleInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class NewsletterController extends AbstractController
@@ -69,8 +70,10 @@ class NewsletterController extends AbstractController
     /**
      * @Route("/meta", name="ibrows_newsletter_meta")
      * @WizardAction(name="meta", number=1, validationMethod="metaValidation")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function metaAction()
+    public function metaAction(Request $request)
     {
         $newsletter = $this->getNewsletter();
         if ($newsletter === null) {
@@ -81,9 +84,8 @@ class NewsletterController extends AbstractController
         $designClass = $this->getClassManager()->getModel('design');
         $form = $this->createForm(new $formtype($this->getMandantName(), $designClass), $newsletter);
 
-        $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
-            $form->bind($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $this->setNewsletter($newsletter);
@@ -112,8 +114,10 @@ class NewsletterController extends AbstractController
     /**
      * @Route("/edit", name="ibrows_newsletter_edit")
      * @WizardAction(name="edit", number=2, validationMethod="editValidation")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function editAction()
+    public function editAction(Request $request)
     {
         if (($response = $this->getWizardActionValidation()) instanceof Response) {
             return $response;
@@ -121,7 +125,6 @@ class NewsletterController extends AbstractController
 
         $newsletter = $this->getNewsletter();
 
-        $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
             $blockParameters = array();
 
@@ -189,8 +192,10 @@ class NewsletterController extends AbstractController
     /**
      * @Route("/subscriber", name="ibrows_newsletter_subscriber")
      * @WizardAction(name="subscriber", number=3, validationMethod="subscriberValidation")
+     * @param Request $request
+     * @return RedirectResponse|Response|true
      */
-    public function subscriberAction()
+    public function subscriberAction(Request $request)
     {
         if (($response = $this->getWizardActionValidation()) instanceof Response) {
             return $response;
@@ -202,9 +207,8 @@ class NewsletterController extends AbstractController
         $subscriberClass = $this->getClassManager()->getModel('subscriber');
         $form = $this->createForm(new $formtype($this->getMandantName(), $subscriberClass, $this->getMandant()), $newsletter);
 
-        $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
-            $form->bind($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $this->setNewsletter($newsletter);
@@ -239,8 +243,10 @@ class NewsletterController extends AbstractController
     /**
      * @Route("/settings", name="ibrows_newsletter_settings")
      * @WizardAction(name="settings", number=4, validationMethod="settingsValidation")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function settingsAction()
+    public function settingsAction(Request $request)
     {
         if (($response = $this->getWizardActionValidation()) instanceof Response) {
             return $response;
@@ -266,10 +272,9 @@ class NewsletterController extends AbstractController
         $password_required = $password === null;
         $form = $this->createForm(new $formtype($password_required), $sendSettings);
 
-        $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
             $plainpassword = $this->decryptPassword($password);
-            $form->bind($request);
+            $form->handleRequest($request);
 
             // set password from send settings if necessary
             $formpassword = $form->get('password')->getData();
@@ -317,8 +322,10 @@ class NewsletterController extends AbstractController
     /**
      * @Route("/summary", name="ibrows_newsletter_summary")
      * @WizardAction(name="summary", number=5, validationMethod="summaryValidation")
+     * @param Request $request
+     * @return Response
      */
-    public function summaryAction()
+    public function summaryAction(Request $request)
     {
         if (($response = $this->getWizardActionValidation()) instanceof Response) {
             return $response;
@@ -339,10 +346,9 @@ class NewsletterController extends AbstractController
 
         $testmailform = $this->createForm($formtype);
 
-        $request = $this->getRequest();
         $error = '';
         if ($request->getMethod() == 'POST' && $request->request->get('testmail')) {
-            $testmailform->bind($request);
+            $testmailform->handleRequest($request);
 
             if ($testmailform->isValid()) {
                 $mandant = $this->getMandant();
@@ -509,7 +515,7 @@ class NewsletterController extends AbstractController
 
     /**
      * @param Collection|BlockInterface[] $blocks
-     * @param array $blockParameters
+     * @param array                       $blockParameters
      */
     protected function updateBlocksRecursive(Collection $blocks, array $blockParameters)
     {

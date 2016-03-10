@@ -2,18 +2,22 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Form;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType as BaseType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractType extends BaseType
 {
     /**
-     * @param OptionsResolverInterface $resolver
+     * Configures the options for this type.
+     *
+     * @param OptionsResolver $resolver The resolver for the options.
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'translation_domain' => 'IbrowsNewsletterBundleForms',
-        ));
+        $resolver->setDefaults(
+            array(
+                'translation_domain' => 'IbrowsNewsletterBundleForms',
+            )
+        );
     }
 }

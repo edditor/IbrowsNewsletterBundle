@@ -24,7 +24,7 @@
 
         <h2>{{ 'newsletter.overview'|trans }}</h2>
         <div class="newsletter-overview">
-            <iframe data-iframe-auto-height="true" src="{{ url('ibrows_newsletter_render_overview', {mandantHash: mandantHash, newsletterHash: newsletter.hash, subscriberHash: subscriber.hash, context: 'preview'}) }}" />
+            <iframe data-iframe-auto-height="true" src="{{ url('ibrows_newsletter_render_overview', {mandantHash: mandantHash, newsletterHash: newsletter.hash, subscriberHash: subscriber.hash, context: 'preview'}) }}"></iframe>
         </div>
     </div>
 {% endblock newsletter_content %}

@@ -1,16 +1,14 @@
 <?php
 namespace Ibrows\Bundle\NewsletterBundle\Service\orm;
 
-use Ibrows\Bundle\NewsletterBundle\Service\ClassManager;
-
-use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
-use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
-
-use Ibrows\Bundle\NewsletterBundle\Model\Mandant\Mandant;
-use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager as BaseMandantManager;
-
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager as BaseMandantManager;
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
+use Ibrows\Bundle\NewsletterBundle\Service\ClassManager;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class MandantManager extends BaseMandantManager
 {
@@ -49,6 +47,10 @@ class MandantManager extends BaseMandantManager
         $this->unsubscribeLogClass = $classManager->getModel('unsubscribelog');
     }
 
+    /**
+     * @param string $name
+     * @return MandantInterface
+     */
     public function get($name)
     {
         $manager = $this->getObjectManager($name);
@@ -65,6 +67,8 @@ class MandantManager extends BaseMandantManager
     /**
      * (non-PHPdoc)
      * @see Ibrows\Bundle\NewsletterBundle\Model\Mandant.MandantManagerInterface::getUserProvider()
+     * @param string $name
+     * @return MandantUserProvider|UserProviderInterface
      */
     public function getUserProvider($name)
     {
@@ -77,6 +81,10 @@ class MandantManager extends BaseMandantManager
         return $this->userProvider;
     }
 
+    /**
+     * @param string $name
+     * @return SubscriberManager
+     */
     public function getSubscriberManager($name)
     {
         if ($this->subscriberManager === null) {
@@ -88,6 +96,10 @@ class MandantManager extends BaseMandantManager
         return $this->subscriberManager;
     }
 
+    /**
+     * @param string $name
+     * @return NewsletterManager
+     */
     public function getNewsletterManager($name)
     {
         if ($this->newsletterManager === null) {
@@ -99,6 +111,10 @@ class MandantManager extends BaseMandantManager
         return $this->newsletterManager;
     }
 
+    /**
+     * @param string $name
+     * @return DesignManager
+     */
     public function getDesignManager($name)
     {
         if ($this->designManager === null) {
@@ -110,22 +126,31 @@ class MandantManager extends BaseMandantManager
         return $this->designManager;
     }
 
+    /**
+     * @param string $name
+     * @return StatisticManager
+     */
     public function getStatisticManager($name)
     {
         if ($this->statisticManager === null) {
             $manager = $this->getObjectManager($name);
             $this->statisticManager = new StatisticManager(
-                    $manager,
-                    $name,
-                    $this->readLogClass,
-                    $this->sendLogClass,
-                    $this->unsubscribeLogClass
-             );
+                $manager,
+                $name,
+                $this->readLogClass,
+                $this->sendLogClass,
+                $this->unsubscribeLogClass
+            );
         }
 
         return $this->statisticManager;
     }
 
+    /**
+     * @param string              $name
+     * @param NewsletterInterface $newsletter
+     * @return NewsletterInterface
+     */
     public function persistNewsletter($name, NewsletterInterface $newsletter)
     {
         $manager = $this->getObjectManager($name);
@@ -136,6 +161,11 @@ class MandantManager extends BaseMandantManager
         return $newsletter;
     }
 
+    /**
+     * @param string          $name
+     * @param DesignInterface $design
+     * @return DesignInterface
+     */
     public function persistDesign($name, DesignInterface $design)
     {
         $manager = $this->getObjectManager($name);
@@ -147,8 +177,7 @@ class MandantManager extends BaseMandantManager
     }
 
     /**
-     *
-     * @param  string                    $name
+     * @param  string $name
      * @return ObjectManager
      * @throws \InvalidArgumentException
      */
@@ -159,7 +188,7 @@ class MandantManager extends BaseMandantManager
         }
 
         if (!array_key_exists($name, $this->mandants)) {
-            throw new \InvalidArgumentException('Mandant "'. $name .'" does not exist. Did you forget to enable it in the IbrowsNewsletter config?');
+            throw new \InvalidArgumentException('Mandant "' . $name . '" does not exist. Did you forget to enable it in the IbrowsNewsletter config?');
         }
 
         return $this->doctrine->getManager($name);

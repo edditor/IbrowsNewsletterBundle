@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 class MailJob extends BaseMailJob
 {
+    protected $id;
+
     /**
      * @ORM\Column(type="string")
      */

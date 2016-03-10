@@ -35,7 +35,7 @@
                 data: [
                     ['{{ 'statistic.jobpiechart.status'|trans }}', '{{ 'statistic.jobpiechart.amount'|trans }}'],
                     {% for status, amount in jobPie %}
-                        ['{{ ('statistic.jobpiechart.status.'~status)|trans }}', {{ amount }}],
+                    ['{{ ('statistic.jobpiechart.status.'~status)|trans }}', {{ amount }}],
                     {% endfor %}
                 ],
                 options: {
@@ -48,14 +48,12 @@
             },
             jobLineChart: {
                 data: [
-                    ['{{ 'statistic.jobpiechart.date'|trans }}',{% for status in jobStati %}'{{ ('statistic.jobpiechart.status.'~status)|trans }}'{% if(loop.last == false) %},{% endif %}{% endfor %}],
+                    ['{{ 'statistic.jobpiechart.date'|trans }}', {% for status in jobStati %}'{{ ('statistic.jobpiechart.status.'~status)|trans }}'{% if(loop.last == false) %},{% endif %}{% endfor %}],
                     {% for date, job in jobLine %}
-                        ['{{ date }}',{{ jobLine[date]|join(",")|raw }}]{% if(loop.last == false) %},{% endif %}
+                    ['{{ date }}',{{ jobLine[date]|join(",")|raw }}]{% if(loop.last == false) %},{% endif %}
                     {% endfor %}
                 ],
-                options: {
-
-                }
+                options: {}
             }
         });
         $statistic.ready();
@@ -68,7 +66,7 @@
     <div id="read-pie-chart"></div>
     <div id="job-pie-chart"></div>
 
-    <div class="clear" />
+    <div class="clear"></div>
 
     <div id="job-line-chart"></div>
 {% endblock %}

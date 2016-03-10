@@ -3,21 +3,40 @@
 namespace Ibrows\Bundle\NewsletterBundle\Block\Provider;
 
 use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
-
-use Symfony\Component\HttpFoundation\Request;
-
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class ImageProvider extends AbstractProvider
 {
+    /**
+     * @var Request
+     */
     protected $request;
+
+    /**
+     * @var string
+     */
     protected $uploadDirectory;
+
+    /**
+     * @var string
+     */
     protected $publicPath;
+
+    /**
+     * @var int
+     */
     protected $width = null;
 
     const PROVIDER_OPTION_FILENAME = 'filename';
 
+    /**
+     * ImageProvider constructor.
+     * @param Request $request
+     * @param string  $uploadDirectory
+     * @param string  $publicPath
+     */
     public function __construct(Request $request, $uploadDirectory, $publicPath)
     {
         if (!is_dir($uploadDirectory)) {
@@ -34,42 +53,59 @@ class ImageProvider extends AbstractProvider
         $this->publicPath = $publicPath;
     }
 
+    /**
+     * @param BlockInterface $block
+     * @return $this
+     */
     public function updateClonedBlock(BlockInterface $block)
     {
-        $newFilename = md5($this->getFilename($block).uniqid());
+        $newFilename = md5($this->getFilename($block) . uniqid());
         $oldFilePath = $this->getFilePath($block);
         $this->setFilename($block, $newFilename);
 
         $filesystem = new Filesystem();
         $filesystem->copy($oldFilePath, $this->getFilePath($block));
+
+        return $this;
     }
 
+    /**
+     * @param BlockInterface $block
+     * @return string
+     */
     public function getBlockDisplayContent(BlockInterface $block)
     {
         $filePath = $this->getFilePath($block);
         if ($filePath && file_exists($filePath)) {
-            return '<img src="'. $this->getPublicPath($block) .'">';
+            return '<img src="' . $this->getPublicPath($block) . '">';
         }
 
         return 'No image found';
     }
 
+    /**
+     * @param BlockInterface $block
+     * @return string
+     */
     public function getBlockEditContent(BlockInterface $block)
     {
         $string = '';
 
         $filePath = $this->getFilePath($block);
         if ($filePath && file_exists($filePath)) {
-            $string .= '<div>'. $this->getBlockDisplayContent($block) .'</div>';
+            $string .= '<div>' . $this->getBlockDisplayContent($block) . '</div>';
         }
 
-        $string .= '
-            <div><input type="file" name="block['. $block->getId() .']"></div>
-        ';
+        $string .= '<div><input type="file" name="block[' . $block->getId() . ']"></div>';
 
         return $string;
     }
 
+    /**
+     * @param BlockInterface $block
+     * @param UploadedFile   $update
+     * @return bool|void
+     */
     public function updateBlock(BlockInterface $block, $update)
     {
         if (!$update instanceof UploadedFile) {
@@ -80,7 +116,7 @@ class ImageProvider extends AbstractProvider
             return false;
         }
 
-        $filename = md5($update->getFilename().uniqid());
+        $filename = md5($update->getFilename() . uniqid());
         $block->setProviderOption(self::PROVIDER_OPTION_FILENAME, $filename);
         $update->move($this->uploadDirectory, $filename);
 
@@ -88,13 +124,15 @@ class ImageProvider extends AbstractProvider
 
         list($orgWidth, $orgHeight, $type) = getimagesize($filePath);
 
-        if ($this->width === null)
-                return;
+        if ($this->width === null) {
+            return false;
+        }
 
         $newWidth = $this->width;
-        $newHeight = round($orgHeight/$orgWidth*$newWidth);
-        if ($newWidth > $orgWidth)
-                return;
+        $newHeight = round($orgHeight / $orgWidth * $newWidth);
+        if ($newWidth > $orgWidth) {
+            return false;
+        }
 
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
 
@@ -121,6 +159,8 @@ class ImageProvider extends AbstractProvider
 
         imagecopyresampled($newImage, $orgImage, 0, 0, 0, 0, $newWidth, $newHeight, $orgWidth, $orgHeight);
         imagepng($newImage, $filePath);
+
+        return true;
     }
 
     protected function getFilePath(BlockInterface $block)
@@ -130,7 +170,7 @@ class ImageProvider extends AbstractProvider
             return null;
         }
 
-        return $this->uploadDirectory.'/'. $filename;
+        return $this->uploadDirectory . '/' . $filename;
     }
 
     protected function getPublicPath(BlockInterface $block)
@@ -140,7 +180,7 @@ class ImageProvider extends AbstractProvider
             return null;
         }
 
-        return $this->request->getSchemeAndHttpHost().'/'.$this->request->getBasePath().'/'.$this->publicPath.'/'. $filename;
+        return $this->request->getSchemeAndHttpHost() . '/' . $this->request->getBasePath() . '/' . $this->publicPath . '/' . $filename;
     }
 
     protected function getFilename(BlockInterface $block)

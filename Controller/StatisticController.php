@@ -3,12 +3,11 @@
 namespace Ibrows\Bundle\NewsletterBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
-use Ibrows\Bundle\NewsletterBundle\Model\Job\MailJob;
 use Ibrows\Bundle\NewsletterBundle\Model\Job\JobInterface;
-
+use Ibrows\Bundle\NewsletterBundle\Model\Job\MailJob;
 use Ibrows\Bundle\NewsletterBundle\Model\Log\Log;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -20,15 +19,22 @@ class StatisticController extends AbstractHashMandantController
 
     /**
      * @Route("/log/read/{mandantHash}/{newsletterHash}/{subscriberHash}", name="ibrows_newsletter_statistic_log_read")
+     * @param Request $request
+     * @param string  $mandantHash
+     * @param string  $newsletterHash
+     * @param string  $subscriberHash
+     * @return Response
      */
-    public function logreadAction($mandantHash, $newsletterHash, $subscriberHash)
+    public function logreadAction(Request $request, $mandantHash, $newsletterHash, $subscriberHash)
     {
-        $imageResponse = new Response(base64_decode(self::TRANSPARENT_GIF), 200, array(
-            'Content-Type' => 'image/gif'
-        ));
+        $imageResponse = new Response(
+            base64_decode(self::TRANSPARENT_GIF), 200, array(
+                'Content-Type' => 'image/gif'
+            )
+        );
 
         // if a context is set, its testing or dev --> no log
-        if ($this->getRequest()->query->get('context')) {
+        if ($request->query->get('context')) {
             return $imageResponse;
         }
 
@@ -38,13 +44,15 @@ class StatisticController extends AbstractHashMandantController
         $subscriber = $this->getSubscriberByHash($newsletter, $subscriberHash);
 
         // log a read
-        $this->addNewsletterReadLog($newsletter, $subscriber, "Newsletter read: logged by ".__METHOD__);
+        $this->addNewsletterReadLog($newsletter, $subscriber, "Newsletter read: logged by " . __METHOD__);
 
         return $imageResponse;
     }
 
     /**
      * @Route("/show/{newsletterId}", name="ibrows_newsletter_statistic_show")
+     * @param string $newsletterId
+     * @return Response
      */
     public function showAction($newsletterId)
     {
@@ -53,9 +61,11 @@ class StatisticController extends AbstractHashMandantController
         $statisticManager = $this->getStatisticManager();
 
         /** @var Log[] $readlogs */
-        $readlogs = $statisticManager->getReadLogs(array(
-            'newsletterId' => $newsletter->getId()
-        ));
+        $readlogs = $statisticManager->getReadLogs(
+            array(
+                'newsletterId' => $newsletter->getId()
+            )
+        );
 
         $objectManager = $this->getObjectManager();
 
@@ -65,25 +75,27 @@ class StatisticController extends AbstractHashMandantController
         $qb = $mailJobRepo->createQueryBuilder('j');
         $qb
             ->select('partial j.{id, error, status, created, scheduled, completed}')
-            ->where('j.newsletterId = '. (int)$newsletter->getId())
-            ->orderBy('j.status', 'ASC')
-        ;
+            ->where('j.newsletterId = ' . (int)$newsletter->getId())
+            ->orderBy('j.status', 'ASC');
 
         /** @var MailJob[] $jobs */
         $jobs = $qb->getQuery()->execute();
 
         $foundSubscriberIds = array();
-        $filteredReadlogs = array_filter($readlogs, function ($readlog) use (&$foundSubscriberIds) {
-            /** @var Log $readlog */
-            $subscriberId = $readlog->getSubscriberId();
-            if (!in_array($subscriberId, $foundSubscriberIds)) {
-                $foundSubscriberIds[] = $subscriberId;
+        $filteredReadlogs = array_filter(
+            $readlogs,
+            function ($readlog) use (&$foundSubscriberIds) {
+                /** @var Log $readlog */
+                $subscriberId = $readlog->getSubscriberId();
+                if (!in_array($subscriberId, $foundSubscriberIds)) {
+                    $foundSubscriberIds[] = $subscriberId;
 
-                return true;
+                    return true;
+                }
+
+                return false;
             }
-
-            return false;
-        });
+        );
 
         $jobPie = array();
         foreach ($jobs as $job) {
@@ -97,12 +109,15 @@ class StatisticController extends AbstractHashMandantController
         $jobStati = array_keys($jobPie);
 
         $jobsSortedByCompleted = $jobs;
-        usort($jobsSortedByCompleted, function (MailJob $a, MailJob $b) {
-            $dateA = $a->getCompleted() ?: $a->getCreated();
-            $dateB = $b->getCompleted() ?: $b->getCreated();
+        usort(
+            $jobsSortedByCompleted,
+            function (MailJob $a, MailJob $b) {
+                $dateA = $a->getCompleted() ?: $a->getCreated();
+                $dateB = $b->getCompleted() ?: $b->getCreated();
 
-            return $dateA > $dateB;
-        });
+                return $dateA > $dateB;
+            }
+        );
 
         $jobLine = array();
         $jobWalkLine = array();
@@ -128,17 +143,20 @@ class StatisticController extends AbstractHashMandantController
             }
         }
 
-        $completedAmount = array_key_exists(JobInterface::STATUS_COMPLETED, $jobPie)?$jobPie[JobInterface::STATUS_COMPLETED]: 0;
+        $completedAmount = array_key_exists(JobInterface::STATUS_COMPLETED, $jobPie) ? $jobPie[JobInterface::STATUS_COMPLETED] : 0;
         $readAmount = count($filteredReadlogs);
-        $unreadAmount = $completedAmount-$readAmount;
+        $unreadAmount = $completedAmount - $readAmount;
 
-        return $this->render($this->getTemplateManager()->getStatistic('show'), array(
-            'newsletter' => $newsletter,
-            'read' => $readAmount,
-            'unread' => $unreadAmount,
-            'jobPie' => $jobPie,
-            'jobLine' => $jobLine,
-            'jobStati' => $jobStati
-        ));
+        return $this->render(
+            $this->getTemplateManager()->getStatistic('show'),
+            array(
+                'newsletter' => $newsletter,
+                'read'       => $readAmount,
+                'unread'     => $unreadAmount,
+                'jobPie'     => $jobPie,
+                'jobLine'    => $jobLine,
+                'jobStati'   => $jobStati
+            )
+        );
     }
 }

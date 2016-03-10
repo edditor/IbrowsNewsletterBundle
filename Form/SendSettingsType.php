@@ -3,11 +3,18 @@
 namespace Ibrows\Bundle\NewsletterBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SendSettingsType extends AbstractType
 {
+    /**
+     * @var bool
+     */
     protected $isPasswordRequired = true;
+
+    /**
+     * @var bool
+     */
     protected $showStartTime = true;
 
     /**
@@ -19,6 +26,7 @@ class SendSettingsType extends AbstractType
         $this->isPasswordRequired = $isPasswordRequired;
         $this->showStartTime = $showStartTime;
     }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -27,45 +35,49 @@ class SendSettingsType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('password', 'password', array(
-                'required' => $this->isPasswordRequired,
-            ))
+            ->add(
+                'password',
+                'password',
+                array(
+                    'required' => $this->isPasswordRequired,
+                )
+            )
             ->add('host')
             ->add('port')
-            ->add('encryption', 'choice', array(
-                'choices' => array('tls' => 'tls', 'ssl' => 'ssl'),
-                'required' => false,
-                'empty_data' => null,
-            ))
-            ->add('authMode', 'choice', array(
-                'choices' => array('plain' => 'plain', 'login' => 'login', 'cram-md5' => 'cram-md5'),
-                'required' => false,
-                'empty_data' => null,
-            ))
-            ->add('interval')
-        ;
+            ->add(
+                'encryption',
+                'choice',
+                array(
+                    'choices'    => array('tls' => 'tls', 'ssl' => 'ssl'),
+                    'required'   => false,
+                    'empty_data' => null,
+                )
+            )
+            ->add(
+                'authMode',
+                'choice',
+                array(
+                    'choices'    => array('plain' => 'plain', 'login' => 'login', 'cram-md5' => 'cram-md5'),
+                    'required'   => false,
+                    'empty_data' => null,
+                )
+            )
+            ->add('interval');
+
         if (true === $this->showStartTime) {
             $builder->add('starttime', 'datetime');
         }
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
-
-        $resolver->setDefaults(array(
-            'validation_groups' => array('newsletter'),
-        ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'ibrows_newsletterbundle_send_settings';
+        $resolver->setDefaults(
+            array(
+                'validation_groups' => array('newsletter')
+            )
+        );
     }
 }

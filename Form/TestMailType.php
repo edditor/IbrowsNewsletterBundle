@@ -17,7 +17,7 @@ class TestMailType extends AbstractType
     protected $defaultMail;
 
     /**
-     * @param array $subscribers
+     * @param array  $subscribers
      * @param string $defaultMail
      */
     public function __construct(array $subscribers, $defaultMail = null)
@@ -28,7 +28,7 @@ class TestMailType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,13 +42,5 @@ class TestMailType extends AbstractType
                     'choices' => $this->subscribers
                 )
             );
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'ibrows_newsletterbundle_testmail';
     }
 }

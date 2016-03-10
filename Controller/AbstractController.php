@@ -2,35 +2,30 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Controller;
 
-use Ibrows\Bundle\NewsletterBundle\Model\Statistic\StatisticManager;
-use Ibrows\Bundle\NewsletterBundle\Service\orm\DesignManager;
-use Ibrows\Bundle\NewsletterBundle\Service\orm\NewsletterManager;
-use Ibrows\Bundle\NewsletterBundle\Service\orm\MandantManager;
-use Ibrows\Bundle\NewsletterBundle\Service\TemplateManager;
-use Ibrows\Bundle\NewsletterBundle\Service\ClassManager;
-use Ibrows\Bundle\NewsletterBundle\Service\RendererManager;
-use Ibrows\Bundle\NewsletterBundle\Service\BlockProviderManager;
-
-use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\SendSettingsInterface;
-use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
-use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
-use Ibrows\Bundle\NewsletterBundle\Model\User\MandantUserInterface;
-use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Ibrows\Bundle\NewsletterBundle\Annotation\Wizard\AnnotationHandler as WizardActionAnnotationHandler;
-
+use Ibrows\Bundle\NewsletterBundle\Encryption\EncryptionInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\SendSettingsInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Statistic\StatisticManager;
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\User\MandantUserInterface;
 use Ibrows\Bundle\NewsletterBundle\Renderer\Bridge\BridgeMethodsHelper;
 use Ibrows\Bundle\NewsletterBundle\Renderer\Bridge\RendererBridge;
-
-use Ibrows\Bundle\NewsletterBundle\Encryption\EncryptionInterface;
-
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Ibrows\Bundle\NewsletterBundle\Service\BlockProviderManager;
+use Ibrows\Bundle\NewsletterBundle\Service\ClassManager;
+use Ibrows\Bundle\NewsletterBundle\Service\orm\DesignManager;
+use Ibrows\Bundle\NewsletterBundle\Service\orm\MandantManager;
+use Ibrows\Bundle\NewsletterBundle\Service\orm\NewsletterManager;
+use Ibrows\Bundle\NewsletterBundle\Service\RendererManager;
+use Ibrows\Bundle\NewsletterBundle\Service\TemplateManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class AbstractController extends Controller
 {
@@ -62,7 +57,7 @@ abstract class AbstractController extends Controller
     /**
      * @param NewsletterInterface $newsletter
      * @param SubscriberInterface $subscriber
-     * @param $message
+     * @param                     $message
      */
     protected function addNewsletterReadLog(NewsletterInterface $newsletter, SubscriberInterface $subscriber, $message)
     {
@@ -72,7 +67,7 @@ abstract class AbstractController extends Controller
     /**
      * @param NewsletterInterface $newsletter
      * @param SubscriberInterface $subscriber
-     * @param $message
+     * @param                     $message
      */
     protected function addNewsletterSendLog(NewsletterInterface $newsletter, SubscriberInterface $subscriber, $message)
     {
@@ -103,7 +98,7 @@ abstract class AbstractController extends Controller
      */
     protected function getObjectManager()
     {
-            return $this->getMandantManager()->getObjectManager($this->getMandantName());
+        return $this->getMandantManager()->getObjectManager($this->getMandantName());
     }
 
     /**
@@ -146,7 +141,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * @return Collection
+     * @return BlockInterface[]
      */
     protected function getBlocks()
     {
@@ -247,8 +242,8 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * @param  NewsletterInterface   $newsletter
-     * @param  integer               $subscriberId
+     * @param  NewsletterInterface $newsletter
+     * @param  integer             $subscriberId
      * @return SubscriberInterface
      * @throws NotFoundHttpException
      */
@@ -260,11 +255,11 @@ abstract class AbstractController extends Controller
             }
         }
 
-        throw $this->createNotFoundException("Subscriber $subscriberId not found in newsletter #". $newsletter->getId());
+        throw $this->createNotFoundException("Subscriber $subscriberId not found in newsletter #" . $newsletter->getId());
     }
 
     /**
-     * @param  integer               $id
+     * @param  integer $id
      * @return NewsletterInterface
      * @throws NotFoundHttpException
      */
@@ -288,7 +283,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * @param  string                $hash
+     * @param  string $hash
      * @return NewsletterInterface
      * @throws NotFoundHttpException
      */
@@ -304,8 +299,8 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * @param  NewsletterInterface   $newsletter
-     * @param  string                $hash
+     * @param  NewsletterInterface $newsletter
+     * @param  string              $hash
      * @return SubscriberInterface
      * @throws NotFoundHttpException
      */
@@ -319,7 +314,7 @@ abstract class AbstractController extends Controller
             }
         }
 
-        throw $this->createNotFoundException("Subscriber with hash $hash not found in newsletter #". $newsletter->getId());
+        throw $this->createNotFoundException("Subscriber with hash $hash not found in newsletter #" . $newsletter->getId());
     }
 
     /**
@@ -353,7 +348,8 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * @param SendSettings $sendSettings
+     * @param SendSettingsInterface $sendSettings
+     * @return $this
      */
     protected function setSendSettings(SendSettingsInterface $sendSettings = null)
     {
@@ -384,7 +380,6 @@ abstract class AbstractController extends Controller
     protected function encryptPassword($password)
     {
         $encryption = $this->getEncryptionService();
-
         return $encryption->encrypt($password, $this->getMandant()->getSalt());
     }
 
@@ -395,21 +390,27 @@ abstract class AbstractController extends Controller
     protected function decryptPassword($password)
     {
         $encryption = $this->getEncryptionService();
-
         return $encryption->decrypt($password, $this->getMandant()->getSalt());
     }
 
     /**
      * @see Symfony\Bundle\FrameworkBundle\Controller.Controller::render()
+     * @param string   $view
+     * @param array    $parameters
+     * @param Response $response
+     * @return Response
      */
     public function render($view, array $parameters = array(), Response $response = null)
     {
         $basetemplate = $this->getTemplateManager()->getBaseTemplate();
-        $parameters = array_merge($parameters, array(
-            'basetemplate' => $basetemplate,
-            'mandant' => $this->getMandant(),
-            'tinymceCustomButtons' => json_encode($this->getBridgeMethodsHelper()->getMethodDefinitions())
-        ));
+        $parameters = array_merge(
+            $parameters,
+            array(
+                'basetemplate'         => $basetemplate,
+                'mandant'              => $this->getMandant(),
+                'tinymceCustomButtons' => json_encode($this->getBridgeMethodsHelper()->getMethodDefinitions())
+            )
+        );
 
         return $this->container->get('templating')->renderResponse($view, $parameters, $response);
     }

@@ -2,33 +2,46 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Command;
 
-use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager;
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\ORM\EntityManager;
+use Ibrows\Bundle\NewsletterBundle\Model\Job\JobInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Job\MailJob;
-
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Serializer\Exception\UnsupportedException;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-
-use Doctrine\ORM\EntityManager;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class ExecuteMailJobsCommand extends ContainerAwareCommand
 {
     const OPTION_LIMIT = 'limit';
 
+    /**
+     * @var string
+     */
     protected $jobClass;
+
     /**
      * @var MandantManager
      */
     protected $mm;
-    protected $now;
-    protected $successCount;
-    protected $errorCount;
 
     /**
-     *
+     * @var \DateTime
      */
+    protected $now;
+
+    /**
+     * @var int
+     */
+    protected $successCount;
+
+    /**
+     * @var int
+     */
+    protected $errorCount;
+
     protected function configure()
     {
         $this
@@ -46,13 +59,13 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
                 InputOption::VALUE_OPTIONAL,
                 'The maximal amount of mailjobs to execute',
                 25
-            )
-        ;
+            );
     }
 
     /**
      * @param  InputInterface  $input
      * @param  OutputInterface $output
+     * @return int|null|void
      * @throws \LogicException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -79,13 +92,18 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
         }
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param string          $mandantName
+     */
     protected function sendMailJobs(InputInterface $input, OutputInterface $output, $mandantName)
     {
         $limit = $input->getOption(self::OPTION_LIMIT);
 
         $manager = $this->mm->getObjectManager($mandantName);
         if ($manager instanceof EntityManager) {
-                $jobs = $this->getReadyJobsORM($limit, $input, $output, $manager);
+            $jobs = $this->getReadyJobsORM($limit, $input, $output, $manager);
         } else {
             throw new UnsupportedException('currently only Doctrine2 ORM is supported');
         }
@@ -93,6 +111,14 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
         $this->sendMails($jobs, $input, $output, $mandantName);
     }
 
+    /**
+     * @param int             $limit
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param EntityManager   $manager
+     * @return array
+     * @throws ConnectionException
+     */
     protected function getReadyJobsORM($limit, InputInterface $input, OutputInterface $output, EntityManager $manager)
     {
         $manager->getConnection()->beginTransaction();
@@ -103,12 +129,12 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
             ->select("$alias")
             ->where("$alias.status = :status")->setParameter('status', MailJob::STATUS_READY)
             ->andWhere("$alias.scheduled <= :now")->setParameter('now', $this->now)
-            ->setMaxResults($limit)
-        ;
+            ->setMaxResults($limit);
 
         $jobs = array();
         $iterableResult = $qb->getQuery()->iterate();
         foreach ($iterableResult as $row) {
+            /** @var JobInterface $job */
             $job = $row[0];
             $jobs[] = $job;
 
@@ -123,7 +149,13 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
         return $jobs;
     }
 
-    protected function sendMails($jobs, InputInterface $input, OutputInterface $output, $mandantName)
+    /**
+     * @param MailJob[]       $jobs
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param string          $mandantName
+     */
+    protected function sendMails(array $jobs, InputInterface $input, OutputInterface $output, $mandantName)
     {
         $manager = $this->mm->getObjectManager($mandantName);
 
@@ -135,7 +167,7 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
         foreach ($jobs as $job) {
             try {
                 if ($output->getVerbosity() > 1) {
-                    $output->writeln('    Sending mail to <info>'.$job->getToMail().'</info>');
+                    $output->writeln('    Sending mail to <info>' . $job->getToMail() . '</info>');
                 }
                 $this->getContainer()->get('ibrows_newsletter.mailer')->send($job);
                 $job->setStatus(MailJob::STATUS_COMPLETED);
@@ -146,7 +178,7 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
                     $output->writeln(sprintf('        <error>%s</error>', $e->getMessage()));
                 }
                 $job->setStatus(MailJob::STATUS_ERROR);
-                $job->setError($e->getMessage().'||'.$e->getTraceAsString());
+                $job->setError($e->getMessage() . '||' . $e->getTraceAsString());
                 ++$this->errorCount;
             }
 

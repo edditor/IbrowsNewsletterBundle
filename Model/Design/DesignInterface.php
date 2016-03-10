@@ -23,6 +23,11 @@ interface DesignInterface extends RenderableInterface
     public function getMandant();
 
     /**
+     * @param MandantInterface $mandant
+     */
+    public function setMandant(MandantInterface $mandant);
+
+    /**
      * @return string
      */
     public function __toString();

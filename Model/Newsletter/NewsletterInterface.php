@@ -72,7 +72,13 @@ interface NewsletterInterface
     public function setSendSettings(SendSettingsInterface $settings);
 
     /**
-     * @return BlockInterface[]
+     * @param MandantInterface $mandant
+     * @return NewsletterInterface
+     */
+    public function setMandant(MandantInterface $mandant);
+
+    /**
+     * @return BlockInterface[]|Collection
      */
     public function getBlocks();
 

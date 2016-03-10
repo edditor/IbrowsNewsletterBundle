@@ -12,8 +12,8 @@
 }
 
 .wizard li:before {
-	width: 0px;
-	height: 0px;
+	width: 0;
+	height: 0;
 	border-top: 20px inset transparent;
 	border-bottom: 20px inset transparent;
 	border-left: 20px solid #fff;
@@ -24,8 +24,8 @@
 }
 
 .wizard li:after {
-	width: 0px;
-	height: 0px;
+	width: 0;
+	height: 0;
 	border-top: 20px inset transparent;
 	border-bottom: 20px inset transparent;
 	border-left: 20px solid #efefef;

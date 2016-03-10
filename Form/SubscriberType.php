@@ -7,10 +7,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SubscriberType extends AbstractType
 {
+    /**
+     * @var string
+     */
     protected $managerName;
+
+    /**
+     * @var string
+     */
     protected $subscriberClass;
+
+    /**
+     * @var MandantInterface
+     */
     protected $mandant;
 
+    /**
+     * SubscriberType constructor.
+     * @param string           $managerName
+     * @param string           $subscriberClass
+     * @param MandantInterface $mandant
+     */
     public function __construct($managerName, $subscriberClass, MandantInterface $mandant)
     {
         $this->managerName = $managerName;
@@ -27,29 +44,23 @@ class SubscriberType extends AbstractType
         $mandant = $this->mandant;
 
         $builder
-            ->add('subscribers', 'entity', array(
-                'em' => $this->managerName,
-                'query_builder' => function (EntityRepository $repo) use ($mandant) {
-                    $qb = $repo->createQueryBuilder('s');
-                    $qb->where('s.mandant = :mandant');
-                    $qb->setParameter('mandant', $mandant);
-                    $qb->orderBy('s.email');
+            ->add(
+                'subscribers',
+                'entity',
+                array(
+                    'em'            => $this->managerName,
+                    'query_builder' => function (EntityRepository $repo) use ($mandant) {
+                        $qb = $repo->createQueryBuilder('s');
+                        $qb->where('s.mandant = :mandant');
+                        $qb->setParameter('mandant', $mandant);
+                        $qb->orderBy('s.email');
 
-                    return $qb;
-                },
-                'class' => $this->subscriberClass,
-                'multiple' => true,
-                'expanded' => false,
-            ))
-        ;
+                        return $qb;
+                    },
+                    'class'         => $this->subscriberClass,
+                    'multiple'      => true,
+                    'expanded'      => false,
+                )
+            );
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'ibrows_newsletterbundle_subscriber';
-    }
-
 }

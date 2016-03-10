@@ -13,15 +13,6 @@ class MandantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('rendererName')
-        ;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'ibrows_newsletterbundle_mandant';
+            ->add('rendererName');
     }
 }

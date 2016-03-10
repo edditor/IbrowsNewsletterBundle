@@ -2,15 +2,14 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Block;
 
+use Doctrine\Common\Collections\Collection;
 use Ibrows\Bundle\NewsletterBundle\Renderer\RenderableInterface;
 use Ibrows\Bundle\NewsletterBundle\Service\BlockProviderManager;
-
-use Doctrine\Common\Collections\Collection;
 
 class BlockComposition implements RenderableInterface
 {
     /**
-     * @var type
+     * @var BlockProviderManager
      */
     protected $blockProvider;
 
@@ -19,12 +18,20 @@ class BlockComposition implements RenderableInterface
      */
     protected $blocks;
 
+    /**
+     * BlockComposition constructor.
+     * @param BlockProviderManager $blockProvider
+     * @param Collection           $blocks
+     */
     public function __construct(BlockProviderManager $blockProvider, Collection $blocks)
     {
         $this->blockProvider = $blockProvider;
         $this->blocks = $blocks;
     }
 
+    /**
+     * @return string
+     */
     public function getContent()
     {
         $content = '';

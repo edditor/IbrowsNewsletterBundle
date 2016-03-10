@@ -2,30 +2,64 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Annotation\Wizard;
 
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AnnotationHandler
 {
+    /**
+     * @var Router
+     */
     protected $router;
+
+    /**
+     * @var mixed
+     */
     protected $validation;
+
+    /**
+     * @var AnnotationBag[]
+     */
     protected $annotationBags = array();
+
+    /**
+     * @var Annotation[]
+     */
     protected $annotations = array();
+
+    /**
+     * @var Annotation
+     */
     protected $currentAnnotation;
+
+    /**
+     * @var int
+     */
     protected $currentAnnotationKey;
 
+    /**
+     * AnnotationHandler constructor.
+     * @param Router $router
+     */
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
+    /**
+     * @param FilterControllerEvent $event
+     * @param AnnotationBag[]       $annotationBags
+     */
     public function handle(FilterControllerEvent $event, $annotationBags)
     {
-        usort($annotationBags, function ($a, $b) {
-            return $a->getAnnotation()->getNumber() > $b->getAnnotation()->getNumber();
-        });
+        usort(
+            $annotationBags,
+            function (AnnotationBag $a, AnnotationBag $b) {
+                return $a->getAnnotation()->getNumber() > $b->getAnnotation()->getNumber();
+            }
+        );
 
         $this->annotationBags = array_values($annotationBags);
 
@@ -69,6 +103,9 @@ class AnnotationHandler
         $this->validation = $wizardValidation;
     }
 
+    /**
+     * @return Annotation|null
+     */
     public function getLastValidAnnotation()
     {
         $lastAnnotation = null;
@@ -85,6 +122,9 @@ class AnnotationHandler
         return null;
     }
 
+    /**
+     * @return Annotation[]
+     */
     public function getAnnotations()
     {
         return $this->annotations;
@@ -107,7 +147,7 @@ class AnnotationHandler
         $currentNumber = $this->currentAnnotation->getNumber();
 
         foreach ($this->annotations as $annotation) {
-            if ($annotation->getNumber() == $currentNumber+1) {
+            if ($annotation->getNumber() == $currentNumber + 1) {
                 return $this->getStepUrl($annotation);
             }
         }
@@ -133,7 +173,7 @@ class AnnotationHandler
         $currentNumber = $this->currentAnnotation->getNumber();
 
         foreach ($this->annotations as $annotation) {
-            if ($annotation->getNumber() == $currentNumber-1) {
+            if ($annotation->getNumber() == $currentNumber - 1) {
                 return $this->getStepUrl($annotation);
             }
         }
@@ -142,9 +182,8 @@ class AnnotationHandler
     }
 
     /**
-     * @param  \Symfony\Component\Routing\Annotation\Route $annotation
-     * @return type
-     * @throws \InvalidArgumentException
+     * @param Annotation|Route $annotation
+     * @return string
      */
     public function getStepUrl(Annotation $annotation)
     {
@@ -153,7 +192,6 @@ class AnnotationHandler
                 return $this->router->generate($annotation->getName());
             }
         }
-
         throw new \InvalidArgumentException("No route found");
     }
 }
