@@ -11,7 +11,7 @@
         {% block head_styles %}
 
             {# CSS libraries START #}
-                {% stylesheets filter='cssrewrite'
+                {% stylesheets
                     'bundles/ibrowsnewsletter/bootstrap/css/*.css'
                     'bundles/ibrowsnewsletter/jquery/css/ui-lightness/*.css'
                 %}
@@ -20,7 +20,7 @@
             {# CSS libraries END #}
 
             {# CSS custom START #}
-                {% stylesheets filter='cssrewrite'
+                {% stylesheets
                     'bundles/ibrowsnewsletter/css/*.css'
                 %}
                     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
