@@ -5,9 +5,9 @@ namespace Ibrows\Bundle\NewsletterBundle\Renderer;
 class TwigRenderer implements RendererInterface
 {
     /**
-     * @var \Twig_Environment
+     * @var array
      */
-    protected $engine;
+    private $twigOptions;
 
     /**
      * TwigRenderer constructor.
@@ -15,10 +15,7 @@ class TwigRenderer implements RendererInterface
      */
     public function __construct(array $twigOptions = array())
     {
-        $this->engine = new \Twig_Environment(
-            null,
-            $twigOptions
-        );
+        $this->twigOptions = $twigOptions;
     }
 
     /**
@@ -29,11 +26,19 @@ class TwigRenderer implements RendererInterface
     public function render(RenderableInterface $element, array $parameters = array())
     {
         try {
-            $rendered = $this->engine->render($element->getContent(), $parameters);
+            $engine = new \Twig_Environment(
+                new \Twig_Loader_Array(
+                    [
+                        'newsletter.html' => $element->getContent()
+                    ]
+                ),
+                $this->twigOptions
+            );
+
+            return $engine->render('newsletter.html', $parameters);
         } catch (\Exception $e) {
-            $rendered = $e->getMessage();
+            return $e->getMessage();
         }
-        return $rendered;
     }
 
 }
