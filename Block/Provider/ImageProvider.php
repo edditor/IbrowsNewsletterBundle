@@ -77,7 +77,7 @@ class ImageProvider extends AbstractProvider
     {
         $filePath = $this->getFilePath($block);
         if ($filePath && file_exists($filePath)) {
-            return '<img src="' . $this->getPublicPath($block) . '">';
+            return '<img src="' . $this->getPublicPath($block) . '" style="width:100%" width="100%">';
         }
 
         return 'No image found';
