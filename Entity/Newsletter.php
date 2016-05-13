@@ -43,4 +43,13 @@ class Newsletter extends AbstractNewsletter
      */
     protected $createdAt;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $status;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $error;
 }

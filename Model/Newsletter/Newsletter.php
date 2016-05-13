@@ -77,6 +77,16 @@ abstract class Newsletter implements NewsletterInterface
      */
     protected $sendSettings;
 
+    /**
+     * @var string
+     */
+    protected $status = self::STATUS_ONHOLD;
+
+    /**
+     * @var string
+     */
+    protected $error;
+
     public function __construct()
     {
         $this->subscribers = new ArrayCollection();
@@ -344,5 +354,37 @@ abstract class Newsletter implements NewsletterInterface
         $this->sendSettings = $sendSettings;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
     }
 }

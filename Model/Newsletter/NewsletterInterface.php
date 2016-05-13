@@ -10,6 +10,12 @@ use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
 
 interface NewsletterInterface
 {
+    const STATUS_ONHOLD = 'onhold';
+    const STATUS_READY = 'ready';
+    const STATUS_WORKING = 'working';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_ERROR = 'error';
+
     /**
      * @return string
      */
@@ -61,7 +67,7 @@ interface NewsletterInterface
     public function getSubscribers();
 
     /**
-     * @return SendSettingsInterface[]
+     * @return SendSettingsInterface
      */
     public function getSendSettings();
 
@@ -98,4 +104,24 @@ interface NewsletterInterface
      * @return DesignInterface
      */
     public function getDesign();
+
+    /**
+     * @return string
+     */
+    public function getStatus();
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status);
+
+    /**
+     * @return string
+     */
+    public function getError();
+
+    /**
+     * @param string $error
+     */
+    public function setError($error);
 }

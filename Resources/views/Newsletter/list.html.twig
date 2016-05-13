@@ -13,6 +13,7 @@
                 <th>{{ 'newsletter.design'|trans }}</th>
                 <th>{{ 'newsletter.statistic'|trans }}</th>
                 <th>{{ 'newsletter.created_at'|trans }}</th>
+                <th>{{ 'newsletter.status'|trans }}</th>
             </tr>
         </thead>
 		<tbody>
@@ -31,6 +32,7 @@
                         </a>
                     </td>
                     <td>{{ newsletter.createdAt|date }}</td>
+                    <td>{{ ('newsletter.status.'~newsletter.status)|trans }}</td>
                 </tr>
 			{% endfor %}
 		</tbody>
