@@ -91,6 +91,8 @@ ibrows_newsletter:
         directory:  %kernel.root_dir%/../web/uploads/block
         # absolute path to the uploaded files
         public:     /uploads/block
+        # Host for public url generation of images
+        host:       http://example.com
 ```
 
 ``` yaml

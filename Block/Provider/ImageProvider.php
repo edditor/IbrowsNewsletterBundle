@@ -5,14 +5,13 @@ namespace Ibrows\Bundle\NewsletterBundle\Block\Provider;
 use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
 
 class ImageProvider extends AbstractProvider
 {
     /**
-     * @var Request
+     * @var string
      */
-    protected $request;
+    protected $host;
 
     /**
      * @var string
@@ -33,11 +32,11 @@ class ImageProvider extends AbstractProvider
 
     /**
      * ImageProvider constructor.
-     * @param Request $request
-     * @param string  $uploadDirectory
-     * @param string  $publicPath
+     * @param string $host
+     * @param string $uploadDirectory
+     * @param string $publicPath
      */
-    public function __construct(Request $request, $uploadDirectory, $publicPath)
+    public function __construct($host, $uploadDirectory, $publicPath)
     {
         if (!is_dir($uploadDirectory)) {
             $filesystem = new Filesystem();
@@ -48,7 +47,7 @@ class ImageProvider extends AbstractProvider
             throw new \InvalidArgumentException("No write access on directory $uploadDirectory");
         }
 
-        $this->request = $request;
+        $this->host = $host;
         $this->uploadDirectory = realpath($uploadDirectory);
         $this->publicPath = $publicPath;
     }
@@ -103,7 +102,7 @@ class ImageProvider extends AbstractProvider
 
     /**
      * @param BlockInterface $block
-     * @param UploadedFile   $update
+     * @param UploadedFile $update
      * @return bool|void
      */
     public function updateBlock(BlockInterface $block, $update)
@@ -163,6 +162,10 @@ class ImageProvider extends AbstractProvider
         return true;
     }
 
+    /**
+     * @param BlockInterface $block
+     * @return null|string
+     */
     protected function getFilePath(BlockInterface $block)
     {
         $filename = $this->getFilename($block);
@@ -173,21 +176,33 @@ class ImageProvider extends AbstractProvider
         return $this->uploadDirectory . '/' . $filename;
     }
 
+    /**
+     * @param BlockInterface $block
+     * @return null|string
+     */
     protected function getPublicPath(BlockInterface $block)
     {
         $filename = $this->getFilename($block);
         if (!$filename) {
             return null;
         }
-
-        return $this->request->getSchemeAndHttpHost() . '/' . $this->request->getBasePath() . '/' . $this->publicPath . '/' . $filename;
+        return $this->host . $this->publicPath . '/' . $filename;
     }
 
+    /**
+     * @param BlockInterface $block
+     * @return string
+     */
     protected function getFilename(BlockInterface $block)
     {
         return $block->getProviderOption(self::PROVIDER_OPTION_FILENAME);
     }
 
+    /**
+     * @param BlockInterface $block
+     * @param string $filename
+     * @return mixed
+     */
     protected function setFilename(BlockInterface $block, $filename)
     {
         return $block->setProviderOption(self::PROVIDER_OPTION_FILENAME, $filename);

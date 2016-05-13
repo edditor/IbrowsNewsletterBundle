@@ -164,6 +164,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('directory')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('public')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('host')->isRequired()->cannotBeEmpty()->end()
                         ->end()
                     ->end()
                 ->end()
