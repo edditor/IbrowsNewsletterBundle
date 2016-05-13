@@ -8,7 +8,6 @@ use Ibrows\Bundle\NewsletterBundle\Annotation\Wizard\AnnotationHandler as Wizard
 use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Job\MailJob;
 use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
-use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberGenderTitleInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -424,64 +423,8 @@ class NewsletterController extends AbstractController
     public function generateMailJobsAction()
     {
         $newsletter = $this->getNewsletter();
-        $sendSettings = $this->getSendSettings();
-        $mailjobClass = $this->getClassManager()->getModel('mailjob');
-
-        $mandant = $this->getMandant();
-        $rendererManager = $this->getRendererManager();
-        $rendererName = $this->getMandant()->getRendererName();
-        $bridge = $this->getRendererBridge();
-
         $objectManager = $this->getObjectManager();
-        $subscribers = $newsletter->getSubscribers();
-        $count = 1;
-        $receiverMails = array();
-
-        foreach ($subscribers as $subscriber) {
-            $receiverMail = $subscriber->getEmail();
-
-            // If subscriber already in list - do not add again
-            if (in_array($receiverMail, $receiverMails)) {
-                continue;
-            }
-            $receiverMails[] = $receiverMail;
-
-            if ($count % $sendSettings->getInterval() === 0) {
-                $time = $sendSettings->getStarttime();
-                $time->modify('+ 1 minutes');
-                $sendSettings->setStarttime(clone $time);
-            }
-
-            $body = $rendererManager->renderNewsletter(
-                $rendererName,
-                $bridge,
-                $newsletter,
-                $mandant,
-                $subscriber
-            );
-
-            /* @var $mailjob MailJob */
-            $mailjob = new $mailjobClass($newsletter, $sendSettings);
-            $mailjob->setBody($body);
-            $mailjob->setToMail($receiverMail);
-
-            if ($subscriber instanceof SubscriberGenderTitleInterface) {
-                $mailjob->setToName($subscriber->getFirstname() . ' ' . $subscriber->getLastname());
-            }
-
-            $mailjob->setStatus(MailJob::STATUS_READY);
-
-            $this->addNewsletterSendLog($newsletter, $subscriber, "Mail ready to send: logged by " . __METHOD__);
-            $objectManager->persist($mailjob);
-            ++$count;
-
-            //TODO: better memory leak handling
-            if ($count % 200 == 0) {
-                $objectManager->flush();
-                $objectManager->clear();
-            };
-        }
-
+        $newsletter->setStatus($newsletter::STATUS_READY);
         $objectManager->flush();
 
         return $this->redirect($this->generateUrl('ibrows_newsletter_statistic_show', array('newsletterId' => $newsletter->getId())));
@@ -515,7 +458,7 @@ class NewsletterController extends AbstractController
 
     /**
      * @param Collection|BlockInterface[] $blocks
-     * @param array                       $blockParameters
+     * @param array $blockParameters
      */
     protected function updateBlocksRecursive(Collection $blocks, array $blockParameters)
     {
