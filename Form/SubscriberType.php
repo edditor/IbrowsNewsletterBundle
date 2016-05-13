@@ -52,14 +52,14 @@ class SubscriberType extends AbstractType
                     'query_builder' => function (EntityRepository $repo) use ($mandant) {
                         $qb = $repo->createQueryBuilder('s');
                         $qb->where('s.mandant = :mandant');
+                        $qb->andWhere('s.unsubscribed = 0');
                         $qb->setParameter('mandant', $mandant);
                         $qb->orderBy('s.email');
-
                         return $qb;
                     },
                     'class'         => $this->subscriberClass,
                     'multiple'      => true,
-                    'expanded'      => false,
+                    'expanded'      => false
                 )
             );
     }
