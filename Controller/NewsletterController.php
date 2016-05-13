@@ -206,12 +206,24 @@ class NewsletterController extends AbstractController
         $subscriberClass = $this->getClassManager()->getModel('subscriber');
         $form = $this->createForm(new $formtype($this->getMandantName(), $subscriberClass, $this->getMandant()), $newsletter);
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('POST')) {
+            $subscriberFormData = $request->request->get($form->getName());
+
+            if ($form->has('subscribers')) {
+                $subscribersFormName = $form->get('subscribers')->getName();
+                if (
+                    isset($subscriberFormData[$subscribersFormName]) &&
+                    is_string($subscriberFormData[$subscribersFormName])
+                ) {
+                    $subscriberFormData[$subscribersFormName] = json_decode($subscriberFormData[$subscribersFormName]);
+                    $request->request->set($form->getName(), $subscriberFormData);
+                }
+            }
+
             $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $this->setNewsletter($newsletter);
-
                 return $this->redirect($this->getWizardActionAnnotationHandler()->getNextStepUrl());
             }
         }

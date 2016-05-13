@@ -9,21 +9,28 @@
 
 {% block newsletter_content %}
     <h1>{{ 'newsletter.subscriber'|trans({'%name%': newsletter.name}) }}</h1>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" name="send" value="{{ 'form.save'|trans }}">
+    </div>
+    {{ form_end(form) }}
 
-    <form action="{{ path('ibrows_newsletter_subscriber') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_errors(form) }}
-        {{ form_rest(form) }}
-        <div class="form-actions">
-            <input type="submit" class="btn btn-primary" name="send" value="{{ 'form.save'|trans }}">
-        </div>
-    </form>
-
-	<script type="text/javascript">
-		jQuery(document).ready(function() {
-			jQuery('select').multiSelect({
-				selectableHeader: "{{ 'subscriber.multiselect.selectable'|trans }}",
-				selectedHeader:  "{{ 'subscriber.multiselect.selected'|trans }}"
-			});
-		});
-	</script>
+    <script>
+        (function ($) {
+            $(function () {
+                var form = $('form[name="subscriber"]');
+                form.submit(function (e) {
+                    var form = $(this);
+                    var subscriberSelect = form.find(':input[name="subscriber[subscribers][]"]');
+                    var items = subscriberSelect.find('> option:selected').map(function () {
+                        return $(this).val();
+                    }).get();
+                    subscriberSelect.removeAttr('name');
+                    $('<input>').attr('type', 'hidden').attr('name', 'subscriber[subscribers]').val(JSON.stringify(items)).appendTo(form);
+                });
+            });
+        })(window.jQuery);
+    </script>
 {% endblock %}
