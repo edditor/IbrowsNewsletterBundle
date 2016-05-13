@@ -3,7 +3,9 @@ namespace Ibrows\Bundle\NewsletterBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SubscriberType extends AbstractType
 {
@@ -24,8 +26,8 @@ class SubscriberType extends AbstractType
 
     /**
      * SubscriberType constructor.
-     * @param string           $managerName
-     * @param string           $subscriberClass
+     * @param string $managerName
+     * @param string $subscriberClass
      * @param MandantInterface $mandant
      */
     public function __construct($managerName, $subscriberClass, MandantInterface $mandant)
@@ -37,7 +39,7 @@ class SubscriberType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -46,7 +48,7 @@ class SubscriberType extends AbstractType
         $builder
             ->add(
                 'subscribers',
-                'entity',
+                EntityType::class,
                 array(
                     'em'            => $this->managerName,
                     'query_builder' => function (EntityRepository $repo) use ($mandant) {
