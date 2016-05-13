@@ -41,7 +41,7 @@ class MailJob extends BaseMailJob
     protected $toName;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $body;
 
