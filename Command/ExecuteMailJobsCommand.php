@@ -63,7 +63,7 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param  InputInterface  $input
+     * @param  InputInterface $input
      * @param  OutputInterface $output
      * @return int|null|void
      * @throws \LogicException
@@ -93,9 +93,9 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param string          $mandantName
+     * @param string $mandantName
      */
     protected function sendMailJobs(InputInterface $input, OutputInterface $output, $mandantName)
     {
@@ -112,10 +112,10 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param int             $limit
-     * @param InputInterface  $input
+     * @param int $limit
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param EntityManager   $manager
+     * @param EntityManager $manager
      * @return array
      * @throws ConnectionException
      */
@@ -124,6 +124,16 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
         $manager->getConnection()->beginTransaction();
 
         $alias = 'j';
+
+        $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
+        $qb
+            ->update()
+            ->set('j.body', ':body')
+            ->where('j.status = :status')
+            ->setParameter('status', JobInterface::STATUS_COMPLETED)
+            ->setParameter('body', null)
+            ->getQuery()->execute();
+
         $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
         $qb
             ->select("$alias")
@@ -150,10 +160,10 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param MailJob[]       $jobs
-     * @param InputInterface  $input
+     * @param MailJob[] $jobs
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param string          $mandantName
+     * @param string $mandantName
      */
     protected function sendMails(array $jobs, InputInterface $input, OutputInterface $output, $mandantName)
     {
