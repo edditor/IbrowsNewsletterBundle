@@ -3,6 +3,12 @@ newsletter:
   unsubscribe: E-Mail "%email%" austragen
   settings: Einstellungen für Newsletter "%name%" editieren
   name: Name
+  status:
+    onhold: Gestoppt
+    ready: Warten auf MailJob-Generierung
+    working: Generierung der Mail Jobs
+    completed: Alle MailJobs generiert
+    error: Error bei MailJob-Generierung
   created_at: Erstellt am
   design: Design
   testmail: Test Versand
@@ -105,6 +111,8 @@ form:
 security:
   login:
     mandant:  Mandant
+
+status: Status
 
 layout:
   header:
