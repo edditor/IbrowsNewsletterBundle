@@ -5,6 +5,7 @@ namespace Ibrows\Bundle\NewsletterBundle\Command;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\ConnectionException;
+use Doctrine\ORM\EntityManager;
 use Ibrows\Bundle\NewsletterBundle\Model\Job\MailJob;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager;
@@ -50,6 +51,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -63,10 +65,8 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
                 try {
                     $this->generateMailJobs($manager, $this->mm->get($mandantName), $newsletter);
                 } catch (\Exception $e) {
-                    $newsletter->setError($e->getMessage());
-                    $newsletter->setStatus($newsletter::STATUS_ERROR);
-                    $manager->persist($newsletter);
-                    $manager->flush();
+                    $this->setNewsletterError($manager, $newsletter->getId(), $e);
+                    throw $e;
                 }
             }
             return;
@@ -78,10 +78,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
                 try {
                     $this->generateMailJobs($manager, $this->mm->get($name), $newsletter);
                 } catch (\Exception $e) {
-                    $newsletter->setError($e->getCode() . ': ' . $e->getMessage());
-                    $newsletter->setStatus($newsletter::STATUS_ERROR);
-                    $manager->persist($newsletter);
-                    $manager->flush();
+                    $this->setNewsletterError($manager, $newsletter->getId(), $e);
                     throw $e;
                 }
             }
@@ -176,6 +173,8 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
         }
 
         $objectManager->flush();
+
+        $this->setNewsletterCompleted($objectManager, $newsletter->getId());
     }
 
     /**
@@ -185,5 +184,40 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
         return $container->get($container->getParameter('ibrows_newsletter.serviceid.rendererbridge'));
+    }
+
+    /**
+     * @param EntityManager $manager
+     * @param int $newsletterId
+     */
+    private function setNewsletterCompleted(EntityManager $manager, $newsletterId)
+    {
+        $qb = $manager->getRepository($this->newsletterClass)->createQueryBuilder('n');
+        $qb
+            ->update()
+            ->set('n.status', ':status')
+            ->where('n.id = :newsletterId')
+            ->setParameter('status', NewsletterInterface::STATUS_COMPLETED)
+            ->setParameter('newsletterId', $newsletterId)
+            ->getQuery()->execute();
+    }
+
+    /**
+     * @param EntityManager $manager
+     * @param int $newsletterId
+     * @param \Exception $e
+     */
+    private function setNewsletterError(EntityManager $manager, $newsletterId, \Exception $e)
+    {
+        $qb = $manager->getRepository($this->newsletterClass)->createQueryBuilder('n');
+        $qb
+            ->update()
+            ->set('n.status', ':status')
+            ->set('n.error', ':error')
+            ->where('n.id = :newsletterId')
+            ->setParameter('status', NewsletterInterface::STATUS_ERROR)
+            ->setParameter('error', $e->getCode() . ': ' . $e->getMessage())
+            ->setParameter('newsletterId', $newsletterId)
+            ->getQuery()->execute();
     }
 }
