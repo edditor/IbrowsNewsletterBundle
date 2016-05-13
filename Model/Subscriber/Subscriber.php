@@ -52,7 +52,7 @@ abstract class Subscriber implements SubscriberInterface, SubscriberGenderTitleI
 
     public function __toString()
     {
-        return $this->getFirstname().' '. $this->getLastname() .' ('. $this->getCompanyname() .') '. $this->getEmail().' - ('. implode(",", $this->getGroups()->toArray()) .')';
+        return $this->getFirstname().' '. $this->getLastname() .' ('. $this->getCompanyname() .') '. $this->getEmail();
     }
 
     public function isFemale()
