@@ -38,6 +38,7 @@
         <service id="ibrows_newsletter.rendererbridge" class="%ibrows_newsletter.rendererbridge.class%">
             <argument type="service" id="router"/>
             <argument type="service" id="ibrows_newsletter.rendererbridge.gendertitlestrategy.translator"/>
+            <argument>%ibrows_newsletter.filesystem.block.host%</argument>
         </service>
 
         <service id="ibrows_newsletter.rendererbridge.methodshelper" class="Ibrows\Bundle\NewsletterBundle\Renderer\Bridge\BridgeMethodsHelper">

@@ -11,19 +11,34 @@ use Symfony\Component\Routing\RouterInterface;
 
 class RendererBridge
 {
+    /**
+     * @var RouterInterface
+     */
     protected $router;
+
+    /**
+     * @var GenderTitleStrategyInterface
+     */
     protected $genderTitleStrategy;
 
     /**
-     * @param RouterInterface              $router
+     * @var string
+     */
+    private $host;
+
+    /**
+     * @param RouterInterface $router
      * @param GenderTitleStrategyInterface $genderTitleStrategy
+     * @param string $host
      */
     public function __construct(
         RouterInterface $router,
-        GenderTitleStrategyInterface $genderTitleStrategy
+        GenderTitleStrategyInterface $genderTitleStrategy,
+        $host
     ) {
         $this->router = $router;
         $this->genderTitleStrategy = $genderTitleStrategy;
+        $this->host = $host;
     }
 
     /**
@@ -38,67 +53,79 @@ class RendererBridge
     }
 
     /**
-     * @param  MandantInterface    $mandant
+     * @param  MandantInterface $mandant
      * @param  NewsletterInterface $newsletter
      * @param  SubscriberInterface $subscriber
-     * @param  string              $context
+     * @param  string $context
      * @return string
      */
-    public function statisticlogreadimage(MandantInterface $mandant, NewsletterInterface $newsletter, SubscriberInterface $subscriber, $context)
-    {
+    public function statisticlogreadimage(
+        MandantInterface $mandant,
+        NewsletterInterface $newsletter,
+        SubscriberInterface $subscriber,
+        $context
+    ) {
         $src = $this->router->generate(
             'ibrows_newsletter_statistic_log_read',
             array(
-                'mandantHash'    => $mandant->getHash(),
+                'mandantHash' => $mandant->getHash(),
                 'newsletterHash' => $newsletter->getHash(),
                 'subscriberHash' => $subscriber->getHash(),
-                'context'        => $context
+                'context' => $context,
             ),
-            true
+            RouterInterface::ABSOLUTE_PATH
         );
 
-        return '<img width="0" height="0" src="' . $src . '" />';
+        return '<img width="0" height="0" src="'.$this->host.$src.'" />';
     }
 
     /**
-     * @param  MandantInterface    $mandant
+     * @param  MandantInterface $mandant
      * @param  NewsletterInterface $newsletter
      * @param  SubscriberInterface $subscriber
      * @param                      $context
      * @return string
      */
-    public function readonlinelink(MandantInterface $mandant, NewsletterInterface $newsletter, SubscriberInterface $subscriber, $context)
-    {
-        return $this->router->generate(
+    public function readonlinelink(
+        MandantInterface $mandant,
+        NewsletterInterface $newsletter,
+        SubscriberInterface $subscriber,
+        $context
+    ) {
+        return $this->host.$this->router->generate(
             'ibrows_newsletter_render_overview',
             array(
-                'mandantHash'    => $mandant->getHash(),
+                'mandantHash' => $mandant->getHash(),
                 'newsletterHash' => $newsletter->getHash(),
                 'subscriberHash' => $subscriber->getHash(),
-                'context'        => $context
+                'context' => $context,
             ),
-            true
+            RouterInterface::ABSOLUTE_PATH
         );
     }
 
     /**
-     * @param  MandantInterface    $mandant
+     * @param  MandantInterface $mandant
      * @param  NewsletterInterface $newsletter
      * @param  SubscriberInterface $subscriber
      * @param                      $context
      * @return string
      */
-    public function unsubscribelink(MandantInterface $mandant, NewsletterInterface $newsletter, SubscriberInterface $subscriber, $context)
-    {
-        return $this->router->generate(
+    public function unsubscribelink(
+        MandantInterface $mandant,
+        NewsletterInterface $newsletter,
+        SubscriberInterface $subscriber,
+        $context
+    ) {
+        return $this->host.$this->router->generate(
             'ibrows_newsletter_unsubscribe',
             array(
-                'mandantHash'    => $mandant->getHash(),
+                'mandantHash' => $mandant->getHash(),
                 'newsletterHash' => $newsletter->getHash(),
                 'subscriberHash' => $subscriber->getHash(),
-                'context'        => $context
+                'context' => $context,
             ),
-            true
+            RouterInterface::ABSOLUTE_PATH
         );
     }
 
