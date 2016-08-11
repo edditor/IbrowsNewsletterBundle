@@ -84,6 +84,7 @@ ibrows_newsletter:
       sendlog:      Ibrows\YourBundle\Entity\Newsletter\Log\SendLog
       sendsettings: Ibrows\YourBundle\Entity\Newsletter\SendSettings
       mailjob:      Ibrows\YourBundle\Entity\Newsletter\MailJob
+      unsubscribelog: Ibrows\YourBundle\Entity\Newsletter\Log\UnsubscribeLog
 
   filesystem:
       block:
