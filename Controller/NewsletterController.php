@@ -87,6 +87,9 @@ class NewsletterController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                if ($newsletter->getStatus() === null) {
+                    $newsletter->setStatus($newsletter::STATUS_ONHOLD);
+                }
                 $this->setNewsletter($newsletter);
 
                 return $this->redirect($this->getWizardActionAnnotationHandler()->getNextStepUrl());
