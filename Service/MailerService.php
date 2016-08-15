@@ -12,19 +12,22 @@ class MailerService
      */
     protected $encryption;
 
+    protected $attachmentsDir;
+
     /**
      * @param EncryptionInterface $encryption
      */
-    public function __construct(EncryptionInterface $encryption)
+    public function __construct(EncryptionInterface $encryption, $attachmentsDir)
     {
         $this->encryption = $encryption;
+        $this->attachmentsDir = $attachmentsDir;
     }
 
     /**
      * @param  MailJob $job
      * @return array   $failedRecipients
      */
-    public function send(MailJob $job)
+    public function send(MailJob $job, array $attachments = null)
     {
         $to = $job->getToName() ? array($job->getToMail() => $job->getToName()) : $job->getToMail();
 
@@ -33,6 +36,9 @@ class MailerService
             ->setReturnPath($job->getReturnMail())
             ->setTo($to)
         ;
+        foreach ($job->getAttachments() as $a) {
+            $message->attach(\Swift_Attachment::fromPath($this->attachmentsDir.'/'.$a)->setDisposition('inline'));
+        }
 
         $transport = \Swift_SmtpTransport::newInstance($job->getHost(), $job->getPort())
             ->setUsername($job->getUsername())

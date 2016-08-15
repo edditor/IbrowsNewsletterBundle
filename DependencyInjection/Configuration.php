@@ -167,6 +167,11 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('host')->isRequired()->cannotBeEmpty()->end()
                         ->end()
                     ->end()
+
+                    ->arrayNode('attachments')
+                        ->children()
+                            ->scalarNode('directory')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
                 ->end()
 
             ->end()

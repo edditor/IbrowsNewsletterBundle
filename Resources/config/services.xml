@@ -34,6 +34,7 @@
 
         <service id="ibrows_newsletter.mailer" class="Ibrows\Bundle\NewsletterBundle\Service\MailerService">
             <argument type="service" id="ibrows_newsletter.encryption.adapter.mcrypt" />
+            <argument>%ibrows_newsletter.filesystem.attachments.directory%</argument>
         </service>
 
         <service id="ibrows_newsletter.annotation.wizard.driver" class="Ibrows\Bundle\NewsletterBundle\Annotation\Wizard\AnnotationDriver">

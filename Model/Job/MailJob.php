@@ -15,6 +15,7 @@ class MailJob extends AbstractJob
     protected $toMail;
     protected $toName;
     protected $body;
+    protected $attachments;
 
     protected $username;
     protected $password;
@@ -130,6 +131,22 @@ class MailJob extends AbstractJob
     public function setBody($body)
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function getAttachments()
+    {
+        return explode(';', $this->attachments);
+    }
+
+    /*
+    *@todo change this to entity
+    *
+    */
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = implode(';', $attachments);
 
         return $this;
     }
