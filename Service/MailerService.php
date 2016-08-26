@@ -37,7 +37,10 @@ class MailerService
             ->setTo($to)
         ;
         foreach ($job->getAttachments() as $a) {
-            $message->attach(\Swift_Attachment::fromPath($this->attachmentsDir.'/'.$a)->setDisposition('inline'));
+            $aPath = $this->attachmentsDir.'/'.$a;
+            if (is_file($aPath) && is_readable($aPath)) {
+                $message->attach(\Swift_Attachment::fromPath($aPath)->setDisposition('inline'));
+            }
         }
 
         $transport = \Swift_SmtpTransport::newInstance($job->getHost(), $job->getPort())
