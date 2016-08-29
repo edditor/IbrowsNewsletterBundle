@@ -23,13 +23,20 @@ class MailerService
         $this->attachmentsDir = $attachmentsDir;
     }
 
+    protected function getPunycodeMail($email)
+    {
+        list($localPart, $domainPart) = explode('@', $email);
+        return $localPart.'@'.idn_to_ascii($domainPart);
+    }
+
     /**
      * @param  MailJob $job
      * @return array   $failedRecipients
      */
     public function send(MailJob $job, array $attachments = null)
     {
-        $to = $job->getToName() ? array($job->getToMail() => $job->getToName()) : $job->getToMail();
+        $toMail = $this->getPunycodeMail($job->getToMail());
+        $to = $job->getToName() ? array($toMail => $job->getToName()) : $toMail;
 
         $message = \Swift_Message::newInstance($job->getSubject(), $job->getBody(), 'text/html', 'utf8')
             ->setFrom(array($job->getSenderMail() => $job->getSenderName()))
