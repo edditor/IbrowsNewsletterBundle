@@ -2,6 +2,8 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Model\Job;
 
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\SendSettingsInterface;
+
 interface JobInterface
 {
     const STATUS_ONHOLD = 'onhold';
@@ -23,4 +25,14 @@ interface JobInterface
     public function setScheduled(\DateTime $scheduled);
     public function getCompleted();
     public function setCompleted(\DateTime $completed);
+
+    /**
+     * @return SendSettingsInterface
+     */
+    public function getSendSettings();
+
+    /**
+     * @param  SendSettingsInterface $settings
+     */
+    public function setSendSettings(SendSettingsInterface $settings);
 }

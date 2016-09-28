@@ -81,39 +81,17 @@ class MailJob extends BaseMailJob
     protected $completed;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $username;
-
-    /**
-     * @ORM\Column(type="blob")
-     */
-    protected $password;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $host;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $port;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $salt;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @var SendSettingsInterface
+     *
+     * @ORM\ManyToOne(targetEntity="SendSettings")
+     * @ORM\JoinColumn(name="send_settings_id", referencedColumnName="id")
      */
-    protected $encryption;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $authMode;
+    protected $sendSettings;
 
     public function getId()
     {

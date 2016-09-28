@@ -17,14 +17,7 @@ class MailJob extends AbstractJob
     protected $body;
     protected $attachments;
 
-    protected $username;
-    protected $password;
     protected $salt;
-    protected $host;
-    protected $port;
-    protected $encryption;
-    protected $authMode;
-
     public function __construct(NewsletterInterface $newsletter, SendSettingsInterface $sendSettings)
     {
         parent::__construct();
@@ -34,12 +27,7 @@ class MailJob extends AbstractJob
         $this->setSenderMail($newsletter->getSenderMail());
         $this->setReturnMail($newsletter->getReturnMail());
 
-        $this->setUsername($sendSettings->getUsername());
-        $this->setPassword($sendSettings->getPassword());
-        $this->setHost($sendSettings->getHost());
-        $this->setPort($sendSettings->getPort());
-        $this->setEncryption($sendSettings->getEncryption());
-        $this->setAuthMode($sendSettings->getAuthMode());
+        $this->setSendSettings($sendSettings);
         $this->setScheduled($sendSettings->getStarttime());
 
         $this->setNewsletterId($newsletter->getId());
@@ -151,85 +139,14 @@ class MailJob extends AbstractJob
         return $this;
     }
 
-    public function getUsername()
+    public function getSendSettings()
     {
-        return $this->username;
+        return $this->sendSettings;
     }
 
-    public function setUsername($username)
+    public function setSendSettings(SendSettingsInterface $settings)
     {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getPassword()
-    {
-            if (is_resource($this->password)) {
-                $handle = $this->password;
-                $content = '';
-                while (!feof($handle)) {
-                    $content .= fread($handle, 8192);
-                }
-                $this->password = $content;
-
-                return $content;
-            }
-
-        return $this->password;
-    }
-
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getHost()
-    {
-        return $this->host;
-    }
-
-    public function setHost($host)
-    {
-        $this->host = $host;
-
-        return $this;
-    }
-
-    public function getPort()
-    {
-        return $this->port;
-    }
-
-    public function setPort($port)
-    {
-        $this->port = $port;
-
-        return $this;
-    }
-
-    public function getEncryption()
-    {
-        return $this->encryption;
-    }
-
-    public function setEncryption($encryption)
-    {
-        $this->encryption = $encryption;
-
-        return $this;
-    }
-
-    public function getAuthMode()
-    {
-        return $this->authMode;
-    }
-
-    public function setAuthMode($authMode)
-    {
-        $this->authMode = $authMode;
+        $this->sendSettings = $settings;
 
         return $this;
     }

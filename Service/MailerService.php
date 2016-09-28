@@ -50,10 +50,10 @@ class MailerService
             }
         }
 
-        $transport = \Swift_SmtpTransport::newInstance($job->getHost(), $job->getPort())
-            ->setUsername($job->getUsername())
-            ->setPassword($this->encryption->decrypt($job->getPassword(), $job->getSalt()))
-            ->setEncryption($job->getEncryption())
+        $transport = \Swift_SmtpTransport::newInstance($job->getSendSettings()->getHost(), $job->getSendSettings()->getPort())
+            ->setUsername($job->getSendSettings()->getUsername())
+            ->setPassword($this->encryption->decrypt($job->getSendSettings()->getPassword(), $job->getSalt()))
+            ->setEncryption($job->getSendSettings()->getEncryption())
         ;
 
         //$transport->setAuthMode($job->getAuthMode());
