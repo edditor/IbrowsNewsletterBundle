@@ -121,24 +121,24 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
      */
     protected function getReadyJobsORM($limit, InputInterface $input, OutputInterface $output, EntityManager $manager)
     {
-        $manager->getConnection()->beginTransaction();
+            $manager->getConnection()->beginTransaction();
 
-        $alias = 'j';
+            $alias = 'j';
 
-        $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
-        $qb
-            ->update()
-            ->set('j.body', ':body')
-            ->where('j.status = :status')
-            ->setParameter('status', JobInterface::STATUS_COMPLETED)
-            ->setParameter('body', null)
-            ->getQuery()->execute();
+            /*$qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
+            $qb
+                ->update()
+                ->set('j.body', ':body')
+                ->where('j.status = :status')
+                ->setParameter('status', JobInterface::STATUS_COMPLETED)
+                ->setParameter('body', null)
+                ->getQuery()->execute();*/
 
-        $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
-        $qb
-            ->select("$alias")
-            ->where("$alias.status = :status")->setParameter('status', MailJob::STATUS_READY)
-            ->andWhere("$alias.scheduled <= :now")->setParameter('now', $this->now)
+            $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
+            $qb
+                ->select("$alias")
+                ->where("$alias.status = :status")->setParameter('status', MailJob::STATUS_READY)
+                ->andWhere("$alias.scheduled <= :now")->setParameter('now', $this->now)
             ->setMaxResults($limit);
 
         $jobs = array();
