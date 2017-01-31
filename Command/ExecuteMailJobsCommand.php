@@ -121,40 +121,45 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
      */
     protected function getReadyJobsORM($limit, InputInterface $input, OutputInterface $output, EntityManager $manager)
     {
-        $manager->getConnection()->beginTransaction();
+        try{
+            $manager->getConnection()->beginTransaction();
 
-        $alias = 'j';
+            $alias = 'j';
 
-        $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
-        $qb
-            ->update()
-            ->set('j.body', ':body')
-            ->where('j.status = :status')
-            ->setParameter('status', JobInterface::STATUS_COMPLETED)
-            ->setParameter('body', null)
-            ->getQuery()->execute();
+            /*$qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
+            $qb
+                ->update()
+                ->set('j.body', ':body')
+                ->where('j.status = :status')
+                ->setParameter('status', JobInterface::STATUS_COMPLETED)
+                ->setParameter('body', null)
+                ->getQuery()->execute();*/
 
-        $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
-        $qb
-            ->select("$alias")
-            ->where("$alias.status = :status")->setParameter('status', MailJob::STATUS_READY)
-            ->andWhere("$alias.scheduled <= :now")->setParameter('now', $this->now)
-            ->setMaxResults($limit);
+            $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
+            $qb
+                ->select("$alias")
+                ->where("$alias.status = :status")->setParameter('status', MailJob::STATUS_READY)
+                ->andWhere("$alias.scheduled <= :now")->setParameter('now', $this->now)
+                ->setMaxResults($limit);
 
-        $jobs = array();
-        $iterableResult = $qb->getQuery()->iterate();
-        foreach ($iterableResult as $row) {
-            /** @var JobInterface $job */
-            $job = $row[0];
-            $jobs[] = $job;
+            $jobs = array();
+            $iterableResult = $qb->getQuery()->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)->iterate();
+            foreach ($iterableResult as $row) {
+                /** @var JobInterface $job */
+                $job = $row[0];
+                $jobs[] = $job;
 
-            $job->setStatus(MailJob::STATUS_WORKING);
+                $job->setStatus(MailJob::STATUS_WORKING);
+            }
+
+            $manager->flush();
+            $manager->clear();
+
+            $manager->getConnection()->commit();
+        } catch (\Exception $e) {
+            $manager->getConnection()->rollBack();
+            throw $e;
         }
-
-        $manager->flush();
-        $manager->clear();
-
-        $manager->getConnection()->commit();
 
         return $jobs;
     }
