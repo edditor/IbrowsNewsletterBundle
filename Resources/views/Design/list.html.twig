@@ -20,7 +20,7 @@
                     <td>
                         <a href="{{ url('ibrows_newsletter_design_edit', {id: design.id}) }}">{{ design.name }}</a>
                     </td>
-                    <td>{{ design.createdAt|date }}</td>
+                    <td>{{ design.createdAt|date('d.m.Y, h:i:s') }}</td>
                 </tr>
 			{% endfor %}
 		</tbody>
