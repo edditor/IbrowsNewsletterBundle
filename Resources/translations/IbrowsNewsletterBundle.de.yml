@@ -5,13 +5,13 @@ newsletter:
   name: Name
   status:
     onhold: Gestoppt
-    ready: Warten auf MailJob-Generierung
-    working: Generierung der Mail Jobs
-    completed: Alle MailJobs generiert
-    error: Error bei MailJob-Generierung
+    ready: Warten auf Mail-Job-Generierung
+    working: Generierung der Mail-Jobs
+    completed: Alle Mail-Jobs generiert
+    error: Fehler bei Mail-Job-Generierung
   created_at: Erstellt am
   design: Design
-  testmail: Test Versand
+  testmail: Test-Versand
   overview: Übersicht
   statistic: Statistik
   design: Design
@@ -20,7 +20,7 @@ newsletter:
     add: Hinzufügen
     new: Neuer Block
     metadata:
-        edit: Metadaten editieren
+        edit: Meta-Daten editieren
     provider:
       'ibrows_newsletter.block.provider.textarea':
         name: Text
@@ -34,7 +34,7 @@ newsletter:
     index:
       title: Willkommen beim iBROWS NewsletterBundle
   wizard:
-    meta:       Meta Daten
+    meta:       Meta-Daten
     edit:       Editieren
     subscriber: Empfänger
     settings:   Einstellungen
@@ -117,4 +117,4 @@ status: Status
 layout:
   header:
     title:
-      newsletterbundle: iBROWS NewsletterBundle
+      newsletterbundle: NewsletterBundle
