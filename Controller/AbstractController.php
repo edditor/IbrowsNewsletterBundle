@@ -275,6 +275,14 @@ abstract class AbstractController extends Controller
     }
 
     /**
+     * @return GroupInterface[]
+     */
+    protected function getSubscriberGroups()
+    {
+        return $this->getMandant()->getSubscriberGroups();
+    }
+
+    /**
      * @return SubscriberInterface[]
      */
     protected function getSubscribers()

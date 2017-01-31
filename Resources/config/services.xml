@@ -10,6 +10,7 @@
 			<argument>%ibrows_newsletter.templates.mandant%</argument>
 			<argument>%ibrows_newsletter.templates.newsletter%</argument>
 			<argument>%ibrows_newsletter.templates.design%</argument>
+            <argument>%ibrows_newsletter.templates.group%</argument>
             <argument>%ibrows_newsletter.templates.subscriber%</argument>
             <argument>%ibrows_newsletter.templates.statistic%</argument>
         </service>

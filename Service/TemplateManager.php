@@ -8,15 +8,17 @@ class TemplateManager
     protected $newsletters;
     protected $designs;
     protected $base_template;
+    protected $groups;
     protected $subscribers;
     protected $statistics;
 
-    public function __construct($base_template, array $mandants, array $newsletters, array $designs, array $subscribers, array $statistics)
+    public function __construct($base_template, array $mandants, array $newsletters, array $designs, array $groups, array $subscribers, array $statistics)
     {
         $this->base_template = $base_template;
         $this->mandants = $mandants;
         $this->newsletters = $newsletters;
         $this->designs = $designs;
+        $this->groups = $groups;
         $this->subscribers = $subscribers;
         $this->statistics = $statistics;
     }
@@ -55,6 +57,15 @@ class TemplateManager
         }
 
         return $this->designs[$name];
+    }
+
+    public function getGroup($name)
+    {
+        if (!array_key_exists($name, $this->groups)) {
+            throw new \InvalidArgumentException("The group-view with name '$name' can not be found.");
+        }
+
+        return $this->groups[$name];
     }
 
     public function getSubscriber($name)

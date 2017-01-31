@@ -93,6 +93,13 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
 
+                        ->arrayNode('group')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('list')->defaultValue('IbrowsNewsletterBundle:Group:list.html.twig')->end()
+                            ->end()
+                        ->end()
+
                         ->arrayNode('subscriber')
                             ->addDefaultsIfNotSet()
                             ->children()
