@@ -4,6 +4,7 @@ newsletter:
   settings: Einstellungen für Newsletter "%name%" editieren
   name: Name
   status:
+    status: Status
     onhold: Gestoppt
     ready: Warten auf Mail-Job-Generierung
     working: Generierung der Mail-Jobs
@@ -66,6 +67,11 @@ mandant:
 
 user:
   logout: Abmelden
+
+group:
+  created_at: Erstellt am
+  list: Gruppen
+  name: Name
 
 subscriber:
   list: Empfänger
