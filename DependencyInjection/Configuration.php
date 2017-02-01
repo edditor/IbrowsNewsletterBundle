@@ -97,6 +97,9 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('list')->defaultValue('IbrowsNewsletterBundle:Group:list.html.twig')->end()
+                                ->scalarNode('create')->defaultValue('IbrowsNewsletterBundle:Group:create.html.twig')->end()
+                                ->scalarNode('edit')->defaultValue('IbrowsNewsletterBundle:Group:edit.html.twig')->end()
+                                ->scalarNode('show')->defaultValue('IbrowsNewsletterBundle:Group:show.html.twig')->end()
                             ->end()
                         ->end()
 
@@ -148,6 +151,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('newsletter')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\NewsletterType')->end()
                             ->scalarNode('mandant')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\MandantType')->end()
+                            ->scalarNode('group')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\GroupType')->end()
                             ->scalarNode('subscriber')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\SubscriberType')->end()
                             ->scalarNode('design')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\DesignType')->end()
                             ->scalarNode('testmail')->cannotBeOverwritten(true)->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\TestMailType')->end()

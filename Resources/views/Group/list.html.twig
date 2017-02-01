@@ -11,16 +11,24 @@
             <th>#</th>
             <th>{{ 'group.name'|trans }}</th>
             {#<th>{{ 'group.created_at'|trans }}</th>#}
+            <th class="text-center">Aktionen</th>
         </tr>
         </thead>
         <tbody>
         {% for group in groups %}
             <tr>
                 <td>{{ group.id }}</td>
-                <td>{{ group.name }}</td>
+                <td><a href="{{ path('ibrows_newsletter_group_show', { 'id': group.id }) }}">{{ group.name }}</a></td>
                 {#<td>{{ group.createdAt|date('d.m.Y, h:i:s') }}</td>#}
+                <td>
+                    <a class="btn btn-small" href="{{ path('ibrows_newsletter_group_edit', { 'id': group.id }) }}">{{ 'group.btn.edit'|trans }}</a>
+                    <a class="btn btn-small" href="{{ path('ibrows_newsletter_group_delete', { 'id': group.id }) }}">{{ 'group.btn.delete'|trans }}</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <hr />
+    <a class="btn btn-small"  href="{{ path('ibrows_newsletter_group_create', {  }) }}">{{ 'group.create'|trans }}</a>
+
 {% endblock newsletter_content %}

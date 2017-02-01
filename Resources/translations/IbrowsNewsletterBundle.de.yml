@@ -69,7 +69,17 @@ user:
   logout: Abmelden
 
 group:
+  btn:
+    delete: löschen
+    edit: bearbeiten
+  group: Gruppe
+  create: Neue Gruppe
+  create.success: Neue Gruppe wurde erfolgreich erstellt.
+  delete.success: 'Gruppe #%id% wurde erfolgreich gelöscht.'
+  edit: Gruppe bearbeiten
+  edit.success: Änderungen gespeichert.
   created_at: Erstellt am
+  edit: Gruppe editieren
   list: Gruppen
   name: Name
 
@@ -124,3 +134,9 @@ layout:
   header:
     title:
       newsletterbundle: NewsletterBundle
+
+ctrl:
+  back: zurück
+  cancel: abbrechen
+  edit: bearbeiten
+  save: speichern

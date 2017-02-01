@@ -1,0 +1,22 @@
+{% extends basetemplate %}
+{% trans_default_domain "IbrowsNewsletterBundle" %}
+{% block layout_class %}group-edit{% endblock layout_class %}
+
+{% block head_javascripts %}
+{{ parent() }}
+{% endblock %}
+
+{% block newsletter_content %}
+    <h1>{{ 'group.edit'|trans }}</h1>
+
+    <form action="{{ path('ibrows_newsletter_group_edit', {'id' : group.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
+        {{ form_rest(form) }}
+
+        <div class="form-actions">
+            <input class="btn btn-primary" type="submit" name="edit" value="{{ 'form.save'|trans }}">
+            <a href="{{ path('ibrows_newsletter_group_list') }}" class="btn">{{ 'ctrl.back'|trans }}</a>
+        </div>
+    </form>
+
+{% endblock %}
