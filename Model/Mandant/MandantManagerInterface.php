@@ -4,6 +4,7 @@ namespace Ibrows\Bundle\NewsletterBundle\Model\Mandant;
 
 use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\GroupInterface;
 
 interface MandantManagerInterface
 {
@@ -31,6 +32,12 @@ interface MandantManagerInterface
      * @return \Ibrows\Bundle\NewsletterBundle\Model\Design\DesignManagerInterface
      */
     public function getDesignManager($name);
+
+    /**
+     * @param  string                                                                      $name
+     * @return \Ibrows\Bundle\NewsletterBundle\Model\Subscriber\GroupManagerInterface
+     */
+    public function getGroupManager($name);
 
     /**
      * @param  string                                                                      $name

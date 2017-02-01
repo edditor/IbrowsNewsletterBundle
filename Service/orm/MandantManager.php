@@ -4,6 +4,7 @@ namespace Ibrows\Bundle\NewsletterBundle\Service\orm;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\GroupInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager as BaseMandantManager;
 use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
@@ -16,6 +17,7 @@ class MandantManager extends BaseMandantManager
     protected $mandants;
     protected $mandantClass;
     protected $newsletterClass;
+    protected $groupClass;
     protected $subscriberClass;
     protected $designClass;
     protected $userClass;
@@ -25,6 +27,7 @@ class MandantManager extends BaseMandantManager
 
     protected $newsletterManager;
     protected $designManager;
+    protected $groupManager;
     protected $subscriberManager;
     protected $statisticManager;
     protected $userProvider;
@@ -39,6 +42,7 @@ class MandantManager extends BaseMandantManager
 
         $this->mandantClass = $classManager->getModel('mandant');
         $this->newsletterClass = $classManager->getModel('newsletter');
+        $this->groupClass = $classManager->getModel('group');
         $this->subscriberClass = $classManager->getModel('subscriber');
         $this->designClass = $classManager->getModel('design');
         $this->userClass = $classManager->getModel('user');
@@ -79,6 +83,21 @@ class MandantManager extends BaseMandantManager
         }
 
         return $this->userProvider;
+    }
+
+    /**
+     * @param string $name
+     * @return GroupManager
+     */
+    public function getGroupManager($name)
+    {
+        if ($this->groupManager === null) {
+            $manager = $this->getObjectManager($name);
+            $repository = $manager->getRepository($this->groupClass);
+            $this->groupManager = new GroupManager($repository);
+        }
+
+        return $this->groupManager;
     }
 
     /**
@@ -177,7 +196,7 @@ class MandantManager extends BaseMandantManager
     }
 
     /**
-     * @param  string $name
+     * @param string          $name
      * @return ObjectManager
      * @throws \InvalidArgumentException
      */

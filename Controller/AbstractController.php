@@ -205,6 +205,14 @@ abstract class AbstractController extends Controller
     }
 
     /**
+     * @return GroupManager
+     */
+    protected function getGroupManager()
+    {
+        return $this->getMandantManager()->getGroupManager($this->getMandantName());
+    }
+
+    /**
      * @return WizardActionAnnotationHandler
      */
     protected function getWizardActionAnnotationHandler()
