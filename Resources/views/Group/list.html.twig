@@ -10,6 +10,7 @@
         <tr>
             <th>#</th>
             <th>{{ 'group.name'|trans }}</th>
+            <th>{{ 'group.subscribers'|trans }}</th>
             {#<th>{{ 'group.created_at'|trans }}</th>#}
             <th class="text-center">Aktionen</th>
         </tr>
@@ -19,6 +20,7 @@
             <tr>
                 <td>{{ group.id }}</td>
                 <td><a href="{{ path('ibrows_newsletter_group_show', { 'id': group.id }) }}">{{ group.name }}</a></td>
+                <td>{{ group.subscribers.count }}</td>
                 {#<td>{{ group.createdAt|date('d.m.Y, h:i:s') }}</td>#}
                 <td>
                     <a class="btn btn-small" href="{{ path('ibrows_newsletter_group_edit', { 'id': group.id }) }}">{{ 'group.btn.edit'|trans }}</a>

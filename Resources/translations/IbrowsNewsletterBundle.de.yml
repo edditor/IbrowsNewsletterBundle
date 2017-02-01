@@ -82,6 +82,7 @@ group:
   edit: Gruppe editieren
   list: Gruppen
   name: Name
+  subscribers: Empfänger
 
 subscriber:
   list: Empfänger

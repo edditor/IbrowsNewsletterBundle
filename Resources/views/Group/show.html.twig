@@ -3,7 +3,7 @@
 {% block layout_class %}group-show{% endblock layout_class %}
 {% block newsletter_content %}
     <h1>{{ 'group.group'|trans }} "{{ group.name }}"</h1>
-
+    {{ 'group.subscribers'|trans }}: {{ group.subscribers.count }}
     <hr />
     <a href="javascript:history.back()" class="btn">{{ 'ctrl.back'|trans }}</a>
 {% endblock newsletter_content %}
