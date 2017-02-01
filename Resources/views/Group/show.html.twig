@@ -3,7 +3,33 @@
 {% block layout_class %}group-show{% endblock layout_class %}
 {% block newsletter_content %}
     <h1>{{ 'group.group'|trans }} "{{ group.name }}"</h1>
-    {{ 'group.subscribers'|trans }}: {{ group.subscribers.count }}
+
+    <h2>{{ 'group.subscribers'|trans }} ({{ group.subscribers.count }})</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>{{ 'subscriber.firstname'|trans }}</th>
+            <th>{{ 'subscriber.lastname'|trans }}</th>
+            {#<th>{{ 'subscriber.company'|trans }}</th>#}
+            <th>{{ 'subscriber.email'|trans }}</th>
+            {#<th>{{ 'subscriber.groups'|trans }}</th>#}
+        </tr>
+        </thead>
+        <tbody>
+        {% for subscriber in group.subscribers %}
+            <tr>
+                <td>{{ subscriber.id }}</td>
+                <td>{{ subscriber.firstname }}</td>
+                <td>{{ subscriber.lastname }}</td>
+                {#<td>{{ subscriber.companyname }}</td>#}
+                <td>{{ subscriber.email }}</td>
+                {#<td>{{ subscriber.groups|join(',') }}</td>#}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <hr />
     <a href="javascript:history.back()" class="btn">{{ 'ctrl.back'|trans }}</a>
 {% endblock newsletter_content %}
