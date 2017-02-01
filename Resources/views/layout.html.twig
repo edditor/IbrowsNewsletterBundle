@@ -127,8 +127,18 @@
     {% block newsletter_flashes %}
         {% for flashMessage in app.session.flashbag.get('ibrows_newsletter_error') %}
             <div class="alert alert-error">
-                {{ flashMessage|trans({'%message%': error.message}) }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p>{{ flashMessage|trans({'%message%': error.message}) }}</p>
             </div>
+        {% endfor %}
+
+        {% for key, flash in app.session.flashBag.all %}
+            {% for flashMsg in flash %}
+                <div class="alert alert-{{ key }}" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p>{{ flashMsg }}</p>
+                </div>
+            {% endfor %}
         {% endfor %}
     {% endblock newsletter_flashes %}
     {% block newsletter_content %}{% endblock newsletter_content %}
