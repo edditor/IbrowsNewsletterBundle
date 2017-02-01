@@ -197,6 +197,35 @@ class MandantManager extends BaseMandantManager
 
     /**
      * @param string          $name
+     * @param GroupInterface $group
+     * @return GroupInterface
+     */
+    public function persistGroup($name, GroupInterface $group)
+    {
+        $manager = $this->getObjectManager($name);
+        $group->setMandant($this->get($name));
+        $manager->persist($group);
+        $manager->flush();
+
+        return $group;
+    }
+
+    /**
+     * @param string $name
+     * @param GroupInterface $group
+     * @return bool
+     */
+    public function deleteGroup($name, GroupInterface $group)
+    {
+        $manager = $this->getObjectManager($name);
+        $manager->remove($group);
+        $manager->flush();
+
+        return true;
+    }
+
+    /**
+     * @param  string $name
      * @return ObjectManager
      * @throws \InvalidArgumentException
      */

@@ -70,4 +70,18 @@ interface MandantManagerInterface
      * @return DesignInterface|null
      */
     public function persistDesign($name, DesignInterface $design);
+
+    /**
+     * @param  string               $name
+     * @param  GroupInterface      $group
+     * @return GroupInterface|null
+     */
+    public function persistGroup($name, GroupInterface $group);
+
+    /**
+     * @param  string               $name
+     * @param  GroupInterface      $group
+     * @return bool
+     */
+    public function deleteGroup($name, GroupInterface $group);
 }
