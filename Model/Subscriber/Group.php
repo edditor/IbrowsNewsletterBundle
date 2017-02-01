@@ -2,6 +2,8 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Model\Subscriber;
 
+use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,6 +12,8 @@ abstract class Group implements GroupInterface
 {
     protected $id;
     protected $subscribers;
+    protected $mandant;
+
 
     /**
      * @var string $name
@@ -37,6 +41,11 @@ abstract class Group implements GroupInterface
         return $this->name;
     }
 
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
     public function getSubscribers()
     {
         return $this->subscribers;
@@ -52,6 +61,18 @@ abstract class Group implements GroupInterface
     public function removeSubscriber(SubscriberInterface $subscriber)
     {
         $this->subscribers->removeElement($subscriber);
+
+        return $this;
+    }
+
+    public function getMandant()
+    {
+        return $this->mandant;
+    }
+
+    public function setMandant(MandantInterface $mandant)
+    {
+        $this->mandant = $mandant;
 
         return $this;
     }
