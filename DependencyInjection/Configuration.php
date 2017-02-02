@@ -154,6 +154,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('mandant')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\MandantType')->end()
                             ->scalarNode('group')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\GroupType')->end()
                             ->scalarNode('subscriber')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\SubscriberType')->end()
+                            ->scalarNode('subscribers')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\SubscribersType')->end()
                             ->scalarNode('design')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\DesignType')->end()
                             ->scalarNode('testmail')->cannotBeOverwritten(true)->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\TestMailType')->end()
                             ->scalarNode('unsubscribe')->defaultValue('Ibrows\\Bundle\\NewsletterBundle\\Form\\UnsubscribeType')->end()

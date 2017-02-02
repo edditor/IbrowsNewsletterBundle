@@ -205,7 +205,7 @@ class NewsletterController extends AbstractController
 
         $newsletter = $this->getNewsletter();
 
-        $formtype = $this->getClassManager()->getForm('subscriber');
+        $formtype = $this->getClassManager()->getForm('subscribers');
         $subscriberClass = $this->getClassManager()->getModel('subscriber');
         $form = $this->createForm(new $formtype($this->getMandantName(), $subscriberClass, $this->getMandant()), $newsletter);
 

@@ -7,7 +7,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SubscriberType extends AbstractType
+class SubscribersType extends AbstractType
 {
     /**
      * @var string
@@ -25,7 +25,7 @@ class SubscriberType extends AbstractType
     protected $mandant;
 
     /**
-     * SubscriberType constructor.
+     * SubscribersType constructor.
      * @param string $managerName
      * @param string $subscriberClass
      * @param MandantInterface $mandant
