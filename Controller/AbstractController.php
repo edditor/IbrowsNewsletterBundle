@@ -213,6 +213,14 @@ abstract class AbstractController extends Controller
     }
 
     /**
+     * @return SubscriberManager
+     */
+    protected function getSubscriberManager()
+    {
+        return $this->getMandantManager()->getSubscriberManager($this->getMandantName());
+    }
+
+    /**
      * @return WizardActionAnnotationHandler
      */
     protected function getWizardActionAnnotationHandler()
