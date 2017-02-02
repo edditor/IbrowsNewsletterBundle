@@ -1,0 +1,51 @@
+{% extends basetemplate %}
+{% trans_default_domain "IbrowsNewsletterBundle" %}
+{% block layout_class %}subscriber-show{% endblock layout_class %}
+{% block newsletter_content %}
+    <h1>{{ 'subscriber.subscriber'|trans }}</h1>
+
+    <div class="table-responsive">
+        <table class="record_properties table table-striped table-condensed table-bordered">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ subscriber.id }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'subscriber.email'|trans }}</th>
+                    <td>{{ subscriber.email }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'subscriber.firstname'|trans }}</th>
+                    <td>{{ subscriber.firstname }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'subscriber.lastname'|trans }}</th>
+                    <td>{{ subscriber.lastname }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'subscriber.company'|trans }}</th>
+                    <td>{{ subscriber.company }}</td>
+                </tr>
+
+                <tr>
+                    <th>{{ 'subscriber.groups'|trans }}</th>
+                    <td>{{ subscriber.groups|join(',') }}</td>
+                </tr>
+
+                {#<tr>
+                    <th>{{ 'subscriber.created_at'|trans }}</th>
+                    <td>{{ subscriber.createdAt }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'subscriber.updated_at'|trans }}</th>
+                    <td>{{ subscriber.updatedAt }}</td>
+                </tr>#}
+            </tbody>
+        </table>
+    </div>
+
+    <hr />
+    <a href="javascript:history.back()" class="btn">{{ 'ctrl.back'|trans }}</a>
+    {#<a href="{{ path('ibrows_newsletter_subscriber_edit', { 'id': subscriber.id }) }}" class="btn">{{ 'ctrl.edit'|trans }}</a>#}
+{% endblock newsletter_content %}

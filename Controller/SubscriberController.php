@@ -20,4 +20,19 @@ class SubscriberController extends AbstractController
             'subscribers' => $subscribers
         ));
     }
+
+    /**
+     * @Route("/show/{id}", name="ibrows_newsletter_subscriber_show")
+     * @param string $id
+     * @return Response
+     */
+    public function showAction($id)
+    {
+        $subscriber = $this->getSubscriberManager()->get($id);
+        return $this->render($this->getTemplateManager()->getSubscriber('show'),
+            array(
+                'subscriber' => $subscriber,
+            )
+        );
+    }
 }

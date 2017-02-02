@@ -85,6 +85,7 @@ group:
   subscribers: Empfänger
 
 subscriber:
+  subscriber: Empfänger
   list: Empfänger
   firstname: Vorname
   lastname: Nachname
@@ -94,6 +95,8 @@ subscriber:
   multiselect:
     selectable: Vorhandene Empfänger
     selected:   Ausgewählte Empfänger
+  created_at: Erstellt am
+  updated_at: Aktualisiert am
 
 design:
   create: Neues Design
@@ -137,7 +140,10 @@ layout:
       newsletterbundle: NewsletterBundle
 
 ctrl:
+  actions: Aktionen
   back: zurück
   cancel: abbrechen
+  details: Details
   edit: bearbeiten
   save: speichern
+  show: anzeigen
