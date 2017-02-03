@@ -5,6 +5,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\GroupInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager as BaseMandantManager;
 use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
@@ -222,6 +223,20 @@ class MandantManager extends BaseMandantManager
         $manager->flush();
 
         return true;
+    }
+
+    /**
+     * @param string          $name
+     * @param SubscriberInterface $group
+     * @return SubscriberInterface
+     */
+    public function persistSubscriber($name, SubscriberInterface $subscriber)
+    {
+        $manager = $this->getObjectManager($name);
+        $manager->persist($subscriber);
+        $manager->flush();
+
+        return $subscriber;
     }
 
     /**

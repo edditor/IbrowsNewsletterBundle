@@ -28,7 +28,7 @@
                 <td>{{ subscriber.groups|join(',') }}</td>
                 <td>
                     <a href="{{ path('ibrows_newsletter_subscriber_show', { 'id': subscriber.id }) }}">{{ 'ctrl.show'|trans }}</a>
-                    {#<a href="{{ path('ibrows_newsletter_subscriber_edit', { 'id': subscriber.id }) }}">{{ 'ctrl.edit'|trans }}</a>#}
+                    <a href="{{ path('ibrows_newsletter_subscriber_edit', { 'id': subscriber.id }) }}">{{ 'ctrl.edit'|trans }}</a>
                 </td>
             </tr></a>
         {% endfor %}

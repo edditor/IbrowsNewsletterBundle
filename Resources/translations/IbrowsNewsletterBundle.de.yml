@@ -85,6 +85,8 @@ group:
   subscribers: Empfänger
 
 subscriber:
+  edit: Empfänger bearbeiten
+  edit.success: Änderungen gespeichert.
   subscriber: Empfänger
   list: Empfänger
   firstname: Vorname
