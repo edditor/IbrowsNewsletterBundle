@@ -3,6 +3,7 @@ namespace Ibrows\Bundle\NewsletterBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\ClassManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,6 +23,11 @@ class SubscriberType extends AbstractType
     protected $subscriberClass;
 
     /**
+     * @var string
+     */
+    protected $groupClass;
+
+    /**
      * @var MandantInterface
      */
     protected $mandant;
@@ -29,13 +35,14 @@ class SubscriberType extends AbstractType
     /**
      * SubscriberType constructor.
      * @param string $managerName
-     * @param string $subscriberClass
+     * @param string $classManager
      * @param MandantInterface $mandant
      */
-    public function __construct($managerName, $subscriberClass, MandantInterface $mandant)
+    public function __construct($managerName, ClassManagerInterface $classManager, MandantInterface $mandant)
     {
         $this->managerName = $managerName;
-        $this->subscriberClass = $subscriberClass;
+        $this->subscriberClass = $classManager->getModel('subscriber');
+        $this->groupClass = $classManager->getModel('group');
         $this->mandant = $mandant;
     }
 
@@ -73,6 +80,16 @@ class SubscriberType extends AbstractType
                 'translation_domain' => 'IbrowsNewsletterBundle',
                 'required' => false,
                 'empty_data' => new EmptyString(),
+                )
+            )
+            ->add(
+                'groups', EntityType::class, array(
+                    'em'    => $this->managerName,
+                    'class' => $this->groupClass,
+                    'label' => 'subscriber.groups',
+                    'translation_domain' => 'IbrowsNewsletterBundle',
+                    'multiple' => true,
+                    'required' => false,
                 )
             )
         ;

@@ -4,7 +4,7 @@
 
 {% block newsletter_content %}
     <h1>{{ 'subscriber.list'|trans }} ({{ subscribers.count }})</h1>
-
+    <a class="btn btn-small btn-primary"  href="{{ path('ibrows_newsletter_subscriber_create', {  }) }}">{{ 'subscriber.create'|trans }}</a>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -34,4 +34,6 @@
         {% endfor %}
         </tbody>
     </table>
+    <hr /> 
+    <a class="btn btn-small btn-primary"  href="{{ path('ibrows_newsletter_subscriber_create', {  }) }}">{{ 'subscriber.create'|trans }}</a>
 {% endblock newsletter_content %}

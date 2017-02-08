@@ -23,6 +23,39 @@ class SubscriberController extends AbstractController
     }
 
     /**
+     * @Route("/create", name="ibrows_newsletter_subscriber_create")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function createAction(Request $request)
+    {
+        /** @var SubscriberInterface $subscriber */
+        $subscriber = $this->getSubscriberManager()->create();
+
+        $formtype = $this->getClassManager()->getForm('subscriber');
+        $form = $this->createForm(new $formtype($this->getMandantName(), $this->getClassManager(), $this->getMandant()), $subscriber);
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $this->getMandantManager()->persistSubscriber($this->getMandantName(), $subscriber);
+                $request->getSession()->getFlashBag()->add('success',
+                    $this->get('translator')->trans('subscriber.create.success', [], 'IbrowsNewsletterBundle'));
+                return $this->redirect($this->generateUrl('ibrows_newsletter_subscriber_list'));
+            }
+        }
+
+        return $this->render(
+            $this->getTemplateManager()->getSubscriber('create'),
+            array(
+                'subscriber' => $subscriber,
+                'form'   => $form->createView(),
+            )
+        );
+    }
+
+    /**
      * @Route("/edit/{id}", name="ibrows_newsletter_subscriber_edit")
      * @param Request $request
      * @param int     $id
@@ -34,8 +67,7 @@ class SubscriberController extends AbstractController
         $subscriber = $this->getSubscriberManager()->get($id);
 
         $formtype = $this->getClassManager()->getForm('subscriber');
-        $subscriberClass = $this->getClassManager()->getModel('subscriber');
-        $form = $this->createForm(new $formtype($this->getMandantName(), $subscriberClass, $this->getMandant()), $subscriber);
+        $form = $this->createForm(new $formtype($this->getMandantName(), $this->getClassManager(), $this->getMandant()), $subscriber);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
