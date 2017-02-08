@@ -2,7 +2,9 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Service;
 
-class ClassManager
+use Ibrows\Bundle\NewsletterBundle\Model\ClassManagerInterface;
+
+class ClassManager implements ClassManagerInterface
 {
     private $models;
     private $forms;
