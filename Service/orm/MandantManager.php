@@ -233,6 +233,7 @@ class MandantManager extends BaseMandantManager
     public function persistSubscriber($name, SubscriberInterface $subscriber)
     {
         $manager = $this->getObjectManager($name);
+        $subscriber->setMandant($this->get($name));
         $manager->persist($subscriber);
         $manager->flush();
 
