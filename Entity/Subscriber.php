@@ -27,14 +27,14 @@ class Subscriber extends AbstractSubscriber
      *
      * @ORM\Column(type="string")
      */
-    protected $gender;
+    protected $gender = '';
 
     /**
      * @var string
      *
      * @ORM\Column(type="string")
      */
-    protected $title;
+    protected $title = '';
 
     /**
      * @var string
