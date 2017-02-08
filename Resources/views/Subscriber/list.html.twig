@@ -3,7 +3,7 @@
 {% block layout_class %}subscriber-list{% endblock layout_class %}
 
 {% block newsletter_content %}
-    <h1>{{ 'subscriber.list'|trans }}</h1>
+    <h1>{{ 'subscriber.list'|trans }} ({{ subscribers.count }})</h1>
 
     <table class="table table-striped">
         <thead>
@@ -25,7 +25,7 @@
                 <td>{{ subscriber.lastname }}</td>
                 <td>{{ subscriber.companyname }}</td>
                 <td>{{ subscriber.email }}</td>
-                <td>{{ subscriber.groups|join(',') }}</td>
+                <td>{{ subscriber.groups|join(', ') }}</td>
                 <td>
                     <a href="{{ path('ibrows_newsletter_subscriber_show', { 'id': subscriber.id }) }}">{{ 'ctrl.show'|trans }}</a>
                     <a href="{{ path('ibrows_newsletter_subscriber_edit', { 'id': subscriber.id }) }}">{{ 'ctrl.edit'|trans }}</a>
