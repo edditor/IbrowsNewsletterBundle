@@ -73,7 +73,7 @@ group:
     delete: löschen
     edit: bearbeiten
   group: Gruppe
-  create: Neue Gruppe
+  create: Gruppe erstellen
   create.success: Neue Gruppe wurde erfolgreich erstellt.
   delete.success: 'Gruppe #%id% wurde erfolgreich gelöscht.'
   edit: Gruppe bearbeiten
@@ -85,6 +85,8 @@ group:
   subscribers: Empfänger
 
 subscriber:
+  create: Empfänger erstellen
+  create.success: Neuer Empfänger wurde erfolgreich erstellt.
   edit: Empfänger bearbeiten
   edit.success: Änderungen gespeichert.
   subscriber: Empfänger
