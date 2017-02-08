@@ -33,7 +33,7 @@ newsletter:
         imagewidth: Bildbreite
   layout:
     index:
-      title: Willkommen beim iBROWS NewsletterBundle
+      title: Willkommen beim NewsletterBundle
   wizard:
     meta:       Meta-Daten
     edit:       Editieren
