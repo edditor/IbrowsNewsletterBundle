@@ -148,15 +148,15 @@ abstract class Subscriber implements SubscriberInterface, SubscriberGenderTitleI
 
     public function addGroup(GroupInterface $group)
     {
-        $group->addSubscriber($this);
-        $this->groups->add($group);
+        if (!$this->getGroups()->contains($group)) {
+            $this->groups->add($group);
+        }
 
         return $this;
     }
 
     public function removeGroup(GroupInterface $group)
     {
-        $group->removeSubscriber($this);
         $this->groups->removeElement($group);
 
         return $this;

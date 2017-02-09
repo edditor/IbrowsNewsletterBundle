@@ -53,13 +53,17 @@ abstract class Group implements GroupInterface
 
     public function addSubscriber(SubscriberInterface $subscriber)
     {
-        $this->subscribers->add($subscriber);
+        if (!$this->getSubscribers()->contains($subscriber)) {
+            $subscriber->addGroup($this);
+            $this->subscribers->add($subscriber);
+        }
 
         return $this;
     }
 
     public function removeSubscriber(SubscriberInterface $subscriber)
     {
+        $subscriber->removeGroup($this);
         $this->subscribers->removeElement($subscriber);
 
         return $this;
