@@ -38,8 +38,7 @@ class GroupController extends AbstractController
         $group = $this->getGroupManager()->create();
 
         $formtype = $this->getClassManager()->getForm('group');
-        $groupClass = $this->getClassManager()->getModel('group');
-        $form = $this->createForm(new $formtype($this->getMandantName(), $groupClass, $this->getMandant()), $group);
+        $form = $this->createForm(new $formtype($this->getMandantName(), $this->getClassManager(), $this->getMandant()), $group);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
@@ -73,8 +72,7 @@ class GroupController extends AbstractController
         $group = $this->getGroupManager()->get($id);
 
         $formtype = $this->getClassManager()->getForm('group');
-        $groupClass = $this->getClassManager()->getModel('group');
-        $form = $this->createForm(new $formtype($this->getMandantName(), $groupClass, $this->getMandant()), $group);
+        $form = $this->createForm(new $formtype($this->getMandantName(), $this->getClassManager(), $this->getMandant()), $group);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
@@ -86,11 +84,14 @@ class GroupController extends AbstractController
             }
         }
 
+        $subscribers = $this->getSubscribers();
+
         return $this->render(
             $this->getTemplateManager()->getGroup('edit'),
             array(
                 'group' => $group,
-                'form'   => $form->createView()
+                'form'   => $form->createView(),
+                'subscribers' => $subscribers,
             )
         );
     }
