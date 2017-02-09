@@ -19,4 +19,20 @@
         </div>
     </form>
 
+<script>
+    var demo1 = $('#group_subscribers').bootstrapDualListbox({
+        bootstrap2Compatible: true,
+        nonSelectedListLabel: 'Alle verfügbaren Empfänger',
+        selectedListLabel: 'Empfänger in Gruppe',
+        moveSelectedLabel: 'Verschiebe Auswahl',
+        moveAllLabel: 'Verschiebe alle',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false,
+        filterTextClear: 'Filter deaktivieren',
+        selectorMinimalHeight: 250,
+        infoText: 'alle {0}',
+        infoTextFiltered: '<span class="label label-warning">gefiltert</span> {0} von {1}'
+    }
+        );
+    </script>
 {% endblock %}
