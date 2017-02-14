@@ -17,14 +17,9 @@ class GroupType extends AbstractType
     protected $managerName;
 
     /**
-     * @var string
+     * @var ClassManagerInterface
      */
-    protected $groupClass;
-
-    /**
-     * @var string
-     */
-    protected $subscriberClass;
+    protected $classManager;
 
     /**
      * @var MandantInterface
@@ -41,8 +36,6 @@ class GroupType extends AbstractType
     {
         $this->managerName = $managerName;
         $this->classManager = $classManager;
-        $this->subscriberClass = $classManager->getModel('subscriber');
-        $this->groupClass = $classManager->getModel('group');
         $this->mandant = $mandant;
     }
 
@@ -52,14 +45,12 @@ class GroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $mandant = $this->mandant;
-
         $builder
             ->add('name')
             ->add(
                 'subscribers', EntityType::class, array(
                     'em'    => $this->managerName,
-                    'class' => $this->subscriberClass,
+                    'class' => $this->classManager->getModel('subscriber'),
                     'label' => 'group.subscribers',
                     'translation_domain' => 'IbrowsNewsletterBundle',
                     'multiple' => true,

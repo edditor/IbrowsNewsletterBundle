@@ -18,14 +18,9 @@ class SubscriberType extends AbstractType
     protected $managerName;
 
     /**
-     * @var string
+     * @var ClassManagerInterface
      */
-    protected $subscriberClass;
-
-    /**
-     * @var string
-     */
-    protected $groupClass;
+    protected $classManager;
 
     /**
      * @var MandantInterface
@@ -41,8 +36,7 @@ class SubscriberType extends AbstractType
     public function __construct($managerName, ClassManagerInterface $classManager, MandantInterface $mandant)
     {
         $this->managerName = $managerName;
-        $this->subscriberClass = $classManager->getModel('subscriber');
-        $this->groupClass = $classManager->getModel('group');
+        $this->classManager = $classManager;
         $this->mandant = $mandant;
     }
 
@@ -52,8 +46,6 @@ class SubscriberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $mandant = $this->mandant;
-
         $builder
             ->add('email', EmailType::class, array(
                 'label' => 'subscriber.email',
@@ -85,7 +77,7 @@ class SubscriberType extends AbstractType
             ->add(
                 'groups', EntityType::class, array(
                     'em'    => $this->managerName,
-                    'class' => $this->groupClass,
+                    'class' => $this->classManager->getModel('group'),
                     'label' => 'subscriber.groups',
                     'translation_domain' => 'IbrowsNewsletterBundle',
                     'multiple' => true,
