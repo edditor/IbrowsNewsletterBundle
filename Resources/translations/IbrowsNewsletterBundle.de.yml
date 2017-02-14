@@ -1,5 +1,6 @@
 newsletter:
   subscriber: Empfänger für Newsletter "%name%" editieren
+  group: Gruppen für Newsletter "%name%" wählen
   unsubscribe: E-Mail "%email%" austragen
   settings: Einstellungen für Newsletter "%name%" editieren
   name: Name
@@ -38,6 +39,7 @@ newsletter:
     meta:       Meta-Daten
     edit:       Editieren
     subscriber: Empfänger
+    groups:     Gruppen
     settings:   Einstellungen
     summary:    Zusammenfassung
   create: Neuer Newsletter

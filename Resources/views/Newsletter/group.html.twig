@@ -1,0 +1,36 @@
+{% extends basetemplate %}
+{% trans_default_domain "IbrowsNewsletterBundle" %}
+{% block layout_class %}newsletter-group{% endblock layout_class %}
+
+{% import "IbrowsNewsletterBundle::macros.html.twig" as macros %}
+{% block newsletter_wizard %}
+    {{ macros.displayWizard(wizard) }}
+{% endblock %}
+
+{% block newsletter_content %}
+    <h1>{{ 'newsletter.group'|trans({'%name%': newsletter.name}) }}</h1>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" name="send" value="{{ 'form.save'|trans }}">
+    </div>
+    {{ form_end(form) }}
+
+    <script>
+        (function ($) {
+            $(function () {
+                var form = $('form[name="group"]');
+                form.submit(function (e) {
+                    var form = $(this);
+                    var groupSelect = form.find(':input[name="group[groups][]"]');
+                    var items = groupSelect.find('> option:selected').map(function () {
+                        return $(this).val();
+                    }).get();
+                    groupSelect.removeAttr('name');
+                    $('<input>').attr('type', 'hidden').attr('name', 'group[groups]').val(JSON.stringify(items)).appendTo(form);
+                });
+            });
+        })(window.jQuery);
+    </script>
+{% endblock %}
