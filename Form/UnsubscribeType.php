@@ -3,6 +3,7 @@
 namespace Ibrows\Bundle\NewsletterBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class UnsubscribeType extends AbstractType
 {
@@ -36,7 +37,7 @@ class UnsubscribeType extends AbstractType
         $builder
             ->add(
                 'groups',
-                'entity',
+                EntityType::class,
                 array(
                     'em'       => $this->managerName,
                     'class'    => $this->groupClass,

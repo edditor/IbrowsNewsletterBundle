@@ -4,6 +4,9 @@ namespace Ibrows\Bundle\NewsletterBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class NewsletterType extends AbstractType
 {
@@ -37,12 +40,12 @@ class NewsletterType extends AbstractType
         $builder
             ->add('subject')
             ->add('name')
-            ->add('senderMail', 'email')
+            ->add('senderMail', EmailType::class)
             ->add('senderName')
-            ->add('returnMail', 'email')
+            ->add('returnMail', EmailType::class)
             ->add(
                 'design',
-                'entity',
+                EntityType::class,
                 array(
                     'em'    => $this->managerName,
                     'class' => $this->designClass,

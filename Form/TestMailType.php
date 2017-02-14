@@ -3,6 +3,8 @@
 namespace Ibrows\Bundle\NewsletterBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class TestMailType extends AbstractType
 {
@@ -33,10 +35,10 @@ class TestMailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', array('data' => $this->defaultMail, 'label' => 'testemail'))
+            ->add('email', EmailType::class, array('data' => $this->defaultMail, 'label' => 'testemail'))
             ->add(
                 'subscriber',
-                'choice',
+                ChoiceType::class,
                 array(
                     'label'   => 'testsubscriber',
                     'choices' => $this->subscribers
