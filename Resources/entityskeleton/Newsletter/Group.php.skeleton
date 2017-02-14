@@ -24,6 +24,11 @@ class Group extends BaseGroup
     protected $subscribers;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Newsletter", mappedBy="groups")
+     */
+    protected $newsletters;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Mandant", inversedBy="subscriberGroups")
      */
     protected $mandant;

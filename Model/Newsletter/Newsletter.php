@@ -8,6 +8,7 @@ use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\GroupInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class Newsletter implements NewsletterInterface
@@ -27,6 +28,12 @@ abstract class Newsletter implements NewsletterInterface
      * @Assert\NotNull(groups={"subscriber"})
      */
     protected $subscribers;
+
+    /**
+     * @var Collection
+     * @Assert\NotNull(groups={"group"})
+     */
+    protected $groups;
 
     /**
      * @var string $subject
@@ -95,6 +102,7 @@ abstract class Newsletter implements NewsletterInterface
     public function __construct()
     {
         $this->subscribers = new ArrayCollection();
+        $this->groups = new ArrayCollection();
         $this->blocks = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->hash = $this->generateHash();
@@ -212,7 +220,7 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
-     * @return Collection
+     * @return SubscriberInterface[]|Collection
      */
     public function getSubscribers()
     {
@@ -243,6 +251,42 @@ abstract class Newsletter implements NewsletterInterface
 
         $subscriber->addNewsletter($this);
         $this->subscribers->add($subscriber);
+
+        return $this;
+    }
+
+    /**
+     * @return GroupInterface[]|Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param  GroupInterface $group
+     * @return Newsletter
+     */
+    public function removeGroup(GroupInterface $group)
+    {
+        $group->removeNewsletter($this);
+        $this->groups->removeElement($group);
+
+        return $this;
+    }
+
+    /**
+     * @param  GroupInterface $group
+     * @return Newsletter
+     */
+    public function addGroup(GroupInterface $group)
+    {
+        if ($this->groups->contains($group)) {
+            return $this;
+        }
+
+        $group->addNewsletter($this);
+        $this->groups->add($group);
 
         return $this;
     }

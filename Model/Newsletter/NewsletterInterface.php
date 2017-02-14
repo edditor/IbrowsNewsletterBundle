@@ -7,6 +7,7 @@ use Ibrows\Bundle\NewsletterBundle\Model\Block\BlockInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Design\DesignInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
+use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\GroupInterface;
 
 interface NewsletterInterface
 {
@@ -65,6 +66,11 @@ interface NewsletterInterface
      * @return SubscriberInterface[]|Collection
      */
     public function getSubscribers();
+
+    /**
+     * @return GroupInterface[]|Collection
+     */
+    public function getGroups();
 
     /**
      * @return SendSettingsInterface

@@ -40,6 +40,12 @@ class Newsletter extends BaseNewsletter
     protected $subscribers;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Group", inversedBy="newsletters")
+     * @ORM\JoinTable(name="ibrows_newsletter_newsletters_groups")
+     */
+    protected $groups;
+
+    /**
      * @ORM\OneToMany(targetEntity="Block", mappedBy="newsletter", cascade={"persist"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
