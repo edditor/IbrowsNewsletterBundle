@@ -57,6 +57,11 @@ class SendSettings implements SendSettingsInterface
      */
     protected $authMode;
 
+    public function __toString()
+    {
+        return (string) $this->host.' - '.$this->username;
+    }
+
     public function getUsername()
     {
         return $this->username;
