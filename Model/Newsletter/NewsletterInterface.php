@@ -124,4 +124,14 @@ interface NewsletterInterface
      * @param string $error
      */
     public function setError($error);
+
+    /**
+     * @return \DateTime
+     */
+    public function getStarttime();
+
+    /**
+     * @param \DateTime $starttime
+     */
+    public function setStarttime($starttime);
 }

@@ -34,11 +34,6 @@ class SendSettings extends BaseSendSettings
     protected $interval;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $starttime;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $encryption;

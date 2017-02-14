@@ -42,11 +42,6 @@ class SendSettings implements SendSettingsInterface
     protected $interval;
 
     /**
-     * @Assert\DateTime(groups={"newsletter"})
-     */
-    protected $starttime;
-
-    /**
      * @Assert\Choice(
      *        choices={"ssl","tls"},
      *        groups={"newsletter"}
@@ -129,18 +124,6 @@ class SendSettings implements SendSettingsInterface
     public function setInterval($interval)
     {
         $this->interval = $interval;
-
-        return $this;
-    }
-
-    public function getStarttime()
-    {
-        return $this->starttime;
-    }
-
-    public function setStarttime($starttime)
-    {
-        $this->starttime = $starttime;
 
         return $this;
     }

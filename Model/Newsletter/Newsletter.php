@@ -67,6 +67,11 @@ abstract class Newsletter implements NewsletterInterface
     protected $returnMail;
 
     /**
+     * @Assert\DateTime(groups={"newsletter"})
+     */
+    protected $starttime;
+
+    /**
      * @var \DateTime $createdAt
      * @Assert\NotNull(groups={"newsletter"})
      */
@@ -257,6 +262,25 @@ abstract class Newsletter implements NewsletterInterface
     public function setMandant(MandantInterface $mandant)
     {
         $this->mandant = $mandant;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStarttime()
+    {
+        return $this->starttime;
+    }
+
+    /**
+     * @param  \DateTime $dateTime
+     * @return Newsletter
+     */
+    public function setStarttime($starttime)
+    {
+        $this->starttime = $starttime;
 
         return $this;
     }

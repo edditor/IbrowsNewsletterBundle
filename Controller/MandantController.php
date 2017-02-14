@@ -29,7 +29,7 @@ class MandantController extends AbstractController
         }
 
         $sendSettingsType = $this->getClassManager()->getForm('sendsettings');
-        $sendSettingsForm = $this->createForm(new $sendSettingsType(true, false), $sendSettings);
+        $sendSettingsForm = $this->createForm(new $sendSettingsType(true), $sendSettings);
 
         if ($request->getMethod() == 'POST') {
             $mandantForm->handleRequest($request);

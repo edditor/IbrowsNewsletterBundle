@@ -39,6 +39,11 @@ class Newsletter extends AbstractNewsletter
     protected $returnMail;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $starttime;
+
+    /**
      * @ORM\Column(type="datetime", name="created_at")
      */
     protected $createdAt;

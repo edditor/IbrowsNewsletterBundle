@@ -21,10 +21,9 @@ class SendSettingsType extends AbstractType
      * @param bool $isPasswordRequired
      * @param bool $showStartTime
      */
-    public function __construct($isPasswordRequired = true, $showStartTime = true)
+    public function __construct($isPasswordRequired = true)
     {
         $this->isPasswordRequired = $isPasswordRequired;
-        $this->showStartTime = $showStartTime;
     }
 
     /**
@@ -63,10 +62,6 @@ class SendSettingsType extends AbstractType
                 )
             )
             ->add('interval');
-
-        if (true === $this->showStartTime) {
-            $builder->add('starttime', 'datetime');
-        }
     }
 
     /**

@@ -25,16 +25,6 @@ interface SendSettingsInterface
     public function setInterval($interval);
 
     /**
-     * @return \DateTime
-     */
-    public function getStarttime();
-
-    /**
-     * @param \DateTime $starttime
-     */
-    public function setStarttime($starttime);
-
-    /**
      * @return string
      */
     public function getEncryption();
