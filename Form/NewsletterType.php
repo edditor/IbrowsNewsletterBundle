@@ -7,6 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Ibrows\Bundle\NewsletterBundle\Model\ClassManagerInterface;
 
 class NewsletterType extends AbstractType
 {
@@ -16,19 +17,19 @@ class NewsletterType extends AbstractType
     protected $managerName;
 
     /**
-     * @var string
+     * @var ClassManagerInterface
      */
-    protected $designClass;
+    protected $classManager;
 
     /**
      * NewsletterType constructor.
      * @param string $managerName
      * @param string $designClass
      */
-    public function __construct($managerName, $designClass)
+    public function __construct($managerName, ClassManagerInterface $classManager)
     {
         $this->managerName = $managerName;
-        $this->designClass = $designClass;
+        $this->classManager = $classManager;
     }
 
     /**
@@ -48,7 +49,7 @@ class NewsletterType extends AbstractType
                 EntityType::class,
                 array(
                     'em'    => $this->managerName,
-                    'class' => $this->designClass,
+                    'class' => $this->classManager->getModel('design'),
                 )
             );
     }
