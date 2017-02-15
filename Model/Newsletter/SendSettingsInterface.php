@@ -22,10 +22,6 @@ interface SendSettingsInterface
 
     public function setPort($port);
 
-    public function getInterval();
-
-    public function setInterval($interval);
-
     /**
      * @return string
      */

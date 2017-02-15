@@ -139,12 +139,6 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
             }
             $receiverMails[] = $receiverMail;
 
-            if ($count % $sendSettings->getInterval() === 0) {
-                $time = $sendSettings->getStarttime();
-                $time->modify('+ 1 minutes');
-                $sendSettings->setStarttime(clone $time);
-            }
-
             $body = $rendererManager->renderNewsletter(
                 $rendererName,
                 $bridge,

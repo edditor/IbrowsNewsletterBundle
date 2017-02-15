@@ -32,16 +32,6 @@ class SendSettings implements SendSettingsInterface
     protected $port;
 
     /**
-     * @Assert\NotNull(groups={"newsletter"})
-     * @Assert\Range(
-     *        min = "1",
-     *    max = "100",
-     *    groups={"newsletter"}
-     *  )
-     */
-    protected $interval;
-
-    /**
      * @Assert\Choice(
      *        choices={"ssl","tls"},
      *        groups={"newsletter"}
@@ -117,18 +107,6 @@ class SendSettings implements SendSettingsInterface
     public function setPort($port)
     {
         $this->port = $port;
-
-        return $this;
-    }
-
-    public function getInterval()
-    {
-        return $this->interval;
-    }
-
-    public function setInterval($interval)
-    {
-        $this->interval = $interval;
 
         return $this;
     }

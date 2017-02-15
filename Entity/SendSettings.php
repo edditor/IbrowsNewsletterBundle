@@ -29,11 +29,6 @@ class SendSettings extends BaseSendSettings
     protected $port;
 
     /**
-     * @ORM\Column(type="integer", name="send_interval")
-     */
-    protected $interval;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $encryption;

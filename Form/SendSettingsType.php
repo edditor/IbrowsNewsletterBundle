@@ -61,7 +61,7 @@ class SendSettingsType extends AbstractType
                     'empty_data' => null,
                 )
             )
-            ->add('interval');
+        ;
     }
 
     /**
