@@ -28,7 +28,7 @@ class MailJob extends AbstractJob
         $this->setReturnMail($newsletter->getReturnMail());
 
         $this->setSendSettings($sendSettings);
-        $this->setScheduled($sendSettings->getStarttime());
+        $this->setScheduled($newsletter->getStarttime());
 
         $this->setNewsletterId($newsletter->getId());
         $this->salt = $newsletter->getMandant()->getSalt();

@@ -78,6 +78,9 @@ class NewsletterController extends AbstractController
         if ($newsletter === null) {
             $newsletter = $this->getNewsletterManager()->create();
         }
+        if ($newsletter->getStarttime() === null) {
+            $newsletter->setStarttime(new \DateTime());
+        }
 
         $formtype = $this->getClassManager()->getForm('newsletter');
         $form = $this->createForm(new $formtype($this->getMandantName(), $this->getClassManager()), $newsletter);
