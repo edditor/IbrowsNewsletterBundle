@@ -51,7 +51,17 @@ class NewsletterType extends AbstractType
                     'em'    => $this->managerName,
                     'class' => $this->classManager->getModel('design'),
                 )
-            );
+            )
+            ->add(
+                'sendsettings',
+                EntityType::class,
+                array(
+                    'em'    => $this->managerName,
+                    'class' => $this->classManager->getModel('sendsettings'),
+                )
+            )
+            ->add('starttime', DateTimeType::class)
+        ;
     }
 
     /**
