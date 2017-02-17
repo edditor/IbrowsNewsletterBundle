@@ -94,6 +94,14 @@ ibrows_newsletter:
         public:     /uploads/block
         # Host for public url generation of images
         host:       http://example.com
+
+# configure doctrine extensions for each mandant
+stof_doctrine_extensions:
+    orm:
+        mandantA:
+            timestampable: true
+        mandantB:
+            timestampable: true
 ```
 
 ``` yaml
