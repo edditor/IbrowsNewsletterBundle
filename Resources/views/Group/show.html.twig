@@ -4,6 +4,19 @@
 {% block newsletter_content %}
     <h1>{{ 'group.group'|trans }} "{{ group.name }}"</h1>
 
+    <table class="record_properties table table-striped table-condensed table-bordered">
+        <tbody>
+            <tr>
+                <th>{{ 'group.created_at'|trans }}</th>
+                <td>{{ group.createdAt|localizeddate('medium', 'medium') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'group.updated_at'|trans }}</th>
+                <td>{{ group.updatedAt|localizeddate('medium', 'medium') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
     <h2>{{ 'group.subscribers'|trans }} ({{ group.subscribers.count }})</h2>
     <table class="table table-striped">
         <thead>

@@ -33,14 +33,14 @@
                     <td>{{ subscriber.groups|join(', ') }}</td>
                 </tr>
 
-                {#<tr>
+                <tr>
                     <th>{{ 'subscriber.created_at'|trans }}</th>
-                    <td>{{ subscriber.createdAt }}</td>
+                    <td>{{ subscriber.createdAt|localizeddate('medium', 'medium') }}</td>
                 </tr>
                 <tr>
                     <th>{{ 'subscriber.updated_at'|trans }}</th>
-                    <td>{{ subscriber.updatedAt }}</td>
-                </tr>#}
+                    <td>{{ subscriber.updatedAt|localizeddate('medium', 'medium') }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
