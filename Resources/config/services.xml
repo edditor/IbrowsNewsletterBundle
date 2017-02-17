@@ -48,6 +48,10 @@
         <service id="ibrows_newsletter.annotation.wizard.handler" class="Ibrows\Bundle\NewsletterBundle\Annotation\Wizard\AnnotationHandler">
             <argument type="service" id ="router" />
         </service>
+
+        <service id="twig.extension.intl" class="Twig_Extensions_Extension_Intl">
+            <tag name="twig.extension" />
+        </service>
     </services>
 
 </container>
