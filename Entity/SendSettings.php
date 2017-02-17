@@ -5,9 +5,16 @@ namespace Ibrows\Bundle\NewsletterBundle\Entity;
 use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\SendSettings as BaseSendSettings;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 class SendSettings extends BaseSendSettings
 {
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
     /**
      * @ORM\Column(type="string")
      */

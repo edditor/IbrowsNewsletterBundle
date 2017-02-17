@@ -5,9 +5,16 @@ namespace Ibrows\Bundle\NewsletterBundle\Entity;
 use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\Subscriber as AbstractSubscriber;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 class Subscriber extends AbstractSubscriber
 {
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
     /**
      * @var string
      *
