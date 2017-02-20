@@ -60,7 +60,14 @@ class NewsletterType extends AbstractType
                     'class' => $this->classManager->getModel('sendsettings'),
                 )
             )
-            ->add('starttime', DateTimeType::class)
+            ->add('starttime', DateTimeType::class, array(
+                    'label' => 'Starttime',
+                    'translation_domain' => 'IbrowsNewsletterBundleForms',
+                    'required' => true,
+                    'widget' => 'single_text',
+                    'format' => 'dd.MM.yyyy HH:mm',
+                )
+			)
         ;
     }
 
