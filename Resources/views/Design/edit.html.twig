@@ -12,14 +12,14 @@ jQuery('[data-element="overview"]').iframeAutoHeight();
 {% block newsletter_content %}
     <h1>{{ 'design.edit'|trans }}</h1>
 
-    <form action="{{ path('ibrows_newsletter_design_edit', {'id' : design.id }) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_rest(form) }}
 
         <div class="form-actions">
             <input class="btn btn-primary" type="submit" name="edit" value="{{ 'form.save'|trans }}">
         </div>
-    </form>
+    {{ form_end(form) }}
 
     <h1>{{ 'design.preview'|trans }}</h1>
     <div class="newsletter-overview">
