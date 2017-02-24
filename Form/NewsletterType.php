@@ -69,8 +69,10 @@ class NewsletterType extends AbstractType
                     'label' => 'Starttime',
                     'translation_domain' => 'IbrowsNewsletterBundleForms',
                     'required' => true,
+                    'widget' => 'single_text',
+                    'format' => 'dd.MM.yyyy HH:mm',
                 )
-            )
+			)
         ;
     }
 

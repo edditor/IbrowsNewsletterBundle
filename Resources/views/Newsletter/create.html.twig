@@ -7,6 +7,33 @@
     {{ macros.displayWizard(wizard) }}
 {% endblock %}
 
+{% block head_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#newsletter_starttime').datetimepicker(
+                    {
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: '2015:2025',
+                        dateFormat: 'dd.mm.yy',
+                        timeFormat: 'HH:mm',
+                        timeText: 'Zeit',
+                        hourText: 'Stunde',
+                        minuteText: 'Minuten',
+                        secondText: 'Sekunden',
+                        currentText: 'Jetzt',
+                        closeText: 'Fertig'
+                    }
+            );
+        });
+    </script>
+{% endblock head_javascripts %}
+{% block head_styles %}
+    {{ parent() }}
+{% endblock head_styles %}
+
 {% block newsletter_content %}
     <form action="" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
