@@ -16,7 +16,6 @@ newsletter:
   testmail: Test-Versand
   overview: Übersicht
   statistic: Statistik
-  design: Design
   block:
     clone: Kopieren
     add: Hinzufügen
@@ -39,7 +38,7 @@ newsletter:
     meta:       Meta-Daten
     edit:       Editieren
     subscriber: Empfänger
-    groups:     Gruppen
+    groups:     Empfänger-Gruppen
     settings:   Einstellungen
     summary:    Zusammenfassung
   create: Neuer Newsletter
@@ -81,6 +80,7 @@ group:
   edit: Gruppe bearbeiten
   edit.success: Änderungen gespeichert.
   created_at: Erstellt am
+  updated_at: Aktualisiert am
   edit: Gruppe editieren
   list: Gruppen
   name: Name

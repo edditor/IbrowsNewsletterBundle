@@ -1,7 +1,8 @@
 Subject: Betreff
-Sendermail: Absender E-Mail
-Sendername: Absender Name
-Returnmail: Antwort E-Mail
+Sendermail: Absender-E-Mail-Adresse
+Sendername: Absender-Name
+Returnmail: Antwort-E-Mail-Adresse
+Design: Layout-Vorlage
 Subscribers: Empfänger
 Content: Inhalt
 Name: Name
@@ -21,6 +22,7 @@ Port: Mailport
 Encryption: Verschlüsselung
 Authmode: Authentifizierung
 Starttime: Startzeit
+Sendsettings: Versand-Profil
 
 Renderername: Renderer Name (Service-Id)
 
