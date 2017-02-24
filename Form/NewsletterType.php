@@ -7,6 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Ibrows\Bundle\NewsletterBundle\Model\ClassManagerInterface;
 
 class NewsletterType extends AbstractType
@@ -39,15 +40,16 @@ class NewsletterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('subject')
-            ->add('name')
+            ->add('subject', TextType::class)
+            ->add('name', TextType::class)
             ->add('senderMail', EmailType::class)
-            ->add('senderName')
+            ->add('senderName', TextType::class)
             ->add('returnMail', EmailType::class)
             ->add(
                 'design',
                 EntityType::class,
                 array(
+                    'required' => true,
                     'em'    => $this->managerName,
                     'class' => $this->classManager->getModel('design'),
                 )
@@ -56,11 +58,19 @@ class NewsletterType extends AbstractType
                 'sendsettings',
                 EntityType::class,
                 array(
+                    'label' => 'Sendsettings',
+                    'translation_domain' => 'IbrowsNewsletterBundleForms',
+                    'required' => true,
                     'em'    => $this->managerName,
                     'class' => $this->classManager->getModel('sendsettings'),
                 )
             )
-            ->add('starttime', DateTimeType::class)
+            ->add('starttime', DateTimeType::class, array(
+                    'label' => 'Starttime',
+                    'translation_domain' => 'IbrowsNewsletterBundleForms',
+                    'required' => true,
+                )
+            )
         ;
     }
 
