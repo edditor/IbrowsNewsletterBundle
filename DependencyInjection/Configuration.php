@@ -80,6 +80,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('unsubscribe')->defaultValue('IbrowsNewsletterBundle:Newsletter:unsubscribe.html.twig')->end()
                                 ->scalarNode('overview')->defaultValue('IbrowsNewsletterBundle:Newsletter:overview.html.twig')->end()
                                 ->scalarNode('generate')->defaultValue('IbrowsNewsletterBundle:Newsletter:generate.html.twig')->end()
+                                ->scalarNode('subscribe_form')->defaultValue('IbrowsNewsletterBundle:Newsletter:subscribe.form.html.twig')->end()
                             ->end()
                         ->end()
 
