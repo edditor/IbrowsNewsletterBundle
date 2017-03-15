@@ -3,6 +3,8 @@
 namespace Ibrows\Bundle\NewsletterBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SendSettingsType extends AbstractType
@@ -36,7 +38,7 @@ class SendSettingsType extends AbstractType
             ->add('username')
             ->add(
                 'password',
-                'password',
+                PasswordType::class,
                 array(
                     'required' => $this->isPasswordRequired,
                 )
@@ -45,7 +47,7 @@ class SendSettingsType extends AbstractType
             ->add('port')
             ->add(
                 'encryption',
-                'choice',
+                ChoiceType::class,
                 array(
                     'choices'    => array('tls' => 'tls', 'ssl' => 'ssl'),
                     'required'   => false,
@@ -54,7 +56,7 @@ class SendSettingsType extends AbstractType
             )
             ->add(
                 'authMode',
-                'choice',
+                ChoiceType::class,
                 array(
                     'choices'    => array('plain' => 'plain', 'login' => 'login', 'cram-md5' => 'cram-md5'),
                     'required'   => false,
