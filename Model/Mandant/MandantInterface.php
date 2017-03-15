@@ -29,6 +29,16 @@ interface MandantInterface
     /**
      * @return string
      */
+    public function getEditorName();
+
+    /**
+     * @param string $editorName
+     */
+    public function setEditorName($editorName);
+
+    /**
+     * @return string
+     */
     public function getRendererName();
 
     /**

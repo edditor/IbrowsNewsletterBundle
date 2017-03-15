@@ -11,6 +11,7 @@ abstract class Mandant implements MandantInterface
     protected $name;
     protected $hash;
     protected $salt;
+    protected $editorName;
     protected $rendererName;
 
     protected $blocks;
@@ -55,6 +56,18 @@ abstract class Mandant implements MandantInterface
     public function getSalt()
     {
         return $this->salt;
+    }
+
+    public function getEditorName()
+    {
+        return $this->editorName;
+    }
+
+    public function setEditorName($editorName)
+    {
+        $this->editorName = $editorName;
+
+        return $this;
     }
 
     public function getRendererName()
