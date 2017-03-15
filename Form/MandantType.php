@@ -13,6 +13,7 @@ class MandantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('editorName')
             ->add('rendererName');
     }
 }
