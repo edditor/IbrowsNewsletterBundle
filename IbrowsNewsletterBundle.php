@@ -13,5 +13,6 @@ class IbrowsNewsletterBundle extends Bundle
         $container->addCompilerPass(new BlockProviderCompilerPass());
         $container->addCompilerPass(new RendererCompilerPass());
         $container->addCompilerPass(new MailerServiceCompilerPass());
+        $container->addCompilerPass(new EditorCompilerPass());
     }
 }

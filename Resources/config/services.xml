@@ -29,6 +29,9 @@
         <service id="ibrows_newsletter.block_provider_manager" class="Ibrows\Bundle\NewsletterBundle\Service\BlockProviderManager">
         </service>
 
+        <service id="ibrows_newsletter.editor_manager" class="Ibrows\Bundle\NewsletterBundle\Service\EditorManager">
+        </service>
+
         <service id="ibrows_newsletter.renderer_manager" class="Ibrows\Bundle\NewsletterBundle\Service\RendererManager">
         		<argument type="service" id="ibrows_newsletter.block_provider_manager" />
         </service>

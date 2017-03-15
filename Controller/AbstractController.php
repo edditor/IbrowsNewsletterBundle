@@ -19,6 +19,7 @@ use Ibrows\Bundle\NewsletterBundle\Service\ClassManager;
 use Ibrows\Bundle\NewsletterBundle\Service\orm\DesignManager;
 use Ibrows\Bundle\NewsletterBundle\Service\orm\MandantManager;
 use Ibrows\Bundle\NewsletterBundle\Service\orm\NewsletterManager;
+use Ibrows\Bundle\NewsletterBundle\Service\EditorManager;
 use Ibrows\Bundle\NewsletterBundle\Service\RendererManager;
 use Ibrows\Bundle\NewsletterBundle\Service\TemplateManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -178,6 +179,14 @@ abstract class AbstractController extends Controller
     protected function getBlockProviderManager()
     {
         return $this->get('ibrows_newsletter.block_provider_manager');
+    }
+
+    /**
+     * @return EditorManager
+     */
+    protected function getEditorManager()
+    {
+        return $this->get('ibrows_newsletter.editor_manager');
     }
 
     /**
