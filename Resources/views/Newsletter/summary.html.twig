@@ -10,6 +10,49 @@
 {% block newsletter_content %}
     <div data-container="newsletter_summary">
         <h1>{{ 'newsletter.summary'|trans({'%name%': newsletter.name}) }}</h1>
+        <div>
+            <h2>{{ 'newsletter.wizard.meta'|trans }}</h2>
+            {% trans_default_domain "IbrowsNewsletterBundleForms" %}
+            <table class="table table-bordered table-striped">
+                <thead>
+                  <tr><th class="span3">Attribut</th><th class="span5">Wert</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>{{ 'Subject'|trans() }}</td><td>{{ newsletter.subject }}</td></tr>
+                    <tr><td>{{ 'Sendermail'|trans }}</td><td>{{ newsletter.sendermail }}</td></tr>
+                    <tr><td>{{ 'Sendername'|trans }}</td><td>{{ newsletter.sendername }}</td></tr>
+                    <tr><td>{{ 'Returnmail'|trans }}</td><td>{{ newsletter.returnmail }}</td></tr>
+                    <tr><td>{{ 'design'|trans }}</td><td>{{ newsletter.design }}</td></tr>
+                    <tr><td>{{ 'Sendsettings'|trans }}</td><td>{{ newsletter.sendsettings }}</td></tr>
+                    <tr><td>{{ 'Starttime'|trans }}</td><td>{{ newsletter.starttime|localizeddate('medium', 'medium') }}</td></tr>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% endif %}
+                </tbody>
+            </table>
+
+            {% trans_default_domain "IbrowsNewsletterBundle" %}
+            <h2>{{ 'newsletter.wizard.groups'|trans }}</h2>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="span3">{{ 'group.group'|trans }}</th>
+                        <th class="span5">{{ 'group.subscribers'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for group in newsletter.groups %}
+                    <tr>
+                        <td><a href="{{ path('ibrows_newsletter_group_show', { 'id': group.id }) }}">{{ group.name }}</a></td>
+                        <td>{{ group.subscribers.count }}</td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td>{{ 'newsletter.unique.total'|trans }}</td>
+                        <td>{{ newsletter.subscribers.count }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <h2>{{ 'newsletter.testmail'|trans }}</h2>
         <form action="" method="post" {{ form_enctype(testmailform) }}>
@@ -22,7 +65,7 @@
             </div>
         </form>
 
-        <h2>{{ 'newsletter.overview'|trans }}</h2>
+        <h2>{{ 'newsletter.preview'|trans }}</h2>
         <div class="newsletter-overview">
             <iframe data-iframe-auto-height="true" src="{{ url('ibrows_newsletter_render_overview', {mandantHash: mandantHash, newsletterHash: newsletter.hash, subscriberHash: subscriber.hash, context: 'preview'}) }}"></iframe>
         </div>
