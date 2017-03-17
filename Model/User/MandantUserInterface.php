@@ -2,7 +2,9 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Model\User;
 
-interface MandantUserInterface
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+
+interface MandantUserInterface extends AdvancedUserInterface
 {
     public function getMandant();
 }
