@@ -118,7 +118,9 @@
             </a>
             <ul class="nav">
                 {% if app.user %}
-                    <li><a href="{{ url('ibrows_newsletter_mandant_edit') }}">{{ 'mandant.admin'|trans }}</a>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li><a href="{{ url('ibrows_newsletter_mandant_edit') }}">{{ 'mandant.admin'|trans }}</a>
+                    {% endif %}
                     <li><a href="{{ url('ibrows_newsletter_list') }}">{{ 'newsletter.list'|trans }}</a></li>
                     <li><a href="{{ url('ibrows_newsletter_design_list') }}">{{ 'design.list'|trans }}</a></li>
                     <li><a href="{{ url('ibrows_newsletter_subscriber_list') }}">{{ 'subscriber.list'|trans }}</a></li>
