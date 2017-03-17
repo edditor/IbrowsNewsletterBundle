@@ -36,4 +36,16 @@ interface EditorInterface
      * @return string
      */
     public function renderTemplate();
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    public function enableEditorInTemplate($content);
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    public function disableEditorInTemplate($content);
 }
