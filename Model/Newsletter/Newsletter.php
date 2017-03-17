@@ -228,6 +228,31 @@ abstract class Newsletter implements NewsletterInterface
     }
 
     /**
+     * @return Newsletter
+     */
+    public function resetSubscribers()
+    {
+        foreach($this->getSubscribers() as $subscriber) {
+            $this->removeSubscriber($subscriber);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  $subscribers
+     * @return Newsletter
+     */
+    public function addSubscribers($subscribers)
+    {
+        foreach($subscribers as $subscriber) {
+            $this->addSubscriber($subscriber);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param  SubscriberInterface $subscriber
      * @return Newsletter
      */
