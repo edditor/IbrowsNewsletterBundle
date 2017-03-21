@@ -2,6 +2,8 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Editor;
 
+use Ibrows\Bundle\NewsletterBundle\Renderer\RenderableInterface;
+
 /**
  * EditorInterface
  */
@@ -11,6 +13,11 @@ interface EditorInterface
      * @return string
      */
     public function __toString();
+
+    /**
+     * @param RenderableInterface $template
+     */
+    public function setTemplate(RenderableInterface $template);
 
     /**
      * @return string
