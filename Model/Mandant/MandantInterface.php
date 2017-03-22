@@ -12,6 +12,11 @@ use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberInterface;
 interface MandantInterface
 {
     /**
+     * @return integer
+     */
+    public function getId();
+
+    /**
      * @return NewsletterInterface[]
      */
     public function getNewsletters();

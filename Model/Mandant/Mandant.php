@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Mandant implements MandantInterface
 {
+    protected $id;
+
     protected $name;
     protected $hash;
     protected $salt;
@@ -30,6 +32,14 @@ abstract class Mandant implements MandantInterface
         $this->subscribers = new ArrayCollection();
         $this->subscriberGroups = new ArrayCollection();
         $this->salt = $this->generateSalt();
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
