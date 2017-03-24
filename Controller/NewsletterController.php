@@ -255,89 +255,9 @@ class NewsletterController extends AbstractController
 
         return null;
     }
-
-    /**
-     * @Route("/settings", name="ibrows_newsletter_settings")
-     * @WizardAction(name="settings", number=4, validationMethod="settingsValidation")
-     * @param Request $request
-     * @return RedirectResponse|Response
-     */
-    public function settingsAction(Request $request)
-    {
-        if (($response = $this->getWizardActionValidation()) instanceof Response) {
-            return $response;
-        }
-
-        $formtype = $this->getClassManager()->getForm('sendsettings');
-
-        // get send settings, if null set default values
-        $sendSettings = $this->getSendSettings();
-        if ($sendSettings === null) {
-            $sendSettings = $this->getMandant()->getSendSettings();
-            if ($sendSettings === null) {
-                $sendSettingsClass = $this->getClassManager()->getModel('sendsettings');
-                $sendSettings = new $sendSettingsClass();
-            }
-        }
-        if ($sendSettings->getStarttime() === null) {
-            $sendSettings->setStarttime(new \DateTime());
-        }
-
-        // set password non required if already defined in send settings
-        $password = $sendSettings->getPassword();
-        $password_required = $password === null;
-        $form = $this->createForm(new $formtype($password_required), $sendSettings);
-
-        if ($request->getMethod() == 'POST') {
-            $plainpassword = $this->decryptPassword($password);
-            $form->handleRequest($request);
-
-            // set password from send settings if necessary
-            $formpassword = $form->get('password')->getData();
-            if ($formpassword !== null) {
-                $plainpassword = $formpassword;
-            }
-
-            if ($form->isValid()) {
-                $sendSettings->setPassword($plainpassword);
-                $this->setSendSettings($sendSettings);
-
-                return $this->redirect($this->getWizardActionAnnotationHandler()->getNextStepUrl());
-            }
-        }
-
-        return $this->render(
-            $this->getTemplateManager()->getNewsletter('settings'),
-            array(
-                'newsletter' => $this->getNewsletter(),
-                'form'       => $form->createView(),
-                'wizard'     => $this->getWizardActionAnnotationHandler(),
-            )
-        );
-    }
-
-    /**
-     * @param WizardActionHandler $handler
-     * @return RedirectResponse|null
-     */
-    public function settingsValidation(WizardActionHandler $handler)
-    {
-        $newsletter = $this->getNewsletter();
-
-        if (is_null($newsletter)) {
-            return $this->redirect($handler->getStepUrl($handler->getLastValidAnnotation()));
-        }
-
-        if (count($newsletter->getSubscribers()) <= 0) {
-            return $this->redirect($this->generateUrl('ibrows_newsletter_subscriber'));
-        }
-
-        return null;
-    }
-
     /**
      * @Route("/summary", name="ibrows_newsletter_summary")
-     * @WizardAction(name="summary", number=5, validationMethod="summaryValidation")
+     * @WizardAction(name="summary", number=4, validationMethod="summaryValidation")
      * @param Request $request
      * @return Response
      */
