@@ -48,11 +48,11 @@ interface EditorInterface
      * @param string $content
      * @return string
      */
-    public function enableEditorInTemplate($content);
+    public function preLoadContentIntoEditor($content);
 
     /**
      * @param string $content
      * @return string
      */
-    public function disableEditorInTemplate($content);
+    public function preSaveContentFromEditor($content);
 }
