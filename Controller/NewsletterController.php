@@ -194,47 +194,53 @@ class NewsletterController extends AbstractController
     }
 
     /**
-     * @Route("/subscriber", name="ibrows_newsletter_subscriber")
-     * @WizardAction(name="subscriber", number=3, validationMethod="subscriberValidation")
+     * @Route("/group", name="ibrows_newsletter_group")
+     * @WizardAction(name="groups", number=3, validationMethod="groupValidation")
      * @param Request $request
      * @return RedirectResponse|Response|true
      */
-    public function subscriberAction(Request $request)
+    public function groupAction(Request $request)
     {
+
         if (($response = $this->getWizardActionValidation()) instanceof Response) {
             return $response;
         }
 
         $newsletter = $this->getNewsletter();
 
-        $formtype = $this->getClassManager()->getForm('subscribers');
-        $subscriberClass = $this->getClassManager()->getModel('subscriber');
-        $form = $this->createForm(new $formtype($this->getMandantName(), $subscriberClass, $this->getMandant()), $newsletter);
+        $formtype = $this->getClassManager()->getForm('groups');
+        $form = $this->createForm(new $formtype($this->getMandantName(), $this->getClassManager(), $this->getMandant()), $newsletter);
 
         if ($request->isMethod('POST')) {
-            $subscriberFormData = $request->request->get($form->getName());
+            $groupFormData = $request->request->get($form->getName());
 
-            if ($form->has('subscribers')) {
-                $subscribersFormName = $form->get('subscribers')->getName();
+            if ($form->has('groups')) {
+                $groupsFormName = $form->get('groups')->getName();
                 if (
-                    isset($subscriberFormData[$subscribersFormName]) &&
-                    is_string($subscriberFormData[$subscribersFormName])
+                    isset($groupFormData[$groupsFormName]) &&
+                    is_string($groupFormData[$groupsFormName])
                 ) {
-                    $subscriberFormData[$subscribersFormName] = json_decode($subscriberFormData[$subscribersFormName]);
-                    $request->request->set($form->getName(), $subscriberFormData);
+                    $groupFormData[$groupsFormName] = json_decode($groupFormData[$groupsFormName]);
+                    $request->request->set($form->getName(), $groupFormData);
                 }
             }
 
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                //setSubscribers by selected Groups
+                $newsletter->resetSubscribers();
+                foreach ($newsletter->getGroups() as $group) {
+                    $newsletter->addSubscribers($group->getSubscribers());
+                }
+
                 $this->setNewsletter($newsletter);
                 return $this->redirect($this->getWizardActionAnnotationHandler()->getNextStepUrl());
             }
         }
 
         return $this->render(
-            $this->getTemplateManager()->getNewsletter('subscriber'),
+            $this->getTemplateManager()->getNewsletter('group'),
             array(
                 'newsletter' => $this->getNewsletter(),
                 'form'       => $form->createView(),
@@ -247,14 +253,17 @@ class NewsletterController extends AbstractController
      * @param WizardActionHandler $handler
      * @return RedirectResponse|null
      */
-    public function subscriberValidation(WizardActionHandler $handler)
+    public function groupValidation(WizardActionHandler $handler)
     {
-        if (is_null($this->getNewsletter())) {
+        $newsletter = $this->getNewsletter();
+
+        if (is_null($newsletter)) {
             return $this->redirect($handler->getStepUrl($handler->getLastValidAnnotation()));
         }
 
         return null;
     }
+
     /**
      * @Route("/summary", name="ibrows_newsletter_summary")
      * @WizardAction(name="summary", number=4, validationMethod="summaryValidation")
@@ -347,8 +356,12 @@ class NewsletterController extends AbstractController
             return $this->redirect($handler->getStepUrl($handler->getLastValidAnnotation()));
         }
 
-        if (count($newsletter->getSubscribers()) <= 0) {
-            return $this->redirect($this->generateUrl('ibrows_newsletter_subscriber'));
+        if (count($newsletter->getSubscribers()) === 0) {
+            return $this->redirect($this->generateUrl('ibrows_newsletter_group'));
+        }
+
+        if (count($newsletter->getGroups()) <= 0) {
+            return $this->redirect($this->generateUrl('ibrows_newsletter_group'));
         }
 
         return null;
