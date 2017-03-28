@@ -186,7 +186,9 @@ class NewsletterController extends AbstractController
      */
     public function editValidation(WizardActionHandler $handler)
     {
-        if (is_null($this->getNewsletter())) {
+        $newsletter = $this->getNewsletter();
+
+        if (is_null($newsletter)) {
             return $this->redirect($handler->getStepUrl($handler->getLastValidAnnotation()));
         }
 
@@ -260,6 +262,11 @@ class NewsletterController extends AbstractController
         if (is_null($newsletter)) {
             return $this->redirect($handler->getStepUrl($handler->getLastValidAnnotation()));
         }
+
+        //TODO
+        /*if (is_null($newsletter->getDesign())) {
+            return $this->redirect($this->generateUrl('ibrows_newsletter_edit'));
+        }*/
 
         return null;
     }
@@ -356,11 +363,16 @@ class NewsletterController extends AbstractController
             return $this->redirect($handler->getStepUrl($handler->getLastValidAnnotation()));
         }
 
-        if (count($newsletter->getSubscribers()) === 0) {
+        //TODO
+        /*if (is_null($newsletter->getDesign())) {
+            return $this->redirect($this->generateUrl('ibrows_newsletter_edit'));
+        }*/
+
+        if (count($newsletter->getGroups()) <= 0) {
             return $this->redirect($this->generateUrl('ibrows_newsletter_group'));
         }
 
-        if (count($newsletter->getGroups()) <= 0) {
+        if (count($newsletter->getSubscribers()) === 0) {
             return $this->redirect($this->generateUrl('ibrows_newsletter_group'));
         }
 
