@@ -1,153 +1,38 @@
 {% extends basetemplate %}
 {% trans_default_domain "IbrowsNewsletterBundle" %}
-{% block layout_class %}newsletter-edit{% endblock layout_class %}
+{% block layout_class %}newsletter-editor{% endblock layout_class %}
 
 {% import "IbrowsNewsletterBundle::macros.html.twig" as macros %}
 {% block newsletter_wizard %}
     {{ macros.displayWizard(wizard) }}
 {% endblock %}
 
-{% block head_javascripts %}
-    {{ parent() }}
-
-    <script type="text/javascript">
-        var $edit = new ibrows_newsletter.edit({
-            container: '[data-container="newsletter-edit"]',
-            selectors: {
-                block: '[data-element="block"]',
-                tinymce: '.tinymce'
-            },
-            attributes: {
-                blockId: 'data-element-id',
-                blockProvider: 'data-block-provider-form'
-            },
-            elements: {
-                blocks: '#blocks',
-                block: '[data-element="block"]',
-                blocksForm: '[data-element="blocks-form"]',
-                blockDeleteDroppable: '[data-element="block-delete-droppable"]',
-                newBlockDialog: '[data-element="new-block-dialog"]',
-                newBlockDialogButton: '[data-action="new-block-dialog"]',
-                newBlockDialogAccordion: '[data-element="new-block-dialog-accordion"]',
-                newBlockDialogAdd: '[data-action="new-block-dialog-add"]',
-                cloneBlockDialog: '[data-element="clone-block-dialog"]',
-                cloneBlockDialogButton: '[data-action="clone-block-dialog"]',
-                cloneBlockNewsletterId: '[data-element="clone-block-newsletter-id"]',
-                cloneBlockButton: '[data-action="clone-block"]',
-                blockMetadataEditDialog: '[data-element="block-metadata-edit-dialog"]',
-                blockProviderForms: '[data-block-provider-form]'
-            },
-            url: {
-                addProviderBlock: '{{ url('ibrows_newsletter_provider_view_add') }}',
-                updateBlockPosition: '{{ url('ibrows_newsletter_provider_block_position_update') }}',
-                removeBlock: '{{ url('ibrows_newsletter_provider_block_remove') }}',
-                blockMetadataEdit: '{{ url('ibrows_newsletter_blockmetadata_edit') }}'
-            },
-            trans: {
-                'newsletter.dialog.abort': '{{ 'newsletter.dialog.abort'|trans }}'
-            }
-        });
-
-        jQuery(function () {
-            $edit.ready();
-        });
-    </script>
-{% endblock head_javascripts %}
-
 {% macro displayformcontrols() %}
     {% trans_default_domain "IbrowsNewsletterBundleForms" %}
     <div class="form-actions">
-        <button data-action="new-block-dialog" class="btn">{{ 'newsletter.block.new'|trans }}</button>
-        <button data-action="clone-block-dialog" class="btn">{{ 'newsletter.block.clone'|trans }}</button>
-        <input type="submit" name="save" class="btn btn-primary" value="{{ 'form.save'|trans }}">
-        <input type="submit" name="continue" class="btn" value="{{ 'form.continue'|trans }}">
+        <input type="submit" name="save" class="btn btn-primary" value="{{ 'form.save'|trans }}" id="btnSave">
+        <input type="submit" name="continue" class="btn" value="{{ 'form.continue'|trans }}" id="btnContinue">
     </div>
 {% endmacro displayformcontrols %}
 
+{% block head_javascripts %}
+    {{ parent() }}
+    {{ head_javascripts|raw }}
+{% endblock head_javascripts %}
+{% block head_styles %}
+    {{ parent() }}
+    {{ head_styles|raw }}
+{% endblock head_styles %}
+
 {% block newsletter_content %}
+    <h1>{{ 'newsletter.edit'|trans({'%name%': newsletter.name}) }}</h1>
 
-    {# generate hidden tinymce textarea because otherwise variable tinyMCE is not defined #}
-    <div style="display:none;"><textarea class="tinymce"></textarea></div>
+    <form action="" method="post" id="editForm">
+        {{ _self.displayformcontrols() }}
 
-    <div data-container="newsletter-edit">
+        {{ newsletter_content|raw }}
 
-        <div class="block-delete-droppable" data-element="block-delete-droppable" style="display:none;"></div>
+        {{ _self.displayformcontrols() }}
+    </form>
 
-        <div data-element="block-metadata-edit-dialog" title="{{ 'newsletter.block.metadata.edit'|trans }}">
-
-        </div>
-
-        <div data-element="new-block-dialog" title="{{ 'newsletter.block.new'|trans }}">
-            <div data-element="new-block-dialog-accordion">
-                {% for blockProviderId, blockProvider in blockProviderManager.blockProviders %}
-                    <h3>{{ ('newsletter.block.provider.'~blockProviderId|lower~'.name')|trans }}</h3>
-                    <div>
-                        <form data-element="new-block-dialog-provider-form" data-block-provider-form="{{ blockProviderId }}">
-                            <input data-form-field="true" type="hidden" name="provider" value="{{ blockProviderId }}">
-                            {#
-                                <div>
-                                    {{ 'newsletter.block.name'|trans({}, "IbrowsNewsletterBundleForms") }}
-                                </div>
-                            #}
-                            <div>
-                                <input
-                                        data-form-field="true"
-                                        required="required"
-                                        type="hidden"
-                                        name="name"
-                                >
-                            </div>
-                            {% for blockProviderOptionKey, blockProviderOptionOptions in blockProvider.optionKeys %}
-                                <div>
-                                    {{ ('newsletter.block.provider.'~blockProviderId|lower~'.'~blockProviderOptionKey|lower)|trans }}
-                                </div>
-                                <div>
-                                    <input
-                                            data-form-field="true"
-                                            {% if blockProviderOptionOptions.required|default(true) == true %}required="required"{% endif %}
-                                            type="text"
-                                            name="option[{{ blockProviderOptionKey }}]"
-                                    >
-                                </div>
-                            {% endfor %}
-                            <div>
-                                <button data-action="new-block-dialog-add" class="btn">{{ 'newsletter.block.add'|trans }}</button>
-                            </div>
-                        </form>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="clone-block-dialog" data-element="clone-block-dialog" title="{{ 'newsletter.block.clone'|trans }}">
-            <ul>
-                {% for cloneNewsletter in newsletters if(cloneNewsletter.id != newsletter.id) %}
-                    <li>
-                        <button class="btn" data-action="clone-block" data-newsletter-id="{{ cloneNewsletter.id }}">{{ cloneNewsletter.name }}</button>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <h1>{{ 'newsletter.edit'|trans({'%name%': newsletter.name}) }}</h1>
-
-        <form method="post" enctype="multipart/form-data" action="" class="blocks" data-element="blocks-form">
-
-            <input data-element="clone-block-newsletter-id" type="hidden" name="clone" value=""/>
-
-            {{ _self.displayformcontrols() }}
-
-            <ul id="blocks">
-                {% for block in newsletter.blocks %}
-                    <li data-element="block" data-provider="{{ block.providerName }}" data-element-id="{{ block.id }}" class="block">
-                        {{ blockProviderManager.get(block.providerName).blockEditContent(block)|raw }}
-                    </li>
-                {% endfor %}
-            </ul>
-
-            {{ _self.displayformcontrols() }}
-
-        </form>
-
-    </div>
 {% endblock %}

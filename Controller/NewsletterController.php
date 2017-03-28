@@ -129,40 +129,32 @@ class NewsletterController extends AbstractController
 
         $newsletter = $this->getNewsletter();
 
+        $editorName = $this->getMandant()->getEditorName();
+        $editorManager = $this->getEditormanager();
+
+        $editor = $editorManager->get($editorName);
+
+        $design = $newsletter->getDesign();
+        if ($newsletter->getDesign()->getName() !== 'default') {
+            $editor->setTemplate($design);
+        }
+
         if ($request->getMethod() == 'POST') {
-            $blockParameters = array();
-
-            $blockPostArray = $request->request->get('block');
-            if (!is_array($blockPostArray)) {
-                $blockPostArray = array();
-            }
-
-            $blockFileArray = $request->files->get('block');
-            if (!is_array($blockFileArray)) {
-                $blockFileArray = array();
-            }
-
-            foreach ($blockPostArray as $blockId => $content) {
-                $blockParameters[$blockId] = $content;
-            }
-
-            foreach ($blockFileArray as $blockId => $file) {
-                $blockParameters[$blockId] = $file;
-            }
-
-            $this->updateBlocksRecursive($newsletter->getBlocks(), $blockParameters);
-
-            // clone newsletter blocks?
-            $newsletterCloneId = $request->request->get('clone');
-            if ($newsletterCloneId) {
-                $cloneNewsletter = $this->getNewsletterById($newsletterCloneId);
-                if ($cloneNewsletter) {
-                    $this->cloneNewsletterBlocks($newsletter, $cloneNewsletter);
-                    $this->setNewsletter($newsletter);
+            $content = $request->request->get('content');
+            //update content
+            if ($content) {
+                $content = $editor->preSaveContentFromEditor($content);
+                $name = 'design_'.$newsletter->getHash();
+                /** @var DesignInterface $design */
+                $design = $this->getDesignManager()->findOneBy(array('name' => $name));
+                if (!$design) {
+                    $design = $this->getDesignManager()->create();
+                    $design->setName($name);
+                    $newsletter->setDesign($design);
                 }
+                $design->setContent($content);
+                $this->getMandantManager()->persistDesign($this->getMandantName(), $design);
             }
-
-            $this->setNewsletter($newsletter);
 
             if ($request->request->get('continue')) {
                 return $this->redirect($this->getWizardActionAnnotationHandler()->getNextStepUrl());
@@ -172,10 +164,11 @@ class NewsletterController extends AbstractController
         return $this->render(
             $this->getTemplateManager()->getNewsletter('edit'),
             array(
-                'blockProviderManager' => $this->getBlockProviderManager(),
                 'newsletter'           => $newsletter,
-                'newsletters'          => $this->getMandant()->getNewsletters(),
                 'wizard'               => $this->getWizardActionAnnotationHandler(),
+                'head_javascripts' => $editor->renderHeadJavascripts(),
+                'head_styles' => $editor->renderHeadStyles(),
+                'newsletter_content' => $editor->renderContent(),
             )
         );
     }
