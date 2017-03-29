@@ -21,7 +21,7 @@ Host: Mailserver
 Port: Mailport
 Encryption: Verschlüsselung
 Authmode: Authentifizierung
-Starttime: Startzeit
+Starttime: Startzeitpunkt
 Sendsettings: Versand-Profil
 
 Renderername: Renderer Name (Service-Id)

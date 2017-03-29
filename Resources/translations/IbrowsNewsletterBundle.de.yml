@@ -13,6 +13,7 @@ newsletter:
     error: Fehler bei Mail-Job-Generierung
   created_at: Erstellt am
   design: Design
+  starttime: Startzeitpunkt
   testmail: Test-Versand
   overview: Übersicht
   preview: Vorschau
