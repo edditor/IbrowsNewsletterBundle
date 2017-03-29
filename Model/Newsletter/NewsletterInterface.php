@@ -16,6 +16,7 @@ interface NewsletterInterface
     const STATUS_WORKING = 'working';
     const STATUS_COMPLETED = 'completed';
     const STATUS_ERROR = 'error';
+    const STATUS_CANCELED = 'canceled';
 
     /**
      * @return string

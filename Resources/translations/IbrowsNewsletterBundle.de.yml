@@ -11,6 +11,7 @@ newsletter:
     working: Generierung der Mail-Jobs
     completed: Alle Mail-Jobs generiert
     error: Fehler bei Mail-Job-Generierung
+    canceled: Abgebrochen
   created_at: Erstellt am
   design: Design
   starttime: Startzeitpunkt
