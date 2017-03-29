@@ -102,4 +102,18 @@ class SubscriberController extends AbstractController
             )
         );
     }
+
+    /**
+     * @Route("/{id}", name="ibrows_newsletter_subscriber_delete")
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        /** @var Subscriber $subscriber */
+        $subscriber = $this->getSubscriberManager()->get($id);
+        $this->getMandantManager()->deleteSubscriber($this->getMandantName(), $subscriber);
+        $request->getSession()->getFlashBag()->add('success',
+            $this->get('translator')->trans('subscriber.delete.success', array('%id%' => $id), 'IbrowsNewsletterBundle'));
+
+        return $this->redirect($this->generateUrl('ibrows_newsletter_subscriber_list'));
+    }
 }

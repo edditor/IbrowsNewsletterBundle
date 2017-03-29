@@ -96,6 +96,7 @@ group:
 subscriber:
   create: Empfänger erstellen
   create.success: Neuer Empfänger wurde erfolgreich erstellt.
+  delete.success: 'Empfänger #%id% wurde erfolgreich gelöscht.'
   edit: Empfänger bearbeiten
   edit.success: Änderungen gespeichert.
   subscriber: Empfänger
@@ -160,3 +161,4 @@ ctrl:
   edit: bearbeiten
   save: speichern
   show: anzeigen
+  delete: löschen

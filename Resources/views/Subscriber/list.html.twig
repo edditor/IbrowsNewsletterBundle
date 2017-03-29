@@ -11,7 +11,7 @@
             <th>#</th>
             <th>{{ 'subscriber.firstname'|trans }}</th>
             <th>{{ 'subscriber.lastname'|trans }}</th>
-            <th>{{ 'subscriber.company'|trans }}</th>
+            {#<th>{{ 'subscriber.company'|trans }}</th>#}
             <th>{{ 'subscriber.email'|trans }}</th>
             <th>{{ 'subscriber.groups'|trans }}</th>
             <th>{{ 'ctrl.actions'|trans }}</th>
@@ -23,17 +23,18 @@
                 <td>{{ subscriber.id }}</td>
                 <td>{{ subscriber.firstname }}</td>
                 <td>{{ subscriber.lastname }}</td>
-                <td>{{ subscriber.companyname }}</td>
+                {#<td>{{ subscriber.companyname }}</td>#}
                 <td>{{ subscriber.email }}</td>
                 <td>{{ subscriber.groups|join(', ') }}</td>
                 <td>
-                    <a href="{{ path('ibrows_newsletter_subscriber_show', { 'id': subscriber.id }) }}">{{ 'ctrl.show'|trans }}</a>
-                    <a href="{{ path('ibrows_newsletter_subscriber_edit', { 'id': subscriber.id }) }}">{{ 'ctrl.edit'|trans }}</a>
+                    <a class="btn btn-small" href="{{ path('ibrows_newsletter_subscriber_show', { 'id': subscriber.id }) }}">{{ 'ctrl.show'|trans }}</a>
+                    <a class="btn btn-small" href="{{ path('ibrows_newsletter_subscriber_edit', { 'id': subscriber.id }) }}">{{ 'ctrl.edit'|trans }}</a>
+                    <a class="btn btn-small" href="{{ path('ibrows_newsletter_subscriber_delete', { 'id': subscriber.id }) }}">{{ 'ctrl.delete'|trans }}</a>
                 </td>
             </tr></a>
         {% endfor %}
         </tbody>
     </table>
-    <hr /> 
+    <hr />
     <a class="btn btn-small btn-primary"  href="{{ path('ibrows_newsletter_subscriber_create', {  }) }}">{{ 'subscriber.create'|trans }}</a>
 {% endblock newsletter_content %}
