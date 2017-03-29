@@ -10,10 +10,12 @@
             <tr>
                 <th>#</th>
                 <th>{{ 'newsletter.name'|trans }}</th>
-                <th>{{ 'newsletter.design'|trans }}</th>
+                {#<th>{{ 'newsletter.design'|trans }}</th>#}
                 <th>{{ 'newsletter.statistic'|trans }}</th>
                 <th>{{ 'newsletter.created_at'|trans }}</th>
+                <th>{{ 'newsletter.starttime'|trans }}</th>
                 <th>{{ 'newsletter.status.status'|trans }}</th>
+                <th></th>
             </tr>
         </thead>
 		<tbody>
@@ -25,14 +27,17 @@
                             {{ newsletter.name }}
                         </a>
                     </td>
-                    <td>{{ newsletter.design.name }}</td>
+                    {#<td>{{ newsletter.design.name }}</td>#}
                     <td>
                         <a href="{{ url('ibrows_newsletter_statistic_show', {newsletterId: newsletter.id}) }}">
                             {{ 'statistic.show'|trans }}
                         </a>
                     </td>
-                    <td>{{ newsletter.createdAt|date('d.m.Y, h:i:s') }}</td>
+                    <td>{{ newsletter.createdAt|localizeddate('medium', 'medium') }}</td>
+                    <td>{{ newsletter.starttime|localizeddate('medium', 'medium') }}</td>
                     <td>{{ ('newsletter.status.'~newsletter.status)|trans }}</td>
+                    <td>
+                    </td>
                 </tr>
 			{% endfor %}
 		</tbody>
