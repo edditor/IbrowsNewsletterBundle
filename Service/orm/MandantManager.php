@@ -241,6 +241,20 @@ class MandantManager extends BaseMandantManager
     }
 
     /**
+     * @param string $name
+     * @param SubscriberInterface $subscriber
+     * @return bool
+     */
+    public function deleteSubscriber($name, SubscriberInterface $subscriber)
+    {
+        $manager = $this->getObjectManager($name);
+        $manager->remove($subscriber);
+        $manager->flush();
+
+        return true;
+    }
+
+    /**
      * @param  string $name
      * @return ObjectManager
      * @throws \InvalidArgumentException
