@@ -12,6 +12,8 @@ newsletter:
     completed: Alle Mail-Jobs generiert
     error: Fehler bei Mail-Job-Generierung
     canceled: Abgebrochen
+  btn:
+    cancel: Abbrechen
   created_at: Erstellt am
   design: Design
   starttime: Startzeitpunkt
@@ -44,6 +46,8 @@ newsletter:
     groups:     Empfänger-Gruppen
     settings:   Einstellungen
     summary:    Zusammenfassung
+  cancel:
+    success: Newsletter wurde gestoppt.
   create: Neuer Newsletter
   list: Newsletter
   edit: Newsletter "%name%" editieren

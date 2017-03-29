@@ -16,6 +16,25 @@ use Symfony\Component\HttpFoundation\Response;
 class NewsletterController extends AbstractController
 {
     /**
+     * @Route("/cancel/{id}", name="ibrows_newsletter_cancel")
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function cancelAction(Request $request, $id)
+    {
+        $newsletter = $this->getNewsletterById($id);
+
+        //TODO later use STATUS_CANCELED
+        $newsletter->setStatus(NewsletterInterface::STATUS_ONHOLD);
+
+        $this->getMandantManager()->persistNewsletter($this->getMandantName(), $newsletter);
+        $request->getSession()->getFlashBag()->add('success',
+            $this->get('translator')->trans('newsletter.cancel.success', [], 'IbrowsNewsletterBundle'));
+
+        return $this->redirect($this->generateUrl('ibrows_newsletter_list'));
+    }
+
+    /**
      * @Route("/", name="ibrows_newsletter_index")
      */
     public function indexAction()

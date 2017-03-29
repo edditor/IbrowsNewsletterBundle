@@ -37,6 +37,11 @@
                     <td>{{ newsletter.starttime|localizeddate('medium', 'medium') }}</td>
                     <td>{{ ('newsletter.status.'~newsletter.status)|trans }}</td>
                     <td>
+                        {% if newsletter.status == constant('STATUS_READY', newsletter) 
+                           or newsletter.status == constant('STATUS_WORKING', newsletter)
+                        %}
+                            <a class="btn btn-small" href="{{ path('ibrows_newsletter_cancel', { 'id': newsletter.id }) }}">{{ 'newsletter.btn.cancel'|trans }}</a>
+                        {% endif %}
                     </td>
                 </tr>
 			{% endfor %}
