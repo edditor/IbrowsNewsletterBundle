@@ -189,8 +189,14 @@ class Configuration implements ConfigurationInterface
                     ->arrayNode('attachments')
                         ->children()
                             ->scalarNode('directory')->isRequired()->cannotBeEmpty()->end()
+                        ->end()
                     ->end()
-                ->end()
+
+                    ->arrayNode('route')
+                        ->children()
+                            ->scalarNode('unsubscribe')->isRequired()->cannotBeEmpty()->end()
+                        ->end()
+                    ->end()
 
             ->end()
         ;

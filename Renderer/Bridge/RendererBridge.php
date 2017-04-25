@@ -27,6 +27,11 @@ class RendererBridge
     private $host;
 
     /**
+     * @var string
+     */
+    private $routeUnsubscribe;
+
+    /**
      * @param RouterInterface $router
      * @param GenderTitleStrategyInterface $genderTitleStrategy
      * @param string $host
@@ -34,11 +39,13 @@ class RendererBridge
     public function __construct(
         RouterInterface $router,
         GenderTitleStrategyInterface $genderTitleStrategy,
-        $host
+        $host,
+        $routeUnsubscribe
     ) {
         $this->router = $router;
         $this->genderTitleStrategy = $genderTitleStrategy;
         $this->host = $host;
+        $this->routeUnsubscribe = $routeUnsubscribe;
     }
 
     /**
@@ -118,7 +125,7 @@ class RendererBridge
         $context
     ) {
         return $this->host.$this->router->generate(
-            'ibrows_newsletter_unsubscribe',
+            $this->routeUnsubscribe,
             array(
                 'mandantHash' => $mandant->getHash(),
                 'newsletterHash' => $newsletter->getHash(),

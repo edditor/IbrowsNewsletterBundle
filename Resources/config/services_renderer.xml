@@ -39,6 +39,7 @@
             <argument type="service" id="router"/>
             <argument type="service" id="ibrows_newsletter.rendererbridge.gendertitlestrategy.translator"/>
             <argument>%ibrows_newsletter.filesystem.block.host%</argument>
+            <argument>%ibrows_newsletter.filesystem.route.unsubscribe%</argument>
         </service>
 
         <service id="ibrows_newsletter.rendererbridge.methodshelper" class="Ibrows\Bundle\NewsletterBundle\Renderer\Bridge\BridgeMethodsHelper">
