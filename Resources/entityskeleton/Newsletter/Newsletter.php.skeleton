@@ -52,7 +52,7 @@ class Newsletter extends BaseNewsletter
     protected $blocks;
 
     /**
-    * @ORM\OneToOne(targetEntity="SendSettings", cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="SendSettings", cascade={"persist"})
     * @ORM\JoinColumn(name="send_settings_id", referencedColumnName="id")
     */
     protected $sendSettings;
