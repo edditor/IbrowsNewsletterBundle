@@ -176,7 +176,7 @@ class NewsletterController extends AbstractController
             }
 
             if ($request->request->get('continue')) {
-                return $this->redirect($this->getWizardActionAnnotationHandler()->getNextStepUrl());
+                return new RedirectResponse($this->getWizardActionAnnotationHandler()->getNextStepUrl());
             }
         }
 
