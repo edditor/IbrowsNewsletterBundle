@@ -94,6 +94,10 @@ ibrows_newsletter:
         public:     /uploads/block
         # Host for public url generation of images
         host:       http://example.com
+      attachments:
+        directory: %kernel.root_dir%/../web/ibrows/attachments
+      route:
+        unsubscribe: ibrows_newsletter_unsubscribe
 
 # configure doctrine extensions for each mandant
 stof_doctrine_extensions:
