@@ -12,6 +12,9 @@
     <div class="form-actions">
         <input type="submit" name="save" class="btn btn-primary" value="{{ 'form.save'|trans }}" id="btnSave">
         <input type="submit" name="continue" class="btn" value="{{ 'form.continue'|trans }}" id="btnContinue">
+        <div class="ajax-loading-icon ajax-save_continue hidden" style="display:inline;">
+            <img style="max-width: 20px" src="{{ asset('bundles/ibrowsnewsletter/img/loading.gif') }}" alt="working...">
+        </div>
     </div>
 {% endmacro displayformcontrols %}
 
