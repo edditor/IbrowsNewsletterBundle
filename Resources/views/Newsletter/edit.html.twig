@@ -11,7 +11,7 @@
     {% trans_default_domain "IbrowsNewsletterBundleForms" %}
     <div class="form-actions">
         <input type="submit" name="save" class="btn btn-primary btnSave" value="{{ 'form.save'|trans }}">
-        <input type="submit" name="continue" class="btn btnContinue" value="{{ 'form.continue'|trans }}">
+        <input type="submit" name="continue" class="btn btnContinue" value="{{ 'form.save'|trans ~ ' & ' ~ 'form.continue'|trans }}">
         <div class="ajax-loading-icon ajax-save_continue hidden" style="display:inline;">
             <img style="max-width: 20px" src="{{ asset('bundles/ibrowsnewsletter/img/loading.gif') }}" alt="working...">
         </div>
