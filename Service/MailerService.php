@@ -43,6 +43,10 @@ class MailerService
             ->setReturnPath($job->getReturnMail())
             ->setTo($to)
         ;
+        //TODO get additional headers from database or config
+        $headers = $message->getHeaders();
+        $headers->addTextHeader('X-Mailer', 'DPX');
+
         foreach ($job->getAttachments() as $a) {
             $aPath = $this->attachmentsDir.'/'.$a;
             if (is_file($aPath) && is_readable($aPath)) {
