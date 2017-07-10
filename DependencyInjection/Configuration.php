@@ -194,7 +194,9 @@ class Configuration implements ConfigurationInterface
 
                     ->arrayNode('route')
                         ->children()
-                            ->scalarNode('unsubscribe')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('statisticlogreadimage')->isRequired()->cannotBeEmpty()->end()
+							->scalarNode('readonlinelink')->isRequired()->cannotBeEmpty()->end()
+							->scalarNode('unsubscribe')->isRequired()->cannotBeEmpty()->end()
                         ->end()
                     ->end()
 
