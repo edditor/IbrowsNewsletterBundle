@@ -29,22 +29,39 @@ class RendererBridge
     /**
      * @var string
      */
+    private $routeStatisticlogreadimage;
+
+    /**
+     * @var string
+     */
+    private $routeReadonlinelink;
+
+    /**
+     * @var string
+     */
     private $routeUnsubscribe;
 
     /**
      * @param RouterInterface $router
      * @param GenderTitleStrategyInterface $genderTitleStrategy
      * @param string $host
+     * @param string $routeStatisticlogreadimage
+     * @param string $routeReadonlinelink
+     * @param string $routeUnsubscribe
      */
     public function __construct(
         RouterInterface $router,
         GenderTitleStrategyInterface $genderTitleStrategy,
         $host,
+        $routeStatisticlogreadimage,
+        $routeReadonlinelink,
         $routeUnsubscribe
     ) {
         $this->router = $router;
         $this->genderTitleStrategy = $genderTitleStrategy;
         $this->host = $host;
+        $this->routeStatisticlogreadimage = $routeStatisticlogreadimage;
+        $this->routeReadonlinelink = $routeReadonlinelink;
         $this->routeUnsubscribe = $routeUnsubscribe;
     }
 
@@ -72,8 +89,9 @@ class RendererBridge
         SubscriberInterface $subscriber,
         $context
     ) {
-        $src = $this->router->generate(
-            'ibrows_newsletter_statistic_log_read',
+
+        $src = $this->host.$this->router->generate(
+            $this->routeStatisticlogreadimage,
             array(
                 'mandantHash' => $mandant->getHash(),
                 'newsletterHash' => $newsletter->getHash(),
@@ -83,7 +101,7 @@ class RendererBridge
             RouterInterface::ABSOLUTE_PATH
         );
 
-        return '<img width="0" height="0" src="'.$this->host.$src.'" />';
+        return '<img width="0" height="0" src="'.$src.'" />';
     }
 
     /**
@@ -100,7 +118,7 @@ class RendererBridge
         $context
     ) {
         return $this->host.$this->router->generate(
-            'ibrows_newsletter_render_overview',
+            $this->routeReadonlinelink,
             array(
                 'mandantHash' => $mandant->getHash(),
                 'newsletterHash' => $newsletter->getHash(),

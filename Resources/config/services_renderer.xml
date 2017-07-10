@@ -39,6 +39,8 @@
             <argument type="service" id="router"/>
             <argument type="service" id="ibrows_newsletter.rendererbridge.gendertitlestrategy.translator"/>
             <argument>%ibrows_newsletter.filesystem.block.host%</argument>
+            <argument>%ibrows_newsletter.filesystem.route.statisticlogreadimage%</argument>
+            <argument>%ibrows_newsletter.filesystem.route.readonlinelink%</argument>
             <argument>%ibrows_newsletter.filesystem.route.unsubscribe%</argument>
         </service>
 
