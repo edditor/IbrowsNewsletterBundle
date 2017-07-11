@@ -101,9 +101,7 @@ class RendererBridge
             RouterInterface::ABSOLUTE_URL
         );
 
-        $src = str_replace('//newsletter/', '/newsletter/', $src);
-
-        return '<img width="0" height="0" src="'.$src.'" />';
+        return '<img width="0" height="0" src="' . $src . '" />';
     }
 
     /**
