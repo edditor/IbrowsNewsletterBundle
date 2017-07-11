@@ -90,7 +90,7 @@ class RendererBridge
         $context
     ) {
 
-        $src = $this->host.$this->router->generate(
+        $src = $this->router->generate(
             $this->routeStatisticlogreadimage,
             array(
                 'mandantHash' => $mandant->getHash(),
@@ -98,8 +98,10 @@ class RendererBridge
                 'subscriberHash' => $subscriber->getHash(),
                 'context' => $context,
             ),
-            RouterInterface::ABSOLUTE_PATH
+            RouterInterface::ABSOLUTE_URL
         );
+
+        $src = str_replace('//newsletter/', '/newsletter/', $src);
 
         return '<img width="0" height="0" src="'.$src.'" />';
     }
