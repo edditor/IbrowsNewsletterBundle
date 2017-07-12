@@ -1,5 +1,4 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,15 +9,31 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SubscriberController extends AbstractController
 {
+
     /**
-     * @Route("/list", name="ibrows_newsletter_subscriber_list")
+     * @Route("/list/{page}", name="ibrows_newsletter_subscriber_list",
+     *  requirements={"page" = "\d+"}, defaults={"page" = 1}
+     *  )
      */
-    public function listAction()
+    public function listAction(Request $request, $page)
     {
-        $subscribers = $this->getSubscribers();
+        $subscriberClass = $this->getClassManager()->getModel('subscriber');
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder()
+            ->select('s')
+            ->from($subscriberClass, 's');
+
+        $paginator = $this->get('knp_paginator');
+
+        $pagination = $paginator->paginate(
+            $qb, /* query NOT result */
+            $page/* page number */,
+            10/* limit per page */
+        );
 
         return $this->render($this->getTemplateManager()->getSubscriber('list'), array(
-            'subscribers' => $subscribers
+                'pagination' => $pagination
         ));
     }
 
@@ -47,11 +62,11 @@ class SubscriberController extends AbstractController
         }
 
         return $this->render(
-            $this->getTemplateManager()->getSubscriber('create'),
-            array(
-                'subscriber' => $subscriber,
-                'form'   => $form->createView(),
-            )
+                $this->getTemplateManager()->getSubscriber('create'),
+                array(
+                    'subscriber' => $subscriber,
+                    'form' => $form->createView(),
+                )
         );
     }
 
@@ -80,11 +95,11 @@ class SubscriberController extends AbstractController
         }
 
         return $this->render(
-            $this->getTemplateManager()->getSubscriber('edit'),
-            array(
-                'subscriber' => $subscriber,
-                'form'   => $form->createView(),
-            )
+                $this->getTemplateManager()->getSubscriber('edit'),
+                array(
+                    'subscriber' => $subscriber,
+                    'form' => $form->createView(),
+                )
         );
     }
 
@@ -97,9 +112,9 @@ class SubscriberController extends AbstractController
     {
         $subscriber = $this->getSubscriberManager()->get($id);
         return $this->render($this->getTemplateManager()->getSubscriber('show'),
-            array(
-                'subscriber' => $subscriber,
-            )
+                array(
+                    'subscriber' => $subscriber,
+                )
         );
     }
 
