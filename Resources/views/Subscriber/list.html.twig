@@ -8,10 +8,10 @@
         {{ knp_pagination_filter(
                     pagination,
                     {
-                        's.id'          : '#',
-                        's.firstname'   : 'subscriber.firstname'|trans,
-                        's.lastname'   : 'subscriber.lastname'|trans,
                         's.email'   : 'subscriber.email'|trans,
+                        's.lastname'   : 'subscriber.lastname'|trans,
+                        's.firstname'   : 'subscriber.firstname'|trans,
+                        's.id'          : '#',
                     }
                 )
         }}
