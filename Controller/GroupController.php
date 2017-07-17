@@ -112,7 +112,7 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="ibrows_newsletter_group_delete")
+     * @Route("/delete/{id}", name="ibrows_newsletter_group_delete")
      */
     public function deleteAction(Request $request, $id)
     {
