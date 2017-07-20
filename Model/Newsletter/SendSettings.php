@@ -7,6 +7,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SendSettings implements SendSettingsInterface
 {
     /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
      * @Assert\NotBlank(groups={"newsletter"})
      */
     protected $username;
@@ -50,6 +55,14 @@ class SendSettings implements SendSettingsInterface
     public function __toString()
     {
         return (string) $this->host.' - '.$this->username;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getUsername()

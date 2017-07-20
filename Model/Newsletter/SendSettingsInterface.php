@@ -6,6 +6,8 @@ interface SendSettingsInterface
 {
     public function __toString();
 
+    public function getId();
+
     public function getUsername();
 
     public function setUsername($username);
