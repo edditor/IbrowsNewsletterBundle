@@ -25,12 +25,14 @@ class MandantManager extends BaseMandantManager
     protected $readLogClass;
     protected $sendLogClass;
     protected $unsubscribeLogClass;
+    protected $sendSettingsClass;
 
     protected $newsletterManager;
     protected $designManager;
     protected $groupManager;
     protected $subscriberManager;
     protected $statisticManager;
+    protected $sendSettingsManager;
     protected $userProvider;
 
     public function __construct(
@@ -50,6 +52,7 @@ class MandantManager extends BaseMandantManager
         $this->readLogClass = $classManager->getModel('readlog');
         $this->sendLogClass = $classManager->getModel('sendlog');
         $this->unsubscribeLogClass = $classManager->getModel('unsubscribelog');
+        $this->sendSettingsClass = $classManager->getModel('sendsettings');
     }
 
     /**
@@ -164,6 +167,21 @@ class MandantManager extends BaseMandantManager
         }
 
         return $this->statisticManager;
+    }
+
+    /**
+     * @param string $name
+     * @return SendSettingsManager
+     */
+    public function getSendSettingsManager($name)
+    {
+        if ($this->sendSettingsManager === null) {
+            $manager = $this->getObjectManager($name);
+            $repository = $manager->getRepository($this->sendSettingsClass);
+            $this->sendSettingsManager = new SendSettingsManager($repository);
+        }
+
+        return $this->sendSettingsManager;
     }
 
     /**
