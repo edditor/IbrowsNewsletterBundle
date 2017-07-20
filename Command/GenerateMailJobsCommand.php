@@ -34,6 +34,11 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
      */
     private $mailJobClass;
 
+    /**
+     * @var string
+     */
+    private $sendSettingsClass;
+
     protected function configure()
     {
         $this
@@ -58,6 +63,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
         $this->mm = $this->getContainer()->get('ibrows_newsletter.mandant_manager');
         $this->newsletterClass = $this->getContainer()->getParameter('ibrows_newsletter.classes.model.newsletter');
         $this->mailJobClass = $this->getContainer()->getParameter('ibrows_newsletter.classes.model.mailjob');
+        $this->sendSettingsClass = $this->getContainer()->getParameter('ibrows_newsletter.classes.model.sendsettings');
 
         if ($mandantName = $input->getOption('mandant')) {
             $manager = $this->mm->getObjectManager($mandantName);
@@ -120,6 +126,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
     private function generateMailJobs(ObjectManager $objectManager, MandantInterface $mandant, NewsletterInterface $newsletter)
     {
         $sendSettings = $newsletter->getSendSettings();
+        $sendSettingsId = $sendSettings->getId();
         $mailjobClass = $this->mailJobClass;
 
         $rendererManager = $this->getContainer()->get('ibrows_newsletter.renderer_manager');
@@ -163,6 +170,8 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
             if ($count % 200 == 0) {
                 $objectManager->flush();
                 $objectManager->clear();
+                //recover $sendSettings reference after clear()
+                $sendSettings = $objectManager->getReference($this->sendSettingsClass, $sendSettingsId);
             };
         }
 
