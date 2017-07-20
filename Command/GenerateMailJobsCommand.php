@@ -39,6 +39,11 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
      */
     private $sendSettingsClass;
 
+    /**
+     * @var integer
+     */
+    protected $batchSize = 200;
+
     protected function configure()
     {
         $this
@@ -167,7 +172,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
             $objectManager->persist($mailjob);
             ++$count;
 
-            if ($count % 200 == 0) {
+            if ($count % $this->batchSize == 0) {
                 $objectManager->flush();
                 $objectManager->clear();
                 //recover $sendSettings reference after clear()
