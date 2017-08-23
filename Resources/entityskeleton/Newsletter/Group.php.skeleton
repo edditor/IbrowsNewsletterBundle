@@ -4,10 +4,12 @@ namespace {{NAMESPACE}};
 
 use Ibrows\Bundle\NewsletterBundle\Entity\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="{{TABLE_PREFIX}}_subscriber_group")
+ * @Gedmo\Loggable(logEntryClass="IbrowsLog")
  */
 class Group extends BaseGroup
 {

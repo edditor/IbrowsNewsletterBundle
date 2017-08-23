@@ -6,6 +6,7 @@ use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\Group as BaseGroup;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 class Group extends BaseGroup
 {
@@ -18,6 +19,7 @@ class Group extends BaseGroup
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $name;

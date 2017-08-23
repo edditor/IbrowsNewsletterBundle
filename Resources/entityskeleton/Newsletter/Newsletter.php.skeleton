@@ -4,6 +4,7 @@ namespace {{NAMESPACE}};
 
 use Ibrows\Bundle\NewsletterBundle\Entity\Newsletter as BaseNewsletter;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *      name="ibrows_newsletter_newsletter",
  *      uniqueConstraints={@ORM\UniqueConstraint(name="unique_idx", columns={"hash"})}
  * )
+ * @Gedmo\Loggable(logEntryClass="IbrowsLog")
  */
 class Newsletter extends BaseNewsletter
 {

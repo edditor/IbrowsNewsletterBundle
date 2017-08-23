@@ -4,10 +4,12 @@ namespace {{NAMESPACE}};
 
 use Ibrows\Bundle\NewsletterBundle\Entity\Design as BaseDesign;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="{{TABLE_PREFIX}}_design")
+ * @Gedmo\Loggable(logEntryClass="IbrowsLog")
  */
 class Design extends BaseDesign
 {

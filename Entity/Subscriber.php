@@ -6,6 +6,7 @@ use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\Subscriber as AbstractSubscr
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 class Subscriber extends AbstractSubscriber
 {
@@ -18,6 +19,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", nullable=true)
      */
     protected $locale;
@@ -25,6 +27,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $email;
@@ -32,6 +35,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $gender = '';
@@ -39,6 +43,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $title = '';
@@ -46,6 +51,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $firstname;
@@ -53,6 +59,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $lastname;
@@ -60,6 +67,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $companyname;
@@ -67,6 +75,7 @@ class Subscriber extends AbstractSubscriber
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      */
     protected $hash;

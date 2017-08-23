@@ -148,6 +148,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('sendlog')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('sendsettings')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('mailjob')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('ibrowslog')->isRequired()->cannotBeEmpty()->end()
                         ->end()
                     ->end()
 
