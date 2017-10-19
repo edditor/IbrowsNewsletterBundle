@@ -1,11 +1,11 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Command;
 
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManager;
 use Ibrows\Bundle\NewsletterBundle\Model\Job\JobInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Job\MailJob;
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Mandant\MandantManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class ExecuteMailJobsCommand extends ContainerAwareCommand
 {
+
     const OPTION_LIMIT = 'limit';
 
     /**
@@ -48,18 +49,11 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
             ->setName('ibrows:newsletter:job:mail:send')
             ->setDescription('Executes (sends) a certain amount of ready mailjobs.')
             ->addOption(
-                'mandant',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'The mandant to use'
+                'mandant', null, InputOption::VALUE_OPTIONAL, 'The mandant to use'
             )
             ->addOption(
-                self::OPTION_LIMIT,
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'The maximal amount of mailjobs to execute',
-                25
-            );
+                self::OPTION_LIMIT, null, InputOption::VALUE_OPTIONAL, 'The maximal amount of mailjobs to execute', 25
+        );
     }
 
     /**
@@ -121,25 +115,25 @@ class ExecuteMailJobsCommand extends ContainerAwareCommand
      */
     protected function getReadyJobsORM($limit, InputInterface $input, OutputInterface $output, EntityManager $manager)
     {
-        try{
+        try {
             $manager->getConnection()->beginTransaction();
 
-            $alias = 'j';
+            //$alias = 'j';
+            /* $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
+              $qb
+              ->update()
+              ->set('j.body', ':body')
+              ->where('j.status = :status')
+              ->setParameter('status', JobInterface::STATUS_COMPLETED)
+              ->setParameter('body', null)
+              ->getQuery()->execute(); */
 
-            /*$qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
+            $qb = $manager->getRepository($this->jobClass)->createQueryBuilder('j');
             $qb
-                ->update()
-                ->set('j.body', ':body')
-                ->where('j.status = :status')
-                ->setParameter('status', JobInterface::STATUS_COMPLETED)
-                ->setParameter('body', null)
-                ->getQuery()->execute();*/
-
-            $qb = $manager->getRepository($this->jobClass)->createQueryBuilder($alias);
-            $qb
-                ->select("$alias")
-                ->where("$alias.status = :status")->setParameter('status', MailJob::STATUS_READY)
-                ->andWhere("$alias.scheduled <= :now")->setParameter('now', $this->now)
+                ->join('j.newsletter', 'nl')
+                ->andwhere('nl.status = :nl_status')->setParameter('nl_status', MailJob::STATUS_COMPLETED) //completed means, all jobs are generated
+                ->andwhere('j.status = :j_status')->setParameter('j_status', MailJob::STATUS_READY)
+                ->andWhere('j.scheduled <= :now')->setParameter('now', $this->now)
                 ->setMaxResults($limit);
 
             $jobs = array();
