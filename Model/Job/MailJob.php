@@ -1,5 +1,4 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Model\Job;
 
 use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\SendSettingsInterface;
@@ -7,17 +6,23 @@ use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
 
 class MailJob extends AbstractJob
 {
+
     protected $subject;
     protected $senderName;
     protected $senderMail;
     protected $returnMail;
-
     protected $toMail;
     protected $toName;
     protected $body;
     protected $attachments;
-
     protected $salt;
+
+    /** @var SendSettingsInterface */
+    protected $sendSettings;
+
+    /** @var NewsletterInterface */
+    protected $newsletter;
+
     public function __construct(NewsletterInterface $newsletter, SendSettingsInterface $sendSettings)
     {
         parent::__construct();
@@ -31,6 +36,7 @@ class MailJob extends AbstractJob
         $this->setScheduled($newsletter->getStarttime());
 
         $this->setNewsletterId($newsletter->getId());
+        $this->setNewsletter($newsletter);
         $this->salt = $newsletter->getMandant()->getSalt();
     }
 
@@ -128,10 +134,9 @@ class MailJob extends AbstractJob
         return explode(';', $this->attachments);
     }
 
-    /*
-    *@todo change this to entity
-    *
-    */
+    /**
+     * @todo change this to entity
+     */
     public function setAttachments(array $attachments)
     {
         $this->attachments = implode(';', $attachments);
@@ -149,5 +154,15 @@ class MailJob extends AbstractJob
         $this->sendSettings = $settings;
 
         return $this;
+    }
+
+    public function getNewsletter()
+    {
+        return $this->newsletter;
+    }
+
+    public function setNewsletter(NewsletterInterface $newsletter)
+    {
+        $this->newsletter = $newsletter;
     }
 }

@@ -1,13 +1,12 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Entity;
 
 use Ibrows\Bundle\NewsletterBundle\Model\Job\MailJob as BaseMailJob;
-
 use Doctrine\ORM\Mapping as ORM;
 
 class MailJob extends BaseMailJob
 {
+
     protected $id;
 
     /**
@@ -87,11 +86,17 @@ class MailJob extends BaseMailJob
 
     /**
      * @var SendSettingsInterface
-     *
      * @ORM\ManyToOne(targetEntity="SendSettings")
      * @ORM\JoinColumn(name="send_settings_id", referencedColumnName="id")
      */
     protected $sendSettings;
+
+    /**
+     * @var Newsletter
+     * @ORM\ManyToOne(targetEntity="Newsletter")
+     * @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id")
+     */
+    protected $newsletter;
 
     public function getId()
     {
