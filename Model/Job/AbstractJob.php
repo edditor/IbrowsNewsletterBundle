@@ -2,9 +2,14 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Model\Job;
 
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
+
 abstract class AbstractJob implements JobInterface
 {
-    protected $newsletterId;
+    /**
+     * @var NewsletterInterface
+     */
+    protected $newsletter;
 
     protected $error;
     protected $status;
@@ -21,14 +26,7 @@ abstract class AbstractJob implements JobInterface
 
     public function getNewsletterId()
     {
-        return $this->newsletterId;
-    }
-
-    public function setNewsletterId($id)
-    {
-        $this->newsletterId = $id;
-
-        return $this;
+        return $this->newsletter->getId();
     }
 
     public function getError()

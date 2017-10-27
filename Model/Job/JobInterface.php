@@ -2,6 +2,7 @@
 
 namespace Ibrows\Bundle\NewsletterBundle\Model\Job;
 
+use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
 use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\SendSettingsInterface;
 
 interface JobInterface
@@ -12,8 +13,22 @@ interface JobInterface
     const STATUS_COMPLETED = 'completed';
     const STATUS_ERROR = 'error';
 
+    /**
+     * @return mixed
+     * @deprecated
+     */
     public function getNewsletterId();
-    public function setNewsletterId($id);
+
+    /**
+     * @return NewsletterInterface
+     */
+    public function getNewsletter();
+
+    /**
+     * @param NewsletterInterface $newsletter
+     * @return mixed
+     */
+    public function setNewsletter(NewsletterInterface $newsletter);
 
     public function getStatus();
     public function setStatus($status);
