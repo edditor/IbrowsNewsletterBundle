@@ -76,7 +76,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
                 try {
                     $this->generateMailJobs($manager, $this->mm->get($mandantName), $newsletter);
                 } catch (\Exception $e) {
-                    $this->setNewsletterError($manager, $newsletter->getId(), $e);
+                    $this->setNewsletterError($manager, $newsletter, $e);
                     throw $e;
                 }
             }
@@ -89,7 +89,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
                 try {
                     $this->generateMailJobs($manager, $this->mm->get($name), $newsletter);
                 } catch (\Exception $e) {
-                    $this->setNewsletterError($manager, $newsletter->getId(), $e);
+                    $this->setNewsletterError($manager, $newsletter, $e);
                     throw $e;
                 }
             }
@@ -182,7 +182,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
 
         $objectManager->flush();
 
-        $this->setNewsletterCompleted($objectManager, $newsletter->getId());
+        $this->setNewsletterCompleted($objectManager, $newsletter);
     }
 
     /**
@@ -196,9 +196,9 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
 
     /**
      * @param EntityManager $manager
-     * @param int $newsletterId
+     * @param NewsletterInterface $newsletter
      */
-    private function setNewsletterCompleted(EntityManager $manager, $newsletterId)
+    private function setNewsletterCompleted(EntityManager $manager, NewsletterInterface $newsletter)
     {
         $qb = $manager->getRepository($this->newsletterClass)->createQueryBuilder('n');
         $qb
@@ -206,16 +206,16 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
             ->set('n.status', ':status')
             ->where('n.id = :newsletterId')
             ->setParameter('status', NewsletterInterface::STATUS_COMPLETED)
-            ->setParameter('newsletterId', $newsletterId)
+            ->setParameter('newsletterId', $newsletter->getId())
             ->getQuery()->execute();
     }
 
     /**
      * @param EntityManager $manager
-     * @param int $newsletterId
+     * @param NewsletterInterface $newsletter
      * @param \Exception $e
      */
-    private function setNewsletterError(EntityManager $manager, $newsletterId, \Exception $e)
+    private function setNewsletterError(EntityManager $manager, NewsletterInterface $newsletter, \Exception $e)
     {
         $qb = $manager->getRepository($this->newsletterClass)->createQueryBuilder('n');
         $qb
@@ -225,7 +225,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
             ->where('n.id = :newsletterId')
             ->setParameter('status', NewsletterInterface::STATUS_ERROR)
             ->setParameter('error', $e->getCode() . ': ' . $e->getMessage())
-            ->setParameter('newsletterId', $newsletterId)
+            ->setParameter('newsletterId', $newsletter->getId())
             ->getQuery()->execute();
     }
 }
