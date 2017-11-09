@@ -132,6 +132,7 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
     {
         $sendSettings = $newsletter->getSendSettings();
         $sendSettingsId = $sendSettings->getId();
+        $newsletterId = $newsletter->getId();
         $mailjobClass = $this->mailJobClass;
 
         $rendererManager = $this->getContainer()->get('ibrows_newsletter.renderer_manager');
@@ -172,11 +173,12 @@ class GenerateMailJobsCommand extends ContainerAwareCommand
             $objectManager->persist($mailjob);
             ++$count;
 
-            if ($count % $this->batchSize == 0) {
+            if ($count % $this->batchSize === 0) {
                 $objectManager->flush();
                 $objectManager->clear();
-                //recover $sendSettings reference after clear()
+                //recover $sendSettings and $newsletter reference after clear()
                 $sendSettings = $objectManager->getReference($this->sendSettingsClass, $sendSettingsId);
+                $newsletter = $objectManager->getReference($this->newsletterClass, $newsletterId);
             };
         }
 
