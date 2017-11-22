@@ -1,14 +1,12 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Model\Log;
 
 abstract class Log implements LogInterface
 {
-    protected $id;
 
+    protected $id;
     protected $newsletterId;
     protected $subscriberId;
-
     protected $subscriberGender;
     protected $subscriberTitle;
     protected $subscriberCompanyname;
@@ -16,7 +14,7 @@ abstract class Log implements LogInterface
     protected $subscriberLastname;
     protected $subscriberLocale;
     protected $subscriberEmail;
-
+    protected $subscriberUseragent;
     protected $createdAt;
     protected $message;
     protected $mandantName;
@@ -228,6 +226,25 @@ abstract class Log implements LogInterface
     public function setSubscriberCompanyname($companyname)
     {
         $this->subscriberCompanyname = $companyname;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubscriberUseragent()
+    {
+        return $this->subscriberUseragent;
+    }
+
+    /**
+     * @param string $useragent
+     * @return $this
+     */
+    public function setSubscriberUseragent($useragent)
+    {
+        $this->subscriberUseragent = $useragent;
 
         return $this;
     }

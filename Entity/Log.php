@@ -1,13 +1,12 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Entity;
 
 use Ibrows\Bundle\NewsletterBundle\Model\Log\Log as BaseLog;
-
 use Doctrine\ORM\Mapping as ORM;
 
 class Log extends BaseLog
 {
+
     /**
      * @ORM\Column(type="integer", name="newsletter_id", nullable=true)
      */
@@ -67,4 +66,10 @@ class Log extends BaseLog
      * @ORM\Column(type="string", name="mandant_name", nullable=true)
      */
     protected $mandantName;
+
+    /**
+     * @ORM\Column(type="text", name="subscriber_useragent", nullable=true)
+     */
+    protected $subscriberUserAgent;
+
 }

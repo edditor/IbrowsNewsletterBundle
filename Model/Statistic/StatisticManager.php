@@ -1,5 +1,4 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Model\Statistic;
 
 use Ibrows\Bundle\NewsletterBundle\Model\Subscriber\SubscriberLocaleInterface;
@@ -9,6 +8,7 @@ use Ibrows\Bundle\NewsletterBundle\Model\Newsletter\NewsletterInterface;
 
 abstract class StatisticManager implements StatisticManagerInterface
 {
+
     protected $mandantName;
     protected $readLogClass;
     protected $sendLogClass;
@@ -43,20 +43,21 @@ abstract class StatisticManager implements StatisticManagerInterface
         $log = new $className();
 
         $log
-                ->setNewsletterId($newsletter->getId())
-                ->setSubscriberId($subscriber->getId())
-                ->setSubscriberEmail($subscriber->getEmail())
-                ->setMessage($message)
-                ->setMandantName($this->mandantName)
+            ->setNewsletterId($newsletter->getId())
+            ->setSubscriberId($subscriber->getId())
+            ->setSubscriberEmail($subscriber->getEmail())
+            ->setMessage($message)
+            ->setMandantName($this->mandantName)
+            ->setSubscriberUseragent(filter_var($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING))
         ;
 
         if ($subscriber instanceof SubscriberGenderTitleInterface) {
             $log
-                    ->setSubscriberCompanyname($subscriber->getCompanyname())
-                    ->setSubscriberFirstname($subscriber->getFirstname())
-                    ->setSubscriberGender($subscriber->getGender())
-                    ->setSubscriberLastname($subscriber->getLastname())
-                    ->setSubscriberTitle($subscriber->getTitle())
+                ->setSubscriberCompanyname($subscriber->getCompanyname())
+                ->setSubscriberFirstname($subscriber->getFirstname())
+                ->setSubscriberGender($subscriber->getGender())
+                ->setSubscriberLastname($subscriber->getLastname())
+                ->setSubscriberTitle($subscriber->getTitle())
             ;
         }
 

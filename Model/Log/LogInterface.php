@@ -1,9 +1,9 @@
 <?php
-
 namespace Ibrows\Bundle\NewsletterBundle\Model\Log;
 
 interface LogInterface
 {
+
     /**
      * @return integer
      */
@@ -134,4 +134,15 @@ interface LogInterface
      * @return LogInterface
      */
     public function setMandantName($mandantName);
+
+    /**
+     * @return string
+     */
+    public function getSubscriberUseragent();
+
+    /**
+     * @param  string       $useragent
+     * @return LogInterface
+     */
+    public function setSubscriberUseragent($useragent);
 }
