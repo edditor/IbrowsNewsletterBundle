@@ -70,6 +70,6 @@ class Log extends BaseLog
     /**
      * @ORM\Column(type="text", name="subscriber_useragent", nullable=true)
      */
-    protected $subscriberUserAgent;
+    protected $subscriberUseragent;
 
 }
